@@ -44,6 +44,34 @@ TEST_CASE(" BoxKonstrAreaVolume ", "[5.2]") {
 	REQUIRE(b2.volume() == Approx(8.0f));
 }
 
+TEST_CASE(" SphereNameColor ", "[5.3]") {
+	Sphere s;
+	REQUIRE(s.getName() == "Shape");
+	REQUIRE(s.getColor().r == 1.0f);
+	REQUIRE(s.getColor().g == 1.0f);
+	REQUIRE(s.getColor().b == 1.0f);
+
+	Sphere s2{ {1.0f, 1.0f, 2.0f}, 4.0f, "Red Sphere", {1.0f, 0.0f, 0.0f} };
+	REQUIRE(s2.getName() == "Red Sphere");
+	REQUIRE(s2.getColor().r == 1.0f);
+	REQUIRE(s2.getColor().g == 0.0f);
+	REQUIRE(s2.getColor().b == 0.0f);
+}
+
+TEST_CASE(" BoxNameColor ", "[5.3]") {
+	Box b;
+	REQUIRE(b.getName() == "Shape");
+	REQUIRE(b.getColor().r == 1.0f);
+	REQUIRE(b.getColor().g == 1.0f);
+	REQUIRE(b.getColor().b == 1.0f);
+
+	Box b2{ { 1.0f, 1.0f, 2.0f }, {3.0f, 3.0f, 5.0f}, "Blue Box", { 0.0f, 0.0f, 1.0f } };
+	REQUIRE(b2.getName() == "Blue Box");
+	REQUIRE(b2.getColor().r == 0.0f);
+	REQUIRE(b2.getColor().g == 0.0f);
+	REQUIRE(b2.getColor().b == 1.0f);
+}
+
 int main(int argc, char *argv[])
 {
   return Catch::Session().run(argc, argv);

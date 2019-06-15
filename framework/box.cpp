@@ -6,16 +6,21 @@ Box::Box() :
 	min_{ 0.0f },
 	max_{ 0.0f } {}
 
-Box::Box(glm::vec3 const& min_, glm::vec3 const& max_) :
+Box::Box(glm::vec3 const& min_, glm::vec3 const& max_):
 	Shape{},
 	min_{ min_ },
 	max_{ max_ } {}
 
-glm::vec3 Box:: getMin() {
+Box::Box(glm::vec3 const& min_, glm::vec3 const& max_, std::string const& name_, Color const& color_) :
+	Shape{name_, color_},
+	min_{ min_ },
+	max_{ max_ } {}
+
+glm::vec3 Box:: getMin() const {
 	return min_;
 }
 
-glm::vec3 Box::getMax() {
+glm::vec3 Box::getMax() const {
 	return max_;
 }
 
