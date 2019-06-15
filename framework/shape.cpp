@@ -17,7 +17,7 @@ Color Shape::getColor() const {
 }
 
 std::ostream& Shape::print(std::ostream& os) const {
-	os << "Name: " << name_ << "\n";
+	os << "Name: " << name_ << "\n Farbe: (" << color_.r <<", " << color_.g << ", " << color_.b << ")\n";
 	return os;
 }
 
