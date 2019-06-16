@@ -1,5 +1,6 @@
 #define CATCH_CONFIG_RUNNER
 #include <catch.hpp>
+#include <iostream>
 #include "shape.hpp"
 #include "sphere.hpp"
 #include "box.hpp"
@@ -70,6 +71,28 @@ TEST_CASE(" BoxNameColor ", "[5.3]") {
 	REQUIRE(b2.getColor().r == 0.0f);
 	REQUIRE(b2.getColor().g == 0.0f);
 	REQUIRE(b2.getColor().b == 1.0f);
+}
+
+TEST_CASE(" SpherePrint ", "[5.5]") {
+	Sphere s;
+	std::cout << s;
+
+	Sphere s2{ { 2.0f, 6.0f, 3.0f }, 5.0f, "Purple Sphere", { 1.0f, 0.0f, 1.0f } };
+	std::cout << s2;
+
+	Sphere s3{ { 2.7f, 5.2f, 4.5f }, 3.4f, "Green Sphere", { 0.0f, 0.9f, 0.0f } };
+	std::cout << s3;
+}
+
+TEST_CASE(" BoxPrint ", "[5.5]") {
+	Box b;
+	std::cout << b;
+
+	Box b2{ { 3.0f, 2.0f, 4.0f }, { 4.0f, 3.0f, 7.0f }, "Black Box", { 1.0f, 1.0f, 1.0f } };
+	std::cout << b2;
+
+	Box b3{ { 3.6f, 2.9f, 4.5f }, { 4.5f, 3.3f, 7.9f }, "Brown Box", { 0.9f, 0.9f, 0.0f } };
+	std::cout << b3;
 }
 
 int main(int argc, char *argv[])
