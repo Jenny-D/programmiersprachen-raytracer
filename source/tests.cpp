@@ -7,7 +7,7 @@
 #include "sphere.hpp"
 #include "box.hpp"
 
-TEST_CASE(" SphereKonstrAreaVolume ", "[5.2]") {
+/*TEST_CASE(" SphereKonstrAreaVolume ", "[5.2]") {
 	Sphere s;
 	REQUIRE(s.getCenter().x == 0.0f);
 	REQUIRE(s.getCenter().y == 0.0f);
@@ -116,6 +116,17 @@ TEST_CASE(" intersect_ray_sphere ", "[5.6]"){
 		sphere_radius * sphere_radius, // squared radius !!!
 		distance);
 	REQUIRE(distance == Approx(4.0f));
+}*/
+
+TEST_CASE(" Destruktor ", "[5.8]") {
+	Color red{ 255 , 0, 0 };
+	glm::vec3 position{ 0.0f, 0.0f, 0.0f };
+	Sphere* s1 = new Sphere{ position, 1.2f, "sphere 0", red };
+	Shape* s2 = new Sphere{ position, 1.2f, "sphere 1", red };
+	s1->print(std::cout);
+	s2->print(std::cout);
+	delete s1;
+	delete s2;
 }
 
 int main(int argc, char *argv[])
