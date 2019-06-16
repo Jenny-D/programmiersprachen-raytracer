@@ -1,6 +1,8 @@
 #define CATCH_CONFIG_RUNNER
 #include <catch.hpp>
 #include <iostream>
+#include <glm/glm.hpp>
+#include <glm/gtx/intersect.hpp>
 #include "shape.hpp"
 #include "sphere.hpp"
 #include "box.hpp"
@@ -93,6 +95,27 @@ TEST_CASE(" BoxPrint ", "[5.5]") {
 
 	Box b3{ { 3.6f, 2.9f, 4.5f }, { 4.5f, 3.3f, 7.9f }, "Brown Box", { 0.9f, 0.9f, 0.0f } };
 	std::cout << b3;
+}
+
+TEST_CASE(" intersect_ray_sphere ", "[5.6]"){
+	// Ray
+	glm::vec3 ray_origin{ 0.0f, 0.0f, 0.0f };
+	// ray direction has to be normalized !
+	// you can use :
+	// v = glm::normalize(some_vector)
+	glm::vec3 ray_direction{ 0.0f, 0.0f, 1.0f };
+
+	// Sphere
+	glm::vec3 sphere_center{ 0.0f ,0.0f, 5.0f };
+	float sphere_radius{ 1.0f };
+
+	float distance = 0.0f;
+	auto result = glm::intersectRaySphere(
+		ray_origin, ray_direction,
+		sphere_center,
+		sphere_radius * sphere_radius, // squared radius !!!
+		distance);
+	REQUIRE(distance == Approx(4.0f));
 }
 
 int main(int argc, char *argv[])

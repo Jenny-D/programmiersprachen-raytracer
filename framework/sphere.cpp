@@ -38,3 +38,7 @@ std::ostream& Sphere::print(std::ostream& os) const {
 	os << "Mittelpunkt: (" << center_.x << ", " << center_.y << ", " << center_.z << ") \nRadius: " << radius_ << "\n \n";
 	return os;
 }
+
+bool Sphere::intersect(Ray const& ray, float& distance) const {
+	return glm::intersectRaySphere(ray.origin, ray.direction, center_, radius_ * radius_, distance);
+}
