@@ -6,12 +6,12 @@
 #include "sphere.hpp"
 
 struct HitPoint {
-	bool hit;
-	float distance;
-	std::string name;
-	Color color;
-	glm::vec3 hitPoint;
-	glm::vec3 direction;
+	bool hit = false;
+	float distance = 0.0f;
+	std::string name = "Sphere";
+	Color color = { 1.0f };
+	glm::vec3 hitPoint = { 0.0f };
+	glm::vec3 direction = { 0.0f };
 };
 
 #endif // !HITPOINT_HPP
