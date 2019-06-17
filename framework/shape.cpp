@@ -3,17 +3,17 @@
 Shape::Shape() :
 	name_{ "Shape" },
 	color_{ 1.0f, 1.0f, 1.0f } {
-	std::cout << "Default-Konstruktor-Aufruf Basis-Klasse Shape \n";
+	//std::cout << "Default-Konstruktor-Aufruf Basis-Klasse Shape \n";
 }
 
 Shape::Shape(std::string name_, Color color_):
 	name_{name_},
 	color_{color_} {
-	std::cout << "Konstruktor-Aufruf Basis-Klasse Shape \n";
+	//std::cout << "Konstruktor-Aufruf Basis-Klasse Shape \n";
 }
 
 Shape::~Shape() {
-	std::cout << "Destruktor-Aufruf Basis-Klasse Shape \n";
+	//std::cout << "Destruktor-Aufruf Basis-Klasse Shape \n";
 }
 
 std::string Shape::getName() const {

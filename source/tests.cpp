@@ -7,7 +7,7 @@
 #include "sphere.hpp"
 #include "box.hpp"
 
-/*TEST_CASE(" SphereKonstrAreaVolume ", "[5.2]") {
+TEST_CASE(" SphereKonstrAreaVolume ", "[5.2]") {
 	Sphere s;
 	REQUIRE(s.getCenter().x == 0.0f);
 	REQUIRE(s.getCenter().y == 0.0f);
@@ -104,6 +104,7 @@ TEST_CASE(" intersect_ray_sphere ", "[5.6]"){
 	// you can use :
 	// v = glm::normalize(some_vector)
 	glm::vec3 ray_direction{ 0.0f, 0.0f, 1.0f };
+	glm::vec3 v = glm::normalize(ray_direction);
 
 	// Sphere
 	glm::vec3 sphere_center{ 0.0f ,0.0f, 5.0f };
@@ -116,7 +117,43 @@ TEST_CASE(" intersect_ray_sphere ", "[5.6]"){
 		sphere_radius * sphere_radius, // squared radius !!!
 		distance);
 	REQUIRE(distance == Approx(4.0f));
-}*/
+
+	//weitere Tests
+
+	//Ray2
+	glm::vec3 ray_origin2{ 5.0f, 2.0f, 3.0f };
+	glm::vec3 ray_direction2{ 2.0f, 4.0f, 2.0f };
+	glm::vec3 v2 = glm::normalize(ray_direction2);
+
+	//Sphere2
+	Sphere s2{ { 7.0f , 2.0f, 6.0f }, 4.0f, "Red Sphere",{ 1.0f, 0.0f, 0.0f } };
+
+	auto result2 = s2.intersect({ ray_origin2, ray_direction2 }, distance);
+	REQUIRE(distance == Approx(20.149f));
+	REQUIRE(result2.hit);
+	REQUIRE(result2.name == "Red Sphere");
+	REQUIRE(result2.color.r == 1.0f);
+	REQUIRE(result2.color.g == 0.0f);
+	REQUIRE(result2.color.b == 0.0f);
+	//REQUIRE(result2.hitPoint.x == );
+	//REQUIRE(result2.hitPoint.y == );
+	//REQUIRE(result2.hitPoint.z == );
+	REQUIRE(result2.direction.x == 2.0f);
+	REQUIRE(result2.direction.y == 4.0f);
+	REQUIRE(result2.direction.z == 2.0f);
+
+	auto r = s2.intersect({ ray_origin, ray_direction }, distance);
+	REQUIRE(r.hit == false);
+
+	//Sphere 3
+	Sphere s3{ { 0.0f , 1.0f, 1.0f }, 1.5f, "Blue Sphere",{ 0.0f, 0.0f, 1.0f } };
+
+	auto result3 = s3.intersect({ ray_origin2, ray_direction2 }, distance);
+	REQUIRE(result3.hit == false);
+
+	auto result4 = s3.intersect({ ray_origin, ray_direction }, distance);
+	REQUIRE(result3.hit == false);
+}
 
 TEST_CASE(" Destruktor ", "[5.8]") {
 	Color red{ 255 , 0, 0 };
