@@ -9,9 +9,9 @@ struct HitPoint {
 	bool hit = false;
 	float distance = 0.0f;
 	std::string name = "Sphere";
-	Color color = { 1.0f };
-	glm::vec3 hitPoint = { 0.0f };
-	glm::vec3 direction = { 0.0f };
+	Color color = { 1.0f, 1.0f, 1.0f };
+	glm::vec3 hitPoint = { 0.0f, 0.0f, 0.0f };
+	glm::vec3 direction = { 0.0f, 0.0f, 0.0f };
 };
 
 #endif // !HITPOINT_HPP
