@@ -135,9 +135,9 @@ TEST_CASE(" intersect_ray_sphere ", "[5.6]"){
 	REQUIRE(result2.color.r == 1.0f);
 	REQUIRE(result2.color.g == 0.0f);
 	REQUIRE(result2.color.b == 0.0f);
-	//REQUIRE(result2.hitPoint.x == );
-	//REQUIRE(result2.hitPoint.y == );
-	//REQUIRE(result2.hitPoint.z == );
+	REQUIRE(result2.hitPoint.x == Approx(45.298f));
+	REQUIRE(result2.hitPoint.y == Approx(82.596f));
+	REQUIRE(result2.hitPoint.z == Approx(43.298f));
 	REQUIRE(result2.direction.x == 2.0f);
 	REQUIRE(result2.direction.y == 4.0f);
 	REQUIRE(result2.direction.z == 2.0f);
