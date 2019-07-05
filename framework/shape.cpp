@@ -2,13 +2,13 @@
 
 Shape::Shape() :
 	name_{ "Shape" },
-	color_{ 1.0f, 1.0f, 1.0f } {
+	material_{} {
 	//std::cout << "Default-Konstruktor-Aufruf Basis-Klasse Shape \n";
 }
 
-Shape::Shape(std::string name_, Color color_):
+Shape::Shape(std::string name_, std::shared_ptr<Material> material_):
 	name_{name_},
-	color_{color_} {
+	material_{material_} {
 	//std::cout << "Konstruktor-Aufruf Basis-Klasse Shape \n";
 }
 
@@ -20,12 +20,12 @@ std::string Shape::getName() const {
 	return name_;
 }
 
-Color Shape::getColor() const {
-	return color_;
+std::shared_ptr<Material> Shape::getMaterial() const {
+	return material_;
 }
 
 std::ostream& Shape::print(std::ostream& os) const {
-	os << "Name: " << name_ << "\nFarbe: (" << color_.r <<", " << color_.g << ", " << color_.b << ")\n";
+	os << "Name: " << name_ << "\nMaterial: " << material_<< "\n";
 	return os;
 }
 

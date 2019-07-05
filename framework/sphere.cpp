@@ -16,8 +16,8 @@ Sphere::Sphere(glm::vec3 const& center_, float radius_):
 	//std::cout << "Konstruktor-Aufruf Klasse Sphere \n";
 }
 
-Sphere::Sphere(glm::vec3 const& center_, float radius_, std::string const& name_, Color const& color_) :
-	Shape{name_, color_},
+Sphere::Sphere(glm::vec3 const& center_, float radius_, std::string const& name_, std::shared_ptr<Material> const& material_) :
+	Shape{name_, material_},
 	center_{ center_ },
 	radius_{ radius_ } {
 	//std::cout << "Konstruktor-Aufruf Klasse Sphere \n";
@@ -57,5 +57,5 @@ HitPoint Sphere::intersect(Ray const& ray, float& distance) const {
 		intersectionPoint.y = ray.origin.y + distance * ray.direction.y;
 		intersectionPoint.z = ray.origin.z + distance * ray.direction.z;
 	}
-	return HitPoint{hit, distance, getName(), getColor(), intersectionPoint , ray.direction};
+	return HitPoint{hit, distance, getName(), getMaterial(), intersectionPoint , ray.direction};
 }

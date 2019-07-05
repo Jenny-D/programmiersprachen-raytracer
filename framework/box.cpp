@@ -15,8 +15,8 @@ Box::Box(glm::vec3 const& min_, glm::vec3 const& max_):
 	//std::cout << "Konstruktor-Aufruf Klasse Box \n";
 }
 
-Box::Box(glm::vec3 const& min_, glm::vec3 const& max_, std::string const& name_, Color const& color_) :
-	Shape{name_, color_},
+Box::Box(glm::vec3 const& min_, glm::vec3 const& max_, std::string const& name_, std::shared_ptr<Material> const& material_) :
+	Shape{name_, material_},
 	min_{ min_ },
 	max_{ max_ } {
 	//std::cout << "Konstruktor-Aufruf Klasse Box \n";

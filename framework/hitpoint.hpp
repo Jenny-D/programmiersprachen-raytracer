@@ -9,7 +9,7 @@ struct HitPoint {
 	bool hit = false;
 	float distance = 0.0f;
 	std::string name = "Sphere";
-	Color color = { 1.0f, 1.0f, 1.0f };
+	std::shared_ptr<Material> material = {};
 	glm::vec3 hitPoint = { 0.0f, 0.0f, 0.0f };
 	glm::vec3 direction = { 0.0f, 0.0f, 0.0f };
 };
