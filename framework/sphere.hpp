@@ -2,8 +2,8 @@
 #define SPHERE_HPP
 #include <glm/vec3.hpp>
 #include "shape.hpp"
-#include "ray.hpp"
 #include "hitpoint.hpp"
+#include "ray.hpp"
 
 class Sphere : public Shape {
 

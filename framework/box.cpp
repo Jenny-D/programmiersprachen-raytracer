@@ -49,3 +49,43 @@ std::ostream& Box::print(std::ostream& os) const {
 	os << "Minimum: (" << min_.x << ", " << min_.y << ", " << min_.z << ") \nMaximum: (" << max_.x << ", " << max_.y << ", " << max_.z << ") \n \n";
 	return os;
 }
+
+/*bool Box::intersect(Ray const& ray, float& t) {
+	bool hit = false;
+	glm::vec3 hitPoint;
+	if (ray.direction.x == 0 && ray.direction.y == 0 && ray.direction.z == 0) {
+		return hit;
+	}
+	else {
+		std::vector<float> distanceVec;
+		float xMin = (min_.x - ray.origin.x) / ray.direction.x;
+		float xMax = (max_.x - ray.origin.x) / ray.direction.x;
+		distanceVec.push_back(xMin);
+		distanceVec.push_back(xMax);
+
+		float yMin = (min_.y - ray.origin.y) / ray.direction.y;
+		float yMax = (max_.y - ray.origin.y) / ray.direction.y;
+		distanceVec.push_back(yMin);
+		distanceVec.push_back(yMax);
+
+		float zMin = (min_.z - ray.origin.z) / ray.direction.z;
+		float zMax = (max_.z - ray.origin.z) / ray.direction.z;
+		distanceVec.push_back(zMin);
+		distanceVec.push_back(zMax);
+
+		std::sort(distanceVec.begin(), distanceVec.end());
+
+		for (auto i : distanceVec) {
+			if (!std::isinf(i)) {
+				hitPoint = ray.origin + (i * ray.direction);
+				if ((hitPoint.x <= max_.x && hitPoint.x >= min_.x)
+					&& (hitPoint.y <= max_.y && hitPoint.y >= min_.y)
+					&& (hitPoint.z <= max_.z && hitPoint.z >= min_.z)) {
+					t = i;
+					hit = true;
+					return hit;
+				}
+			}
+		}
+	}
+}*/

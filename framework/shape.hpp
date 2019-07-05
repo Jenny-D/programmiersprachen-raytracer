@@ -3,6 +3,8 @@
 #include <string>
 #include <ostream>
 #include "color.hpp"
+//#include "hitpoint.hpp"
+//#include "ray.hpp"
 
 class Shape {
 
@@ -14,6 +16,7 @@ public:		Shape();
 			virtual float area() const = 0;
 			virtual float volume() const = 0;
 			virtual std::ostream& print(std::ostream& os) const;
+			//virtual bool intersect(Ray const& ray, float& t) = 0;
 
 private:	std::string name_;
 			Color color_;
