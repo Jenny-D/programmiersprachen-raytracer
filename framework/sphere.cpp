@@ -49,7 +49,7 @@ std::ostream& Sphere::print(std::ostream& os) const {
 	return os;
 }
 
-/*
+
 HitPoint Sphere::intersect(Ray const& ray, float& distance) const {
 	auto hit = glm::intersectRaySphere(ray.origin, ray.direction, center_, radius_ * radius_, distance);
 	glm::vec3 intersectionPoint{ 0.0f };
@@ -60,4 +60,4 @@ HitPoint Sphere::intersect(Ray const& ray, float& distance) const {
 	}
 	return HitPoint{hit, distance, getName(), getMaterial(), intersectionPoint , ray.direction};
 }
-*/
+

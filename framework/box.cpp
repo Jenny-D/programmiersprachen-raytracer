@@ -50,7 +50,7 @@ std::ostream& Box::print(std::ostream& os) const {
 	return os;
 }
 
-/*
+
 HitPoint Box::intersect(Ray const& ray, float& distance) const {
 
 	distance = (min_.x - ray.origin.x) / ray.direction.x;
@@ -70,7 +70,7 @@ HitPoint Box::intersect(Ray const& ray, float& distance) const {
 		hitPoint.hit = false;
 		return hitPoint;
 	}
-
+  /*
 	glm::vec3 intersectionPoint;
 	bool hit = false;
 	glm::vec3 hitPoint;
@@ -109,6 +109,8 @@ HitPoint Box::intersect(Ray const& ray, float& distance) const {
 			}
 		}
 	}
+
+  */
 }
 
-*/
+

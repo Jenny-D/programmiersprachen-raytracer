@@ -14,7 +14,7 @@ public:		Sphere();
 			virtual float area() const override;
 			virtual float volume() const override;
 			virtual std::ostream& print(std::ostream& os) const override;
-			//virtual HitPoint intersect(Ray const& ray, float& distance) const override;
+			virtual HitPoint intersect(Ray const& ray, float& distance) const override;
 
 private:	glm::vec3 center_;
 			float radius_;

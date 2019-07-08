@@ -3,8 +3,8 @@
 #include <glm/vec3.hpp>
 #include <ostream>
 #include "ray.hpp"
-#include "sphere.hpp"
 #include "material.hpp"
+
 
 struct HitPoint {
 	bool hit = false;
