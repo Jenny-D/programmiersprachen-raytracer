@@ -1,8 +1,8 @@
 #ifndef BOX_HPP
 #define BOX_HPP
 #include <glm/vec3.hpp>
-//#include <vector>
-//#include <algorithm>
+#include <vector>
+#include <algorithm>
 #include "shape.hpp"
 
 class Box : public Shape {
@@ -16,7 +16,7 @@ public:			Box();
 				virtual float area() const override;
 				virtual float volume() const override;
 				virtual std::ostream& print(std::ostream& os) const override;
-				//virtual bool intersect(Ray const& ray, float& t) override;
+				//HitPoint intersect(Ray const& ray, float& distance) const override;
 
 private:		glm::vec3 min_;
 				glm::vec3 max_;

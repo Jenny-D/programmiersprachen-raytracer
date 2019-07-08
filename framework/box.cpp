@@ -50,11 +50,32 @@ std::ostream& Box::print(std::ostream& os) const {
 	return os;
 }
 
-/*bool Box::intersect(Ray const& ray, float& t) {
+/*
+HitPoint Box::intersect(Ray const& ray, float& distance) const {
+
+	distance = (min_.x - ray.origin.x) / ray.direction.x;
+	HitPoint hitPoint;
+	glm::vec3 p = ray.origin + distance * ray.direction;
+
+	if (p.y > min_.y && p.y < max_.y && p.z > min_.z && p.z < max_.z) {
+		hitPoint.hit = true;
+		hitPoint.distance = distance;
+		hitPoint.name = getName();
+		hitPoint.material = getMaterial();
+		hitPoint.hitPoint = ray.origin + distance * ray.direction;
+		hitPoint.direction = ray.direction;
+		return hitPoint;
+	}
+	else {
+		hitPoint.hit = false;
+		return hitPoint;
+	}
+
+	glm::vec3 intersectionPoint;
 	bool hit = false;
 	glm::vec3 hitPoint;
 	if (ray.direction.x == 0 && ray.direction.y == 0 && ray.direction.z == 0) {
-		return hit;
+		return HitPoint{ hit, t, getName(), getMaterial(), ray.direction };
 	}
 	else {
 		std::vector<float> distanceVec;
@@ -83,9 +104,11 @@ std::ostream& Box::print(std::ostream& os) const {
 					&& (hitPoint.z <= max_.z && hitPoint.z >= min_.z)) {
 					t = i;
 					hit = true;
-					return hit;
+					return HitPoint{ hit, t, getName(), getMaterial(), intersectionPoint, ray.direction };
 				}
 			}
 		}
 	}
-}*/
+}
+
+*/

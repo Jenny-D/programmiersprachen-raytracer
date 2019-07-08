@@ -4,8 +4,8 @@
 #include <ostream>
 #include <memory>
 #include "color.hpp"
-//#include "hitpoint.hpp"
-//#include "ray.hpp"
+#include "hitpoint.hpp"
+#include "ray.hpp"
 #include "material.hpp"
 
 class Shape {
@@ -18,7 +18,7 @@ public:		Shape();
 			virtual float area() const = 0;
 			virtual float volume() const = 0;
 			virtual std::ostream& print(std::ostream& os) const;
-			//virtual bool intersect(Ray const& ray, float& t) = 0;
+			//virtual HitPoint intersect(Ray const& ray, float& distance) const = 0;
 
 private:	std::string name_;
 			std::shared_ptr<Material> material_;
