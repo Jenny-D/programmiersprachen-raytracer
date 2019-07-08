@@ -180,10 +180,10 @@ TEST_CASE(" Destruktor ", "[5.8]") {
 
 int main(int argc, char *argv[])
 {
-	/*Scene scene;
+	Scene scene;
 	scene = sdf("scene.sdf");
 
-	std::vector<std::string, std::shared_ptr<Material>> vec = scene.materialVec;
+	/*std::vector<std::string, std::shared_ptr<Material>> vec = scene.materialVec;
 	std::cout << "Find material in a vector: \n";
 	vec_find_material("red", vec);
 	vec_find_material("blue", vec);
@@ -197,9 +197,9 @@ int main(int argc, char *argv[])
 	set_find_material("blue", set);
 	set_find_material("green", set);
 	set_find_material("black", set);
-	std::cout << "\n\n";
+	std::cout << "\n\n";*/
 
-	std::map<std::string, std::shared_ptr<Material>> material = scene.materialMap;
+	/*std::map<std::string, std::shared_ptr<Material>> material = scene.materialMap;
 	std::cout << "Material in a map: \n";
 	map_find_material("red", material);
 	map_find_material("blue", material);
