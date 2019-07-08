@@ -6,6 +6,7 @@
 #include "shape.hpp"
 #include "sphere.hpp"
 #include "box.hpp"
+#include "scene.hpp"
 
 TEST_CASE(" SphereKonstrAreaVolume ", "[5.2]") {
 	Sphere s;
@@ -166,7 +167,45 @@ TEST_CASE(" Destruktor ", "[5.8]") {
 	delete s2;
 }*/
 
+/*TEST_CASE(" Sdf ", "[6.5]") {
+	Scene scene;
+	scene = sdf("scene.sdf");
+
+	std::map<std::string, std::shared_ptr<Material>> material = scene.materialMap;
+	std::cout << "Material in a map: \n";
+	map_find_material("red", material);
+	map_find_material("black", material);
+	std::cout << "\n";
+}*/
+
 int main(int argc, char *argv[])
 {
+	/*Scene scene;
+	scene = sdf("scene.sdf");
+
+	std::vector<std::string, std::shared_ptr<Material>> vec = scene.materialVec;
+	std::cout << "Find material in a vector: \n";
+	vec_find_material("red", vec);
+	vec_find_material("blue", vec);
+	vec_find_material("green", vec);
+	vec_find_material("black", vec);
+	std::cout << "\n\n";
+	
+	std::set<std::string, std::shared_ptr<Material>> set = scene.materialSet;
+	std::cout << "Find material in a set: \n";
+	set_find_material("red", set);
+	set_find_material("blue", set);
+	set_find_material("green", set);
+	set_find_material("black", set);
+	std::cout << "\n\n";
+
+	std::map<std::string, std::shared_ptr<Material>> material = scene.materialMap;
+	std::cout << "Material in a map: \n";
+	map_find_material("red", material);
+	map_find_material("blue", material);
+	map_find_material("green", material);
+	map_find_material("black", material);
+	std::cout << "\n";*/
+
   return Catch::Session().run(argc, argv);
 }
