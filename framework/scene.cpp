@@ -1,53 +1,55 @@
 #include "scene.hpp"
 
-Scene sdf(std::string const& sdfName) {
-	Scene scene;
+void sdf(std::string const& sdfName) {
+	
+	std::ifstream input(sdfName);
+	std::string line_buffer;
 
-	std::ifstream input;
-	input.open(sdfName);
-	std::string buffer;
-
-	while (std::getline(input, buffer))
+	while (std::getline(input, line_buffer))
 	{
-		std::stringstream line_stream(buffer);
-		//liest Zeichen der Zeile als einzelne Strings 
-		std::string keyword;
+		std::istringstream line_string_stream(line_buffer);
+		std::string identifier;
 
-		line_stream >> keyword;
-		if ("define" == keyword)
+		std::vector<std::shared_ptr<Material>> materials_vec;
+
+		line_string_stream >> identifier;
+
+		if ("define" == identifier)
 		{
-			line_stream >> keyword;
-			if ("material" == keyword)
+			line_string_stream >> identifier;
+			if ("material" == identifier)
 			{
-				std::shared_ptr<Material> material_ptr = std::make_shared<Material>();
+				std::string material_name;
+				line_string_stream >> material_name;
 
-				line_stream >> material_ptr->name_;
-				//bei Pointern dereferenzieren ->
-				line_stream >> material_ptr->ka_.r;
-				line_stream >> material_ptr->ka_.g;
-				line_stream >> material_ptr->ka_.b;
-				line_stream >> material_ptr->kd_.r;
-				line_stream >> material_ptr->kd_.g;
-				line_stream >> material_ptr->kd_.b;
-				line_stream >> material_ptr->ks_.r;
-				line_stream >> material_ptr->ks_.g;
-				line_stream >> material_ptr->ks_.b;
-				line_stream >> material_ptr->m_;
-				//Hier wird jedes durch ein whitespace getrenntes string/float etc. (wird selbstständig interpretiert)
-				//in den jeweiligen Variablen gespeichert 
+				float ka_r, ka_g, ka_b;
+				float kd_r, kd_g, kd_b;
+				float ks_r, ks_g, ks_b;
+				float m;
 
-				std::cout << material_ptr->name_ << ", " << std::endl;
-				std::cout << material_ptr->ka_.r << ", " << material_ptr->ka_.g << ", " << material_ptr->ka_.b << std::endl;
-				std::cout << material_ptr->kd_.r << ", " << material_ptr->kd_.g << ", " << material_ptr->kd_.b << std::endl;
-				std::cout << material_ptr->ks_.r << ", " << material_ptr->ks_.g << ", " << material_ptr->ks_.b << std::endl;
-				std::cout << material_ptr->m_ << std::endl;
+				line_string_stream >> ka_r;
+				line_string_stream >> ka_g;
+				line_string_stream >> ka_b;
+				line_string_stream >> kd_r;
+				line_string_stream >> kd_g;
+				line_string_stream >> kd_b;
+				line_string_stream >> ks_r;
+				line_string_stream >> ks_g;
+				line_string_stream >> ks_b;
+				line_string_stream >> m;
 
-				(scene.materialMap).insert(std::make_pair(material_ptr->name_, material_ptr));
+				std::cout << "material " << material_name << " " << ka_r << " " << ka_g << " " << ka_b << " " << kd_r << " " << kd_g << " " << kd_b << " " <<  ks_r << " " << ks_g << " " << ks_b << " " <<  m << std::endl;
+
+				Material mat { material_name, {ka_r,ka_g,ka_b}, {kd_r,kd_g,kd_b}, {ks_r,ks_g,ks_b}, m };
+				auto material = std::make_shared<Material>(mat);
+
+				materials_vec.push_back(material);
 			}
 		}
 	}
-	return scene;
+	input.close();
 }
+
 std::shared_ptr<Material> vec_find_material(std::string const& input, std::vector<std::shared_ptr<Material>> const& materialVec) {
 	for (int i = 0; i < materialVec.size(); i++) {
 		if (materialVec[i]->name_ == input) {
@@ -61,7 +63,7 @@ std::shared_ptr<Material> set_find_material(std::string const& input, std::set<s
 	auto dummy = std::make_shared<Material>();
 	dummy->name_ = input;
 	std::cout << (dummy == *materialSet.begin()) << std::endl;
-	auto result = materialSet.find(dummy);  // funktioniert wenn man z.B. *materialSet.begin() reinschreibt
+	auto result = materialSet.find(dummy);
 	std::cout << *result << "  " << *materialSet.end();
 	if (result == materialSet.end()) {
 		return nullptr;

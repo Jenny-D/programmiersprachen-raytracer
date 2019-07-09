@@ -192,19 +192,41 @@ TEST_CASE(" intersect box ", "[6.3]") {
 
 TEST_CASE(" material ", "[6.4]") {
 	Material m { "Material 1", {1.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f, 1.0f}, 2.0f };
-	std::cout << m;
+	std::cout << m << "\n";
+
+	Material m2;
+	std::cout << m2 << "\n";
 }
 
-/*TEST_CASE(" Sdf ", "[6.5]") {
-	Scene scene;
-	scene = sdf("scene.sdf");
+TEST_CASE(" Sdf ", "[6.5]") {
+	
+	sdf("../../sdf-file/scene.sdf");
+}
 
-	std::map<std::string, std::shared_ptr<Material>> material = scene.materialMap;
+TEST_CASE(" find_methods ", "[6.5]") {
+	
+	/*Scene s;
+	sdf("../../sdf-file/scene.sdf");
+	auto map = s.materialVec;
+	vec_find_material("blue", map);*/
+
+	/*auto map = scene.materialMap;
+	
+	auto result = map_find_material("blue", map);
+	std::cout << result;
+	auto vec = scene.materialVec;
+	auto map = scene.materialMap;
+	auto set = scene.materialSet;
+
 	std::cout << "Material in a map: \n";
-	map_find_material("red", material);
-	map_find_material("black", material);
+	map_find_material("red", map);
 	std::cout << "\n";
-}*/
+	*/
+	/*REQUIRE(vec_find_material("red", vec)->name_ == "red");
+	REQUIRE(map_find_material("red", map)->name_ == "red");
+	REQUIRE(set.size() == 3);
+	REQUIRE(set_find_material("red", set)->name_ == "red");*/
+}
 
 int main(int argc, char *argv[])
 {

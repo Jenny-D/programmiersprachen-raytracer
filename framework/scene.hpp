@@ -20,7 +20,7 @@ struct Scene {
 
 };
 
-Scene sdf(std::string const& sdfName);
+void sdf(std::string const& sdfName);
 
 std::shared_ptr<Material> vec_find_material(std::string const& input, std::vector<std::shared_ptr<Material>> const& materialVec);
 std::shared_ptr<Material> set_find_material(std::string const& input, std::set<std::shared_ptr<Material>> const& materialSet);
