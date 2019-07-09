@@ -18,7 +18,7 @@ public:		Shape();
 			virtual float area() const = 0;
 			virtual float volume() const = 0;
 			virtual std::ostream& print(std::ostream& os) const;
-			virtual HitPoint intersect(Ray const& ray, float& distance) const = 0;
+			virtual HitPoint intersect(Ray const& ray, float& t) const = 0;
 
 private:	std::string name_;
 			std::shared_ptr<Material> material_;

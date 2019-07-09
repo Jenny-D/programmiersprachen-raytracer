@@ -6,9 +6,10 @@
 #include "shape.hpp"
 #include "sphere.hpp"
 #include "box.hpp"
+#include "material.hpp"
 #include "scene.hpp"
 
-TEST_CASE(" SphereKonstrAreaVolume ", "[5.2]") {
+/*TEST_CASE(" SphereKonstrAreaVolume ", "[5.2]") {
 	Sphere s;
 	REQUIRE(s.getCenter().x == 0.0f);
 	REQUIRE(s.getCenter().y == 0.0f);
@@ -48,7 +49,7 @@ TEST_CASE(" BoxKonstrAreaVolume ", "[5.2]") {
 	REQUIRE(b2.volume() == Approx(8.0f));
 }
 
-/*TEST_CASE(" SphereNameColor ", "[5.3]") {
+TEST_CASE(" SphereNameColor ", "[5.3]") {
 	Sphere s;
 	REQUIRE(s.getName() == "Shape");
 	REQUIRE(s.getColor().r == 1.0f);
@@ -74,9 +75,9 @@ TEST_CASE(" BoxNameColor ", "[5.3]") {
 	REQUIRE(b2.getColor().r == 0.0f);
 	REQUIRE(b2.getColor().g == 0.0f);
 	REQUIRE(b2.getColor().b == 1.0f);
-}*/
+}
 
-/*TEST_CASE(" SpherePrint ", "[5.5]") {
+TEST_CASE(" SpherePrint ", "[5.5]") {
 	Sphere s;
 	std::cout << s;
 
@@ -166,6 +167,28 @@ TEST_CASE(" Destruktor ", "[5.8]") {
 	delete s1;
 	delete s2;
 }*/
+
+TEST_CASE(" intersect box ", "[6.3]") {
+	
+	Box b{ {2.0f, 1.0f, 1.0f}, {5.0f, 4.0f, 4.0f} };
+	Ray r;
+	Ray r2 { {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f} };
+
+	float t = 0.0f;
+
+	HitPoint hp = b.intersect(r, t);
+	REQUIRE(hp.hit == false);
+
+	HitPoint hp2 = b.intersect(r2, t);
+	REQUIRE(hp2.hit == true);
+	REQUIRE(hp2.distance == 2.0f);
+	REQUIRE(hp2.hitPoint.x == 2.0f);
+	REQUIRE(hp2.hitPoint.y == 2.0f);
+	REQUIRE(hp2.hitPoint.z == 2.0f);
+	REQUIRE(hp2.direction.x == 1.0f);
+	REQUIRE(hp2.direction.y == 1.0f);
+	REQUIRE(hp2.direction.z == 1.0f);
+}
 
 /*TEST_CASE(" Sdf ", "[6.5]") {
 	Scene scene;

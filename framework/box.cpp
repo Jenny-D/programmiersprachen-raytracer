@@ -51,18 +51,18 @@ std::ostream& Box::print(std::ostream& os) const {
 }
 
 
-HitPoint Box::intersect(Ray const& ray, float& distance) const {
+HitPoint Box::intersect(Ray const& ray, float& t) const {
 
-	distance = (min_.x - ray.origin.x) / ray.direction.x;
+	t = (min_.x - ray.origin.x) / ray.direction.x;
 	HitPoint hitPoint;
-	glm::vec3 p = ray.origin + distance * ray.direction;
+	glm::vec3 p = ray.origin + t * ray.direction;
 
 	if (p.y > min_.y && p.y < max_.y && p.z > min_.z && p.z < max_.z) {
 		hitPoint.hit = true;
-		hitPoint.distance = distance;
+		hitPoint.distance = t;
 		hitPoint.name = getName();
 		hitPoint.material = getMaterial();
-		hitPoint.hitPoint = ray.origin + distance * ray.direction;
+		hitPoint.hitPoint = ray.origin + t * ray.direction;
 		hitPoint.direction = ray.direction;
 		return hitPoint;
 	}
