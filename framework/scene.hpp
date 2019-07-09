@@ -22,8 +22,8 @@ struct Scene {
 
 Scene sdf(std::string const& sdfName);
 
-std::shared_ptr<Material> vec_find_material(std::string const& input, std::vector<std::string, std::shared_ptr<Material>> const& materialVec);
-std::shared_ptr<Material> set_find_material(std::string const& input, std::set<std::string, std::shared_ptr<Material>> const& materialSet);
+std::shared_ptr<Material> vec_find_material(std::string const& input, std::vector<std::shared_ptr<Material>> const& materialVec);
+std::shared_ptr<Material> set_find_material(std::string const& input, std::set<std::shared_ptr<Material>> const& materialSet);
 std::shared_ptr<Material> map_find_material(std::string const& input, std::map<std::string, std::shared_ptr<Material>> const& materialMap);
 
 #endif // !SCENE_HPP

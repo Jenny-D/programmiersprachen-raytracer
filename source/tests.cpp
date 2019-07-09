@@ -190,6 +190,11 @@ TEST_CASE(" intersect box ", "[6.3]") {
 	REQUIRE(hp2.direction.z == 1.0f);
 }
 
+TEST_CASE(" material ", "[6.4]") {
+	Material m { "Material 1", {1.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f, 1.0f}, 2.0f };
+	std::cout << m;
+}
+
 /*TEST_CASE(" Sdf ", "[6.5]") {
 	Scene scene;
 	scene = sdf("scene.sdf");
@@ -203,9 +208,6 @@ TEST_CASE(" intersect box ", "[6.3]") {
 
 int main(int argc, char *argv[])
 {
-	Scene scene;
-	scene = sdf("scene.sdf");
-
 	/*std::vector<std::string, std::shared_ptr<Material>> vec = scene.materialVec;
 	std::cout << "Find material in a vector: \n";
 	vec_find_material("red", vec);

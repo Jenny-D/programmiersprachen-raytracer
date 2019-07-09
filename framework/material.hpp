@@ -9,8 +9,8 @@ struct Material {
 
 	friend std::ostream& operator<<(std::ostream& os, Material const& m) {
 		os << "Material: " << m.name_ <<
-			"\nMaterialkoeffizient ka: " << m.ka_ << "\nMaterialkoeffizient kd: " << m.kd_ << "\nMaterialkoeffizient ks: " << m.ks_ <<
-			"\nSpekularreflexionsexponent m: " << m.m_ << "\n";
+			"\nMaterialkoeffizient ka: " << m.ka_ << "Materialkoeffizient kd: " << m.kd_ << "Materialkoeffizient ks: " << m.ks_ <<
+			"Spekularreflexionsexponent m: " << m.m_ << "\n";
 		return os;
 	}
 

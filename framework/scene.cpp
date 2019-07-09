@@ -48,20 +48,28 @@ Scene sdf(std::string const& sdfName) {
 	}
 	return scene;
 }
+std::shared_ptr<Material> vec_find_material(std::string const& input, std::vector<std::shared_ptr<Material>> const& materialVec) {
+	for (int i = 0; i < materialVec.size(); i++) {
+		if (materialVec[i]->name_ == input) {
+			return materialVec[i];
+		}
+	}
+	return nullptr;
+}
 
-/*std::shared_ptr<Material> vec_find_material(std::string const& input, std::vector<std::string, std::shared_ptr<Material>> const& materialVec) {
-	auto i = std::find_if(materialVec.begin(), materialVec.end(),
-		[&input] (std::shared_ptr<Material> const& material)
-		{return (material->name_) == input;});
-}*/
+std::shared_ptr<Material> set_find_material(std::string const& input, std::set<std::shared_ptr<Material>> const& materialSet) {
+	auto dummy = std::make_shared<Material>();
+	dummy->name_ = input;
+	std::cout << (dummy == *materialSet.begin()) << std::endl;
+	auto result = materialSet.find(dummy);  // funktioniert wenn man z.B. *materialSet.begin() reinschreibt
+	std::cout << *result << "  " << *materialSet.end();
+	if (result == materialSet.end()) {
+		return nullptr;
+	}
+	return *result;
+}
 
-/*std::shared_ptr<Material> set_find_material(std::string const& input, std::set<std::string, std::shared_ptr<Material>> const& materialSet) {
-	auto i = std::find_if(materialSet.begin(), materialSet.end(),
-		[&input](std::shared_ptr<Material> const& material)
-		{return (material->name_) == input;});
-}*/
-
-std::shared_ptr<Material> map_find_material(std::string const& input, std::map<std::string, std::shared_ptr<Material>> materialMap) {
+std::shared_ptr<Material> map_find_material(std::string const& input, std::map<std::string, std::shared_ptr<Material>> const& materialMap) {
 	auto i = materialMap.find(input);
 	if (i != materialMap.end()) {
 		return i->second;
