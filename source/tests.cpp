@@ -203,9 +203,9 @@ TEST_CASE(" Sdf ", "[6.5]") {
 	sdf("../../sdf-file/scene.sdf");
 }
 
-TEST_CASE(" find_methods ", "[6.5]") {
+/*TEST_CASE(" find_methods ", "[6.5]") {
 	
-	/*Scene s;
+	Scene s;
 	sdf("../../sdf-file/scene.sdf");
 	auto map = s.materialVec;
 	vec_find_material("blue", map);*/
@@ -225,34 +225,10 @@ TEST_CASE(" find_methods ", "[6.5]") {
 	/*REQUIRE(vec_find_material("red", vec)->name_ == "red");
 	REQUIRE(map_find_material("red", map)->name_ == "red");
 	REQUIRE(set.size() == 3);
-	REQUIRE(set_find_material("red", set)->name_ == "red");*/
-}
+	REQUIRE(set_find_material("red", set)->name_ == "red");
+}*/
 
 int main(int argc, char *argv[])
 {
-	/*std::vector<std::string, std::shared_ptr<Material>> vec = scene.materialVec;
-	std::cout << "Find material in a vector: \n";
-	vec_find_material("red", vec);
-	vec_find_material("blue", vec);
-	vec_find_material("green", vec);
-	vec_find_material("black", vec);
-	std::cout << "\n\n";
-	
-	std::set<std::string, std::shared_ptr<Material>> set = scene.materialSet;
-	std::cout << "Find material in a set: \n";
-	set_find_material("red", set);
-	set_find_material("blue", set);
-	set_find_material("green", set);
-	set_find_material("black", set);
-	std::cout << "\n\n";*/
-
-	/*std::map<std::string, std::shared_ptr<Material>> material = scene.materialMap;
-	std::cout << "Material in a map: \n";
-	map_find_material("red", material);
-	map_find_material("blue", material);
-	map_find_material("green", material);
-	map_find_material("black", material);
-	std::cout << "\n";*/
-
   return Catch::Session().run(argc, argv);
 }
