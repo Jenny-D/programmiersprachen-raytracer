@@ -9,7 +9,7 @@
 #include "material.hpp"
 #include "scene.hpp"
 
-/*TEST_CASE(" SphereKonstrAreaVolume ", "[5.2]") {
+TEST_CASE(" SphereKonstrAreaVolume ", "[5.2]") {
 	Sphere s;
 	REQUIRE(s.getCenter().x == 0.0f);
 	REQUIRE(s.getCenter().y == 0.0f);
@@ -49,7 +49,7 @@ TEST_CASE(" BoxKonstrAreaVolume ", "[5.2]") {
 	REQUIRE(b2.volume() == Approx(8.0f));
 }
 
-TEST_CASE(" SphereNameColor ", "[5.3]") {
+/*TEST_CASE(" SphereNameColor ", "[5.3]") {
 	Sphere s;
 	REQUIRE(s.getName() == "Shape");
 	REQUIRE(s.getColor().r == 1.0f);
@@ -202,31 +202,6 @@ TEST_CASE(" Sdf ", "[6.5]") {
 	
 	sdf("../../sdf-file/scene.sdf");
 }
-
-/*TEST_CASE(" find_methods ", "[6.5]") {
-	
-	Scene s;
-	sdf("../../sdf-file/scene.sdf");
-	auto map = s.materialVec;
-	vec_find_material("blue", map);*/
-
-	/*auto map = scene.materialMap;
-	
-	auto result = map_find_material("blue", map);
-	std::cout << result;
-	auto vec = scene.materialVec;
-	auto map = scene.materialMap;
-	auto set = scene.materialSet;
-
-	std::cout << "Material in a map: \n";
-	map_find_material("red", map);
-	std::cout << "\n";
-	*/
-	/*REQUIRE(vec_find_material("red", vec)->name_ == "red");
-	REQUIRE(map_find_material("red", map)->name_ == "red");
-	REQUIRE(set.size() == 3);
-	REQUIRE(set_find_material("red", set)->name_ == "red");
-}*/
 
 int main(int argc, char *argv[])
 {
