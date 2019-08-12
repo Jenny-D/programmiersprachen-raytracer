@@ -7,30 +7,8 @@
 #include "sphere.hpp"
 #include "box.hpp"
 #include "material.hpp"
-#include "lightsource.hpp"
+#include "light.hpp"
 #include "scene.hpp"
-
-TEST_CASE(" TestLightSource ", "[7.1]") {
-  LightSource sun;
-  REQUIRE(sun.name == "Helios");
-  REQUIRE(sun.position.x == 0.0f);
-  REQUIRE(sun.position.y == 0.0f);
-  REQUIRE(sun.position.z == 0.0f);
-  REQUIRE(sun.color.r == 0.0f);
-  REQUIRE(sun.color.g == 0.0f);
-  REQUIRE(sun.color.b == 0.0f);
-  REQUIRE(sun.brightness == 0.0f);
-
-  LightSource sun2{ "Star", { 1.0, 2.0, 3.0 } ,{ 0.5, 1.0, 0.0 }, 1.0 };
-  REQUIRE(sun2.name == "Star");
-  REQUIRE(sun2.position.x == 1.0f);
-  REQUIRE(sun2.position.y == 2.0f);
-  REQUIRE(sun2.position.z == 3.0f);
-  REQUIRE(sun2.color.r == 0.5f);
-  REQUIRE(sun2.color.g == 1.0f);
-  REQUIRE(sun2.color.b == 0.0f);
-  REQUIRE(sun2.brightness == 1.0f);
-}
 
 TEST_CASE(" SphereKonstrAreaVolume ", "[5.2]") {
 	Sphere s;
@@ -221,9 +199,36 @@ TEST_CASE(" material ", "[6.4]") {
 	std::cout << m2 << "\n";
 }
 
-TEST_CASE(" Sdf ", "[6.5]") {
-	
-	sdf("../../sdf-file/scene.sdf");
+TEST_CASE(" Sdf ", "[6.5 & 7.1]") {
+  Scene scene1;
+  scene1.name = "scene1";
+	scene1.sdf("../../sdf-file/scene.sdf");
+  REQUIRE(scene1.materialMap.find("red")->second->name_ == "red");
+  REQUIRE(scene1.materialMap.find("red")->second->ka_.r == 1);
+  REQUIRE(scene1.materialMap.find("green")->second->ka_.g == 1);
+  REQUIRE(scene1.materialMap.find("blue")->second->ka_.b == 1);
+}
+
+TEST_CASE(" TestLight ", "[7.1]") {
+  Light sun;
+  REQUIRE(sun.name == "Helios");
+  REQUIRE(sun.position.x == 0.0f);
+  REQUIRE(sun.position.y == 0.0f);
+  REQUIRE(sun.position.z == 0.0f);
+  REQUIRE(sun.color.r == 0.0f);
+  REQUIRE(sun.color.g == 0.0f);
+  REQUIRE(sun.color.b == 0.0f);
+  REQUIRE(sun.brightness == 0.0f);
+
+  Light sun2{ "Star", { 1.0, 2.0, 3.0 } ,{ 0.5, 1.0, 0.0 }, 1.0 };
+  REQUIRE(sun2.name == "Star");
+  REQUIRE(sun2.position.x == 1.0f);
+  REQUIRE(sun2.position.y == 2.0f);
+  REQUIRE(sun2.position.z == 3.0f);
+  REQUIRE(sun2.color.r == 0.5f);
+  REQUIRE(sun2.color.g == 1.0f);
+  REQUIRE(sun2.color.b == 0.0f);
+  REQUIRE(sun2.brightness == 1.0f);
 }
 
 int main(int argc, char *argv[])

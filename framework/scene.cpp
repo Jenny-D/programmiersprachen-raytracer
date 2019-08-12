@@ -1,6 +1,6 @@
 #include "scene.hpp"
 
-void sdf(std::string const& sdfName) {
+void Scene::sdf(std::string const& sdfName) {
 	
 	std::ifstream input(sdfName);
 	std::string line_buffer;
@@ -10,7 +10,9 @@ void sdf(std::string const& sdfName) {
 		std::istringstream line_string_stream(line_buffer);
 		std::string identifier;
 
-		std::vector<std::shared_ptr<Material>> materials_vec;
+		//std::vector<std::shared_ptr<Material>> materials_vec;
+    //std::vector<Shape> shapes_vec;
+    //std::vector<LightSource> lights_vec;
 
 		line_string_stream >> identifier;
 
@@ -43,8 +45,64 @@ void sdf(std::string const& sdfName) {
 				Material mat { material_name, {ka_r,ka_g,ka_b}, {kd_r,kd_g,kd_b}, {ks_r,ks_g,ks_b}, m };
 				auto material = std::make_shared<Material>(mat);
 
-				materials_vec.push_back(material);
+        std::pair<std::string, std::shared_ptr<Material>> pair{ material_name, material };
+        materialMap.insert(pair);
 			}
+      if ("shape" == identifier)
+      {
+        line_string_stream >> identifier;
+        if ("box" == identifier)
+        {
+          std::string box_name;
+          line_string_stream >> box_name;
+
+          float min_x, min_y, min_z;
+          float max_x, max_y, max_z;
+
+          line_string_stream >> min_x;
+          line_string_stream >> min_y;
+          line_string_stream >> min_z;
+          line_string_stream >> max_x;
+          line_string_stream >> max_y;
+          line_string_stream >> max_z;
+
+          std::string material_name;
+          line_string_stream >> material_name;
+
+          std::cout << "box " << box_name << " " << min_x << " " << min_y << " " << min_z << " " << max_x << " " << max_y << " " << max_z << " " << material_name << std::endl;
+
+          auto material = materialMap.find(material_name)->second;
+
+          Box box = { {min_x,min_y,min_z}, {max_x,max_y,max_z}, box_name, material };
+
+          shapeVec.push_back(&box);
+        }
+        if ("sphere" == identifier)
+        {
+          std::string sphere_name;
+          line_string_stream >> sphere_name;
+
+          float center_x, center_y, center_z;
+          float radius;
+
+          line_string_stream >> center_x;
+          line_string_stream >> center_y;
+          line_string_stream >> center_z;
+          line_string_stream >> radius;
+
+          std::string material_name;
+          line_string_stream >> material_name;
+
+          std::cout << "sphere " << sphere_name << " " << center_x << " " << center_y << " " << center_z << " " << radius << " " << material_name << std::endl;
+
+          auto material = materialMap.find(material_name)->second;
+
+          glm::vec3 center{ center_x,center_y,center_z };
+          Sphere sphere{ center, radius, sphere_name, material };
+          
+          shapeVec.push_back(&sphere);
+        }
+      }
 		}
 	}
 	input.close();
