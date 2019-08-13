@@ -24,6 +24,7 @@ struct Scene {
 
   std::vector<Shape*> shapeVec;
   std::vector<Light> lightVec;
+  Color ambient{ 0,0,0 };
 
   void sdf(std::string const& sdfName);
 };
