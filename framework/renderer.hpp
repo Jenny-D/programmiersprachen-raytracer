@@ -29,7 +29,7 @@ public:
     return color_buffer_;
   }
 
-private:
+//private:
   unsigned width_;
   unsigned height_;
   std::vector<Color> color_buffer_;

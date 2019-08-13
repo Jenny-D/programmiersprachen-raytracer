@@ -10,3 +10,7 @@ define shape sphere green_sphere 1 1 1 2 green
 #lighting
 define light sun 4 8 5 1 1 1 0.9
 define ambient 0.1 0.1 0.1
+
+#rendering
+define camera eye 45.0 1 1 1 1 1 1 1 1 1
+define render image.ppm 10 10

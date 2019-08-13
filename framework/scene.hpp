@@ -14,6 +14,7 @@
 #include "sphere.hpp"
 #include "light.hpp"
 #include "camera.hpp"
+#include "renderer.hpp"
 
 struct Scene {
 
@@ -25,8 +26,10 @@ struct Scene {
 	std::vector<Light> lightVec;
 	Color ambient{ 0,0,0 };
 
-	void sdf(std::string const& sdfName);
+	void sdf(std::string const& sdfName, Camera eye, Renderer render);
 };
+
+//void sdf(std::string const& sdfName); // soll die unabhängig sein?
 
 
 //std::shared_ptr<Material> vec_find_material(std::string const& input, std::vector<std::shared_ptr<Material>> const& materialVec);
