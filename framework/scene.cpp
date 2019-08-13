@@ -85,10 +85,11 @@ void Scene::sdf(std::string const& sdfName) {
 
           // erstelle Objekt
           auto material = materialMap.find(material_name)->second;
-          Box box = { {min_x,min_y,min_z}, {max_x,max_y,max_z}, box_name, material };
+          Box bo = { {min_x,min_y,min_z}, {max_x,max_y,max_z}, box_name, material };
+          auto box = std::make_shared<Box>(bo);
 
           // füge Objekt zu Container hinzu
-          shapeVec.push_back(&box);
+          shapeVec.push_back(box);
         }
         if ("sphere" == identifier)
         {
@@ -116,10 +117,11 @@ void Scene::sdf(std::string const& sdfName) {
 
           // erstelle Objekt
           auto material = materialMap.find(material_name)->second;
-          Sphere sphere{ { center_x,center_y,center_z }, radius, sphere_name, material };
+          Sphere sphe{ { center_x,center_y,center_z }, radius, sphere_name, material };
+          auto sphere = std::make_shared<Sphere>(sphe);
           
           // füge Objekt zu Container hinzu
-          shapeVec.push_back(&sphere);
+          shapeVec.push_back(sphere);
         }
       }
       if ("light" == identifier) 

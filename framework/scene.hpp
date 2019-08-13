@@ -22,7 +22,7 @@ struct Scene {
 	std::set<std::shared_ptr<Material>> materialSet;
 	std::map<std::string, std::shared_ptr<Material>> materialMap;
 
-  std::vector<Shape*> shapeVec;
+  std::vector<std::shared_ptr<Shape>> shapeVec;
   std::vector<Light> lightVec;
   Color ambient{ 0,0,0 };
 

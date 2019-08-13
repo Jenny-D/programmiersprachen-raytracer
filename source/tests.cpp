@@ -204,9 +204,10 @@ TEST_CASE(" Sdf ", "[6.5 & 7.1]") {
   scene1.name = "scene1";
 	scene1.sdf("../../sdf-file/scene.sdf");
   REQUIRE(scene1.materialMap.find("red")->second->name_ == "red");
-  REQUIRE(scene1.materialMap.find("red")->second->ka_.r == 1);
-  REQUIRE(scene1.materialMap.find("green")->second->ka_.g == 1);
-  REQUIRE(scene1.materialMap.find("blue")->second->ka_.b == 1);
+  REQUIRE(scene1.shapeVec.front()->getName() == "red_box");
+  REQUIRE(scene1.shapeVec.back()->getName() == "green_sphere");
+  REQUIRE(scene1.lightVec.front().name == "sun");
+  REQUIRE(scene1.ambient.r == 0.1f);
 }
 
 TEST_CASE(" TestLight ", "[7.1]") {
