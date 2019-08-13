@@ -17,11 +17,9 @@
 struct Scene {
 
 	std::string name = "Scene";
-
-	std::vector<std::shared_ptr<Material>> materialVec;
-	std::set<std::shared_ptr<Material>> materialSet;
+	//std::vector<std::shared_ptr<Material>> materialVec;
+	//std::set<std::shared_ptr<Material>> materialSet;
 	std::map<std::string, std::shared_ptr<Material>> materialMap;
-
   std::vector<std::shared_ptr<Shape>> shapeVec;
   std::vector<Light> lightVec;
   Color ambient{ 0,0,0 };
@@ -30,8 +28,8 @@ struct Scene {
 };
 
 
-std::shared_ptr<Material> vec_find_material(std::string const& input, std::vector<std::shared_ptr<Material>> const& materialVec);
-std::shared_ptr<Material> set_find_material(std::string const& input, std::set<std::shared_ptr<Material>> const& materialSet);
-std::shared_ptr<Material> map_find_material(std::string const& input, std::map<std::string, std::shared_ptr<Material>> const& materialMap);
+//std::shared_ptr<Material> vec_find_material(std::string const& input, std::vector<std::shared_ptr<Material>> const& materialVec);
+//std::shared_ptr<Material> set_find_material(std::string const& input, std::set<std::shared_ptr<Material>> const& materialSet);
+std::shared_ptr<Material> find_material(std::string const& input, std::map<std::string, std::shared_ptr<Material>> const& materialMap);
 
 #endif // !SCENE_HPP

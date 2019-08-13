@@ -84,7 +84,8 @@ void Scene::sdf(std::string const& sdfName) {
           std::endl;
 
           // erstelle Objekt
-          auto material = materialMap.find(material_name)->second;
+          auto material = find_material(material_name, materialMap);
+          //auto material = materialMap.find(material_name)->second;
           Box bo = { {min_x,min_y,min_z}, {max_x,max_y,max_z}, box_name, material };
           auto box = std::make_shared<Box>(bo);
 
@@ -116,7 +117,8 @@ void Scene::sdf(std::string const& sdfName) {
           std::endl;
 
           // erstelle Objekt
-          auto material = materialMap.find(material_name)->second;
+          auto material = find_material(material_name, materialMap);
+          //auto material = materialMap.find(material_name)->second;
           Sphere sphe{ { center_x,center_y,center_z }, radius, sphere_name, material };
           auto sphere = std::make_shared<Sphere>(sphe);
           
@@ -179,7 +181,7 @@ void Scene::sdf(std::string const& sdfName) {
 	input.close();
 }
 
-std::shared_ptr<Material> vec_find_material(std::string const& input, std::vector<std::shared_ptr<Material>> const& materialVec) {
+/*std::shared_ptr<Material> vec_find_material(std::string const& input, std::vector<std::shared_ptr<Material>> const& materialVec) {
 	for (int i = 0; i < materialVec.size(); i++) {
 		if (materialVec[i]->name_ == input) {
 			return materialVec[i];
@@ -198,9 +200,9 @@ std::shared_ptr<Material> set_find_material(std::string const& input, std::set<s
 		return nullptr;
 	}
 	return *result;
-}
+}*/
 
-std::shared_ptr<Material> map_find_material(std::string const& input, std::map<std::string, std::shared_ptr<Material>> const& materialMap) {
+std::shared_ptr<Material> find_material(std::string const& input, std::map<std::string, std::shared_ptr<Material>> const& materialMap) {
 	auto i = materialMap.find(input);
 	if (i != materialMap.end()) {
 		return i->second;
