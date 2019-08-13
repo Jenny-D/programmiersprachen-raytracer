@@ -13,6 +13,7 @@
 #include "box.hpp"
 #include "sphere.hpp"
 #include "light.hpp"
+#include "camera.hpp"
 
 struct Scene {
 
@@ -20,11 +21,11 @@ struct Scene {
 	//std::vector<std::shared_ptr<Material>> materialVec;
 	//std::set<std::shared_ptr<Material>> materialSet;
 	std::map<std::string, std::shared_ptr<Material>> materialMap;
-  std::vector<std::shared_ptr<Shape>> shapeVec;
-  std::vector<Light> lightVec;
-  Color ambient{ 0,0,0 };
+	std::vector<std::shared_ptr<Shape>> shapeVec;
+	std::vector<Light> lightVec;
+	Color ambient{ 0,0,0 };
 
-  void sdf(std::string const& sdfName);
+	void sdf(std::string const& sdfName);
 };
 
 

@@ -9,8 +9,8 @@
 struct Light {
 	std::string name = "Helios";
 	glm::vec3 position = { 0.0f, 0.0f, 0.0f };
-  Color color = { 0.0f, 0.0f, 0.0f };
-  float brightness = 0.0f;
+	Color color = { 0.0f, 0.0f, 0.0f };
+	float brightness = 0.0f;
 };
 
 #endif // !LIGHT_HPP

@@ -15,17 +15,18 @@ void Scene::sdf(std::string const& sdfName) {
 		if ("define" == identifier)
 		{
 			line_string_stream >> identifier;
+
 			if ("material" == identifier)
 			{
 				// erstelle Variablen
-        std::string material_name;
+				std::string material_name;
 				float ka_r, ka_g, ka_b;
 				float kd_r, kd_g, kd_b;
 				float ks_r, ks_g, ks_b;
 				float m;
         
-        // befülle Variablen
-        line_string_stream >> material_name;
+				// befülle Variablen
+				line_string_stream >> material_name;
 				line_string_stream >> ka_r;
 				line_string_stream >> ka_g;
 				line_string_stream >> ka_b;
@@ -37,145 +38,167 @@ void Scene::sdf(std::string const& sdfName) {
 				line_string_stream >> ks_b;
 				line_string_stream >> m;
 
-        // gib Variablen aus
-				std::cout << "material " 
-          << material_name << " " 
-          << ka_r << " " << ka_g << " " << ka_b << " " 
-          << kd_r << " " << kd_g << " " << kd_b << " " 
-          << ks_r << " " << ks_g << " " << ks_b << " " 
-          <<  m  << 
-        std::endl;
+				// gib Variablen aus
+				std::cout << "material " << material_name << " " 
+				<< ka_r << " " << ka_g << " " << ka_b << " " 
+				<< kd_r << " " << kd_g << " " << kd_b << " " 
+				<< ks_r << " " << ks_g << " " << ks_b << " " 
+				<<  m  << std::endl;
 
-        // erstelle Objekt
-				Material mat { material_name, {ka_r,ka_g,ka_b}, {kd_r,kd_g,kd_b}, {ks_r,ks_g,ks_b}, m };
+				// erstelle Objekt
+				Material mat { material_name, {ka_r, ka_g, ka_b}, {kd_r, kd_g, kd_b}, {ks_r, ks_g, ks_b}, m };
 				auto material = std::make_shared<Material>(mat);
 
-        // füge Objekt zu Container hinzu
-        std::pair<std::string, std::shared_ptr<Material>> pair{ material_name, material };
-        materialMap.insert(pair);
+				// füge Objekt zu Container hinzu
+				std::pair<std::string, std::shared_ptr<Material>> pair{ material_name, material };
+				materialMap.insert(pair);
 			}
-      if ("shape" == identifier)
-      {
-        line_string_stream >> identifier;
-        if ("box" == identifier)
-        {
-          // erstelle Variablen
-          std::string box_name;
-          float min_x, min_y, min_z;
-          float max_x, max_y, max_z;
-          std::string material_name;
 
-          // befülle Variablen
-          line_string_stream >> box_name;
-          line_string_stream >> min_x;
-          line_string_stream >> min_y;
-          line_string_stream >> min_z;
-          line_string_stream >> max_x;
-          line_string_stream >> max_y;
-          line_string_stream >> max_z;
-          line_string_stream >> material_name;
+			if ("shape" == identifier)
+			{
+				line_string_stream >> identifier;
 
-          // gib Variablen aus
-          std::cout << "box " 
-            << box_name << " " 
-            << min_x << " " << min_y << " " << min_z << " " 
-            << max_x << " " << max_y << " " << max_z << " " 
-            << material_name << 
-          std::endl;
+				if ("box" == identifier)
+				{
+					// erstelle Variablen
+					std::string box_name;
+					float min_x, min_y, min_z;
+					float max_x, max_y, max_z;
+					std::string material_name;
 
-          // erstelle Objekt
-          auto material = find_material(material_name, materialMap);
-          //auto material = materialMap.find(material_name)->second;
-          Box bo = { {min_x,min_y,min_z}, {max_x,max_y,max_z}, box_name, material };
-          auto box = std::make_shared<Box>(bo);
+					// befülle Variablen
+					line_string_stream >> box_name;
+					line_string_stream >> min_x;
+					line_string_stream >> min_y;
+					line_string_stream >> min_z;
+					line_string_stream >> max_x;
+					line_string_stream >> max_y;
+					line_string_stream >> max_z;
+					line_string_stream >> material_name;
 
-          // füge Objekt zu Container hinzu
-          shapeVec.push_back(box);
-        }
-        if ("sphere" == identifier)
-        {
-          // erstelle Variablen
-          std::string sphere_name;
-          float center_x, center_y, center_z;
-          float radius;
-          std::string material_name;
+					// gib Variablen aus
+					std::cout << "box " << box_name << " " 
+					<< min_x << " " << min_y << " " << min_z << " " 
+					<< max_x << " " << max_y << " " << max_z << " " 
+					<< material_name << std::endl;
 
-          // befülle Variablen
-          line_string_stream >> sphere_name;
-          line_string_stream >> center_x;
-          line_string_stream >> center_y;
-          line_string_stream >> center_z;
-          line_string_stream >> radius;
-          line_string_stream >> material_name;
+					// erstelle Objekt
+					auto material = find_material(material_name, materialMap);
+					//auto material = materialMap.find(material_name)->second;
+					Box bo = { {min_x, min_y, min_z}, {max_x, max_y, max_z}, box_name, material };
+					auto box = std::make_shared<Box>(bo);
 
-          // gib Variablen aus
-          std::cout << "sphere " 
-            << sphere_name << " " 
-            << center_x << " " << center_y << " " << center_z << " " 
-            << radius << " " 
-            << material_name << 
-          std::endl;
+					// füge Objekt zu Container hinzu
+					shapeVec.push_back(box);
+				}
 
-          // erstelle Objekt
-          auto material = find_material(material_name, materialMap);
-          //auto material = materialMap.find(material_name)->second;
-          Sphere sphe{ { center_x,center_y,center_z }, radius, sphere_name, material };
-          auto sphere = std::make_shared<Sphere>(sphe);
+				if ("sphere" == identifier)
+				{
+					// erstelle Variablen
+					std::string sphere_name;
+					float center_x, center_y, center_z;
+					float radius;
+					std::string material_name;
+
+					// befülle Variablen
+					line_string_stream >> sphere_name;
+					line_string_stream >> center_x;
+					line_string_stream >> center_y;
+					line_string_stream >> center_z;
+					line_string_stream >> radius;
+					line_string_stream >> material_name;
+
+					// gib Variablen aus
+					std::cout << "sphere " << sphere_name << " " 
+					<< center_x << " " << center_y << " " << center_z << " " 
+					<< radius << " " << material_name << std::endl;
+
+					// erstelle Objekt
+					auto material = find_material(material_name, materialMap);
+					//auto material = materialMap.find(material_name)->second;
+					Sphere sphe{ { center_x, center_y, center_z }, radius, sphere_name, material };
+					auto sphere = std::make_shared<Sphere>(sphe);
           
-          // füge Objekt zu Container hinzu
-          shapeVec.push_back(sphere);
-        }
-      }
-      if ("light" == identifier) 
-      {
-        // erstelle Variablen
-        std::string light_name;
-        float pos_x, pos_y, pos_z;
-        float color_r, color_g, color_b;
-        float brightness;
+					// füge Objekt zu Container hinzu
+					shapeVec.push_back(sphere);
+				}
+			}
+		
+			if ("light" == identifier) 
+			{
+				// erstelle Variablen
+				std::string light_name;
+				float pos_x, pos_y, pos_z;
+				float color_r, color_g, color_b;
+				float brightness;
 
-        // befülle Variablen
-        line_string_stream >> light_name;
-        line_string_stream >> pos_x;
-        line_string_stream >> pos_y;
-        line_string_stream >> pos_z;
-        line_string_stream >> color_r;
-        line_string_stream >> color_g;
-        line_string_stream >> color_b;
-        line_string_stream >> brightness;
+				// befülle Variablen
+				line_string_stream >> light_name;
+				line_string_stream >> pos_x;
+				line_string_stream >> pos_y;
+				line_string_stream >> pos_z;
+				line_string_stream >> color_r;
+				line_string_stream >> color_g;
+				line_string_stream >> color_b;
+				line_string_stream >> brightness;
 
-        // gib Variablen aus
-        std::cout << "light "
-          << light_name << " "
-          << pos_x << " " << pos_y << " " << pos_z << " "
-          << color_r << " " << color_g << " " << color_b << " "
-          << brightness <<
-        std::endl;
+				// gib Variablen aus
+				std::cout << "light " << light_name << " "
+				<< pos_x << " " << pos_y << " " << pos_z << " "
+				<< color_r << " " << color_g << " " << color_b << " "
+				<< brightness << std::endl;
 
-        // erstelle Objekt
-        Light light{ light_name, { pos_x,pos_y,pos_z }, { color_r,color_g,color_b }, brightness };
+				// erstelle Objekt
+				Light light{ light_name, { pos_x, pos_y, pos_z }, { color_r, color_g, color_b }, brightness };
 
-        // füge Objekt zu Container hinzu
-        lightVec.push_back(light);
-      }
-      if ("ambient" == identifier) 
-      {
-        // erstelle Variablen
-        float color_r, color_g, color_b;
+				// füge Objekt zu Container hinzu
+				lightVec.push_back(light);
+			}
+		
+			if ("ambient" == identifier) 
+			{
+				// erstelle Variablen
+				float color_r, color_g, color_b;
 
-        // befülle Variablen
-        line_string_stream >> color_r;
-        line_string_stream >> color_g;
-        line_string_stream >> color_b;
+				// befülle Variablen
+				line_string_stream >> color_r;
+				line_string_stream >> color_g;
+				line_string_stream >> color_b;
 
-        // gib Variablen aus
-        std::cout << "ambient "
-          << color_r << " " << color_g << " " << color_b <<
-        std::endl;
+				// gib Variablen aus
+				std::cout << "ambient "
+				<< color_r << " " << color_g << " " << color_b <<
+				std::endl;
 
-        // füge Werte ein
-        ambient = { color_r,color_g,color_b };
-      }
+				// füge Werte ein
+				ambient = { color_r, color_g, color_b };
+			}
+
+			if ("camera" == identifier) 
+			{
+				std::string name_;
+				float fov_x_;
+				glm::vec3 eye_, dir_, up_;
+
+				line_string_stream >> name_;
+				line_string_stream >> fov_x_;
+				line_string_stream >> eye_.x;
+				line_string_stream >> eye_.y;
+				line_string_stream >> eye_.z;
+				line_string_stream >> dir_.x;
+				line_string_stream >> dir_.y;
+				line_string_stream >> dir_.z;
+				line_string_stream >> up_.x;
+				line_string_stream >> up_.y;
+				line_string_stream >> up_.z;
+
+				std::cout << "camera " << name_ << " "<< fov_x_ << " " 
+					<< eye_.x << " " << eye_.y << " " << eye_.z << " "
+					<< dir_.x << " " << dir_.y << " " << dir_.z << " "
+					<< up_.x << " " << up_.y << " " << up_.z << std::endl;
+
+				Camera camera{ name_, fov_x_, {eye_.x, eye_.y, eye_.z}, {dir_.x, dir_.y, dir_.z}, {up_.x, up_.y, up_.z} };
+			}
 		}
 	}
 	input.close();
