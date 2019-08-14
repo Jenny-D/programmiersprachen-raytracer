@@ -3,7 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
-#include <set>
+//#include <set>
 #include <map>
 #include <memory>
 #include <string>
@@ -26,7 +26,7 @@ struct Scene {
 	std::vector<Light> lightVec;
 	Color ambient{ 0,0,0 };
 
-	void sdf(std::string const& sdfName, std::vector<Camera>& cams, std::vector<Renderer>& renderers);
+  void sdf(std::string const& sdfName, Camera& cam, Renderer& render);
 };
 
 //void sdf(std::string const& sdfName); // soll die unabhängig sein?

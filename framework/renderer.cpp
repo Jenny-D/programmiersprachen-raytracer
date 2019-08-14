@@ -24,15 +24,19 @@ void Renderer::render()
   for (unsigned y = 0; y < height_; ++y) {
     for (unsigned x = 0; x < width_; ++x) {
       Pixel p(x,y);
-
-      Ray r{ { 0, 0, 0 }, { x, y, -1 } };
       
-      p.color = trace(r);
+      //p.color = trace(cam_ray(p));
+      p.color = Color{ 0,0,0 };
 
       write(p);
     }
   }
   ppm_.save(filename_);
+}
+
+Ray cam_ray(Pixel p) 
+{
+  return Ray{ { 0,0,0 },{ p.x,p.y,-1 } };
 }
 
 Color trace(Ray ray)

@@ -1,6 +1,6 @@
 #include "scene.hpp"
 
-void Scene::sdf(std::string const& sdfName, std::vector<Camera>& cams, std::vector<Renderer>& renderers) {
+void Scene::sdf(std::string const& sdfName, Camera& cam, Renderer& render) {
 	
 	std::ifstream input(sdfName);
 	std::string line_buffer;
@@ -199,9 +199,7 @@ void Scene::sdf(std::string const& sdfName, std::vector<Camera>& cams, std::vect
 					<< dir_x << " " << dir_y << " " << dir_z << " "
 					<< up_x << " " << up_y << " " << up_z << std::endl;
 
-        Camera cam{ name, fov_x, { eye_x, eye_y, eye_z }, { dir_x, dir_y, dir_z }, { up_x, up_y, up_z } };
-
-        cams.push_back(cam);
+        cam = Camera{ name, fov_x, { eye_x, eye_y, eye_z }, { dir_x, dir_y, dir_z }, { up_x, up_y, up_z } };
 			}
       if ("render" == identifier) 
       {
@@ -213,8 +211,7 @@ void Scene::sdf(std::string const& sdfName, std::vector<Camera>& cams, std::vect
         line_string_stream >> width;
         line_string_stream >> height;
 
-        Renderer renderer{ width, height, filename };
-        renderers.push_back(renderer);
+        render = Renderer{ width, height, filename };
       }
 		}
 	}

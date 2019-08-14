@@ -15,6 +15,8 @@
 #include "ray.hpp"
 #include "hitpoint.hpp"
 #include "ppmwriter.hpp"
+#include "scene.hpp"
+#include "camera.hpp"
 #include <string>
 #include <glm/glm.hpp>
 
@@ -30,6 +32,7 @@ public:
   void render();
   void write(Pixel const& p);
 
+
   inline std::vector<Color> const& color_buffer() const
   {
     return color_buffer_;
@@ -42,6 +45,8 @@ private:
   std::string filename_;
   PpmWriter ppm_;
 };
+
+Ray cam_ray(Pixel p);
 
 Color trace(Ray ray);
 
