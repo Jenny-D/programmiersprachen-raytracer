@@ -208,7 +208,7 @@ TEST_CASE(" Sdf ", "[6.5 & 7.1]") {
 	scene1.sdf("../../sdf-file/scene.sdf", cams, renderers);
 
   Camera cam1 = cams.front();
-  Renderer render1 = renderers.front();
+  Renderer renderer1 = renderers.front();
 
   REQUIRE(scene1.materialMap.find("red")->second->name_ == "red");
   REQUIRE(scene1.shapeVec.front()->getName() == "red_box");
@@ -216,7 +216,7 @@ TEST_CASE(" Sdf ", "[6.5 & 7.1]") {
   REQUIRE(scene1.lightVec.front().name == "sun");
   REQUIRE(scene1.ambient.r == 0.1f);
   REQUIRE(cam1.name_ == "eye");
-  REQUIRE(render1.width_ == 10);
+  REQUIRE(renderer1.getWidth() == 10);
 }
 
 TEST_CASE(" TestLight ", "[7.1]") {

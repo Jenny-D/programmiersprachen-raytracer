@@ -51,3 +51,18 @@ void Renderer::write(Pixel const& p)
 
   ppm_.write(p);
 }
+
+unsigned Renderer::getWidth() const
+{
+  return width_;
+}
+
+unsigned Renderer::getHeight() const
+{
+  return height_;
+}
+
+std::string Renderer::getFile() const
+{
+  return filename_;
+}

@@ -213,8 +213,8 @@ void Scene::sdf(std::string const& sdfName, std::vector<Camera>& cams, std::vect
         line_string_stream >> width;
         line_string_stream >> height;
 
-        Renderer render{ width, height, filename };
-        renderers.push_back(render);
+        Renderer renderer{ width, height, filename };
+        renderers.push_back(renderer);
       }
 		}
 	}

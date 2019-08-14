@@ -21,6 +21,10 @@ class Renderer
 public:
   Renderer(unsigned w, unsigned h, std::string const& file);
 
+  unsigned getWidth() const;
+  unsigned getHeight() const;
+  std::string getFile() const;
+
   void render();
   void write(Pixel const& p);
 
@@ -29,7 +33,7 @@ public:
     return color_buffer_;
   }
 
-//private:
+private:
   unsigned width_;
   unsigned height_;
   std::vector<Color> color_buffer_;
