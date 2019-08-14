@@ -24,16 +24,25 @@ void Renderer::render()
   for (unsigned y = 0; y < height_; ++y) {
     for (unsigned x = 0; x < width_; ++x) {
       Pixel p(x,y);
-      if ( ((x/checker_pattern_size)%2) != ((y/checker_pattern_size)%2)) {
-        p.color = Color(0.0, 1.0, float(x)/height_);
-      } else {
-        p.color = Color(1.0, 0.0, float(y)/width_);
-      }
+
+      Ray r{ { 0, 0, 0 }, { x, y, -1 } };
+      
+      p.color = trace(r);
 
       write(p);
     }
   }
   ppm_.save(filename_);
+}
+
+Color trace(Ray ray)
+{
+  return Color{ 1,1,0 };
+}
+
+Color shade(HitPoint hit) 
+{
+  return Color{ 0,0,0 };
 }
 
 void Renderer::write(Pixel const& p)
@@ -66,3 +75,25 @@ std::string Renderer::getFile() const
 {
   return filename_;
 }
+
+// original checkerboard render
+
+/*void Renderer::render()
+{
+  std::size_t const checker_pattern_size = 20;
+
+  for (unsigned y = 0; y < height_; ++y) {
+    for (unsigned x = 0; x < width_; ++x) {
+      Pixel p(x, y);
+      if (((x / checker_pattern_size) % 2) != ((y / checker_pattern_size) % 2)) {
+        p.color = Color(0.0, 1.0, float(x) / height_);
+      }
+      else {
+        p.color = Color(1.0, 0.0, float(y) / width_);
+      }
+
+      write(p);
+    }
+  }
+  ppm_.save(filename_);
+}*/

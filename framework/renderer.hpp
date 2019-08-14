@@ -12,6 +12,8 @@
 
 #include "color.hpp"
 #include "pixel.hpp"
+#include "ray.hpp"
+#include "hitpoint.hpp"
 #include "ppmwriter.hpp"
 #include <string>
 #include <glm/glm.hpp>
@@ -40,5 +42,9 @@ private:
   std::string filename_;
   PpmWriter ppm_;
 };
+
+Color trace(Ray ray);
+
+Color shade(HitPoint hit);
 
 #endif // #ifndef BUW_RENDERER_HPP
