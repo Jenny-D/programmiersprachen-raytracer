@@ -26,7 +26,7 @@ struct Scene {
 	std::vector<Light> lightVec;
 	Color ambient{ 0,0,0 };
 
-	void sdf(std::string const& sdfName, Camera eye, Renderer render);
+	void sdf(std::string const& sdfName, std::vector<Camera>& cams, std::vector<Renderer>& renderers);
 };
 
 //void sdf(std::string const& sdfName); // soll die unabhängig sein?
