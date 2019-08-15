@@ -20,6 +20,7 @@
 #include <string>
 #include <glm/glm.hpp>
 #include <limits>
+#include <cmath>
 
 class Renderer
 {
@@ -47,7 +48,7 @@ private:
   PpmWriter ppm_;
 };
 
-Ray cam_ray(Pixel const& p, Camera const& cam);
+Ray cam_ray(Pixel const& p, float d);
 
 Color trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const& shapeVec, std::vector<Light> const& lightVec, Color const& ambient);
 

@@ -7,6 +7,7 @@
 // Renderer
 // -----------------------------------------------------------------------------
 
+#define _USE_MATH_DEFINES
 #include "renderer.hpp"
 
 Renderer::Renderer(unsigned w, unsigned h, std::string const& file)
@@ -22,7 +23,8 @@ void Renderer::render(Camera const& cam, std::vector<std::shared_ptr<Shape>> con
   for (unsigned y = 0; y < height_; ++y) {
     for (unsigned x = 0; x < width_; ++x) {
       Pixel p(x,y);
-      p.color = trace(cam_ray(p, cam), shapeVec, lightVec, ambient);
+
+      p.color = trace(cam_ray(p, cam.distance()), shapeVec, lightVec, ambient);
 
       write(p);
     }
@@ -30,9 +32,9 @@ void Renderer::render(Camera const& cam, std::vector<std::shared_ptr<Shape>> con
   ppm_.save(filename_);
 }
 
-Ray cam_ray(Pixel const& p, Camera const& cam) 
+Ray cam_ray(Pixel const& p, float d) 
 {
-  return Ray{ { 0,0,0 },{ p.x,p.y,-1 } };
+  return Ray{ { 0,0,0 },{ p.x,p.y,-d } };
 }
 
 Color trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const& shapeVec, std::vector<Light> const& lightVec, Color const& ambient)
