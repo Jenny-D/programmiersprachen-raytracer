@@ -8,9 +8,9 @@
 
 int main(int argc, char* argv[])
 {
-  Scene scene1;
-  Camera cam1;
-  sdf("../../sdf-file/scene_1.sdf", scene1, cam1);
+  Scene scene;
+  Camera cam;
+  sdf("../../sdf-file/scene_1.sdf", scene, cam);
 
   return 0;
 }
