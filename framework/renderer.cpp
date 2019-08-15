@@ -17,7 +17,7 @@ Renderer::Renderer(unsigned w, unsigned h, std::string const& file)
   , ppm_(width_, height_)
 {}
 
-void Renderer::render(Camera const& cam)
+void Renderer::render(Camera const& cam, std::vector<std::shared_ptr<Shape>> const& shapeVec, std::vector<Light> const& lightVec)
 {
   std::size_t const checker_pattern_size = 20;
 
@@ -25,7 +25,7 @@ void Renderer::render(Camera const& cam)
     for (unsigned x = 0; x < width_; ++x) {
       Pixel p(x,y);
       
-      p.color = trace(cam_ray(p));
+      p.color = trace(cam_ray(p, cam), shapeVec, lightVec);
 
       write(p);
     }
@@ -33,17 +33,17 @@ void Renderer::render(Camera const& cam)
   ppm_.save(filename_);
 }
 
-Ray cam_ray(Pixel p) 
+Ray cam_ray(Pixel const& p, Camera const& cam) 
 {
   return Ray{ { 0,0,0 },{ p.x,p.y,-1 } };
 }
 
-Color trace(Ray ray)
+Color trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const& shapeVec, std::vector<Light> const& lightVec)
 {
   return Color{ 1,1,0 };
 }
 
-Color shade(HitPoint hit) 
+Color shade(HitPoint const& hit, std::vector<Light> const& lightVec)
 {
   return Color{ 0,0,0 };
 }

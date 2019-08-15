@@ -29,7 +29,7 @@ public:
   unsigned getHeight() const;
   std::string getFile() const;
 
-  void render (Camera const& cam);
+  void render (Camera const& cam, std::vector<std::shared_ptr<Shape>> const& shapeVec, std::vector<Light> const& lightVec);
   void write(Pixel const& p);
 
 
@@ -46,10 +46,10 @@ private:
   PpmWriter ppm_;
 };
 
-Ray cam_ray(Pixel p);
+Ray cam_ray(Pixel const& p, Camera const& cam);
 
-Color trace(Ray ray);
+Color trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const& shapeVec, std::vector<Light> const& lightVec);
 
-Color shade(HitPoint hit);
+Color shade(HitPoint const& hit, std::vector<Light> const& lightVec);
 
 #endif // #ifndef BUW_RENDERER_HPP

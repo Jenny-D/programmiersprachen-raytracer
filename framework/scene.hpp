@@ -26,7 +26,7 @@ struct Scene {
   
   // void sdf(std::string const& sdfName, Camera& cam);
 };
-
+//void render(Scene const& scene, Camera const& cam);
 void sdf(std::string const& sdfName, Scene& scene, Camera& cam);
 
 std::shared_ptr<Material> find_material(std::string const& input, std::map<std::string, std::shared_ptr<Material>> const& materialMap);
