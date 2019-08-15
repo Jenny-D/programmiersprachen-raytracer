@@ -29,7 +29,7 @@ public:
   unsigned getHeight() const;
   std::string getFile() const;
 
-  void render();
+  void render (Camera const& cam);
   void write(Pixel const& p);
 
 

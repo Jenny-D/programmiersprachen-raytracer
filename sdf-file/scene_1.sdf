@@ -13,4 +13,4 @@ define ambient 0.1 0.1 0.1
 
 #rendering
 define camera eye 45.0 1 1 1 1 1 1 1 1 1
-define render image.ppm 10 10
+define render image.ppm 500 500

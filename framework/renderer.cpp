@@ -12,12 +12,12 @@
 Renderer::Renderer(unsigned w, unsigned h, std::string const& file)
   : width_(w)
   , height_(h)
-  , color_buffer_(w*h, Color(0.0, 0.0, 0.0))
+  , color_buffer_(w*h, Color(0.0f, 0.0f, 0.0f))
   , filename_(file)
   , ppm_(width_, height_)
 {}
 
-void Renderer::render()
+void Renderer::render(Camera const& cam)
 {
   std::size_t const checker_pattern_size = 20;
 

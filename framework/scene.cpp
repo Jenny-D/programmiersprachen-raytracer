@@ -1,7 +1,6 @@
 #include "scene.hpp"
 
-void Scene::sdf(std::string const& sdfName, Camera& cam) {
-// void Scene::sdf(std::string const& sdfName, Camera & cam, Renderer & render) {
+void sdf(std::string const& sdfName, Scene& scene, Camera& cam) {
 	
 	std::ifstream input(sdfName);
 	std::string line_buffer;
@@ -52,7 +51,7 @@ void Scene::sdf(std::string const& sdfName, Camera& cam) {
 
 				// füge Objekt zu Container hinzu
 				std::pair<std::string, std::shared_ptr<Material>> pair{ material_name, material };
-				materialMap.insert(pair);
+				scene.materialMap.insert(pair);
 			}
 
 			if ("shape" == identifier)
@@ -84,13 +83,13 @@ void Scene::sdf(std::string const& sdfName, Camera& cam) {
 					<< material_name << std::endl;
 
 					// erstelle Objekt
-					auto material = find_material(material_name, materialMap);
+					auto material = find_material(material_name, scene.materialMap);
 					//auto material = materialMap.find(material_name)->second;
 					Box bo = { {min_x, min_y, min_z}, {max_x, max_y, max_z}, box_name, material };
 					auto box = std::make_shared<Box>(bo);
 
 					// füge Objekt zu Container hinzu
-					shapeVec.push_back(box);
+					scene.shapeVec.push_back(box);
 				}
 
 				if ("sphere" == identifier)
@@ -115,13 +114,13 @@ void Scene::sdf(std::string const& sdfName, Camera& cam) {
 					<< radius << " " << material_name << std::endl;
 
 					// erstelle Objekt
-					auto material = find_material(material_name, materialMap);
+					auto material = find_material(material_name, scene.materialMap);
 					//auto material = materialMap.find(material_name)->second;
 					Sphere sphe{ { center_x, center_y, center_z }, radius, sphere_name, material };
 					auto sphere = std::make_shared<Sphere>(sphe);
           
 					// füge Objekt zu Container hinzu
-					shapeVec.push_back(sphere);
+					scene.shapeVec.push_back(sphere);
 				}
 			}
 		
@@ -153,7 +152,7 @@ void Scene::sdf(std::string const& sdfName, Camera& cam) {
 				Light light{ light_name, { pos_x, pos_y, pos_z }, { color_r, color_g, color_b }, brightness };
 
 				// füge Objekt zu Container hinzu
-				lightVec.push_back(light);
+				scene.lightVec.push_back(light);
 			}
 		
 			if ("ambient" == identifier) 
@@ -172,7 +171,7 @@ void Scene::sdf(std::string const& sdfName, Camera& cam) {
 				std::endl;
 
 				// füge Werte ein
-				ambient = { color_r, color_g, color_b };
+				scene.ambient = { color_r, color_g, color_b };
 			}
 
 			if ("camera" == identifier) 
@@ -213,7 +212,7 @@ void Scene::sdf(std::string const& sdfName, Camera& cam) {
         line_string_stream >> height;
 
         Renderer renderer{ width, height, filename };
-        renderer.render();
+        renderer.render(cam);
 
         Window window{ {width, height} };
 

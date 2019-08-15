@@ -24,11 +24,10 @@ struct Scene {
 	std::vector<Light> lightVec;
 	Color ambient{ 0,0,0 };
   
-  void sdf(std::string const& sdfName, Camera& cam);
-  // void sdf(std::string const& sdfName, Camera& cam, Renderer& render);
+  // void sdf(std::string const& sdfName, Camera& cam);
 };
 
-//void sdf(std::string const& sdfName); // soll die unabhängig sein?
+void sdf(std::string const& sdfName, Scene& scene, Camera& cam);
 
 std::shared_ptr<Material> find_material(std::string const& input, std::map<std::string, std::shared_ptr<Material>> const& materialMap);
 
