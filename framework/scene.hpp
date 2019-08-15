@@ -3,7 +3,6 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
-//#include <set>
 #include <map>
 #include <memory>
 #include <string>
@@ -15,6 +14,7 @@
 #include "light.hpp"
 #include "camera.hpp"
 #include "renderer.hpp"
+#include "window.hpp"
 
 struct Scene {
 

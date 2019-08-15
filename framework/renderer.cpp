@@ -25,8 +25,7 @@ void Renderer::render()
     for (unsigned x = 0; x < width_; ++x) {
       Pixel p(x,y);
       
-      //p.color = trace(cam_ray(p));
-      p.color = Color{ 1,0,1 };
+      p.color = trace(cam_ray(p));
 
       write(p);
     }

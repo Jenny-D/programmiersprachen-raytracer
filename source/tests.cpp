@@ -199,23 +199,23 @@ TEST_CASE(" material ", "[6.4]") {
 	std::cout << m2 << "\n";
 }
 
-TEST_CASE(" Sdf ", "[6.5 & 7.1]") {
-  Scene scene1;
-  scene1.name = "scene1";
-  Camera cam1;
-  // Renderer renderer1{ 2,2,"image.ppm" };
-
-  scene1.sdf("../../sdf-file/scene.sdf", cam1);
-	// scene1.sdf("../../sdf-file/scene.sdf", cam1, renderer1);
-
-  REQUIRE(scene1.materialMap.find("red")->second->name_ == "red");
-  REQUIRE(scene1.shapeVec.front()->getName() == "red_box");
-  REQUIRE(scene1.shapeVec.back()->getName() == "green_sphere");
-  REQUIRE(scene1.lightVec.front().name == "sun");
-  REQUIRE(scene1.ambient.r == 0.1f);
-  REQUIRE(cam1.name_ == "eye");
-  // REQUIRE(renderer1.getWidth() == 10);
-}
+//TEST_CASE(" Sdf ", "[6.5 & 7.1]") {
+//  Scene scene1;
+//  scene1.name = "scene1";
+//  Camera cam1;
+//  // Renderer renderer1{ 2,2,"image.ppm" };
+//
+//  scene1.sdf("../../sdf-file/scene_tests.sdf", cam1);
+//	// scene1.sdf("../../sdf-file/scene.sdf", cam1, renderer1);
+//
+//  REQUIRE(scene1.materialMap.find("red")->second->name_ == "red");
+//  REQUIRE(scene1.shapeVec.front()->getName() == "red_box");
+//  REQUIRE(scene1.shapeVec.back()->getName() == "green_sphere");
+//  REQUIRE(scene1.lightVec.front().name == "sun");
+//  REQUIRE(scene1.ambient.r == 0.1f);
+//  REQUIRE(cam1.name_ == "eye");
+//  // REQUIRE(renderer1.getWidth() == 10);
+//}
 
 TEST_CASE(" TestLight ", "[7.1]") {
   Light sun;

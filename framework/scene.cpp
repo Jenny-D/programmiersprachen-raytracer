@@ -212,7 +212,19 @@ void Scene::sdf(std::string const& sdfName, Camera& cam) {
         line_string_stream >> width;
         line_string_stream >> height;
 
-        //render = Renderer{ width, height, filename };
+        Renderer renderer{ width, height, filename };
+        renderer.render();
+
+        Window window{ {width, height} };
+
+        while (!window.should_close())
+        {
+          if (window.get_key(GLFW_KEY_ESCAPE) == GLFW_PRESS)
+          {
+            window.close();
+          }
+          window.show(renderer.color_buffer());
+        }
       }
 		}
 	}
