@@ -19,6 +19,7 @@
 #include "camera.hpp"
 #include <string>
 #include <glm/glm.hpp>
+#include <limits>
 
 class Renderer
 {
@@ -29,7 +30,7 @@ public:
   unsigned getHeight() const;
   std::string getFile() const;
 
-  void render (Camera const& cam, std::vector<std::shared_ptr<Shape>> const& shapeVec, std::vector<Light> const& lightVec);
+  void render (Camera const& cam, std::vector<std::shared_ptr<Shape>> const& shapeVec, std::vector<Light> const& lightVec, Color const& ambient);
   void write(Pixel const& p);
 
 
@@ -48,8 +49,8 @@ private:
 
 Ray cam_ray(Pixel const& p, Camera const& cam);
 
-Color trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const& shapeVec, std::vector<Light> const& lightVec);
+Color trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const& shapeVec, std::vector<Light> const& lightVec, Color const& ambient);
 
-Color shade(HitPoint const& hit, std::vector<Light> const& lightVec);
+Color shade(HitPoint const& hit, std::vector<Light> const& lightVec, Color const& ambient);
 
 #endif // #ifndef BUW_RENDERER_HPP

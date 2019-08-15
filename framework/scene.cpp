@@ -212,7 +212,7 @@ void sdf(std::string const& sdfName, Scene& scene, Camera& cam) {
         line_string_stream >> height;
 
         Renderer renderer{ width, height, filename };
-        renderer.render(cam, scene.shapeVec, scene.lightVec);
+        renderer.render(cam, scene.shapeVec, scene.lightVec, scene.ambient);
 
         Window window{ {width, height} };
 

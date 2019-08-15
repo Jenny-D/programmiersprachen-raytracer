@@ -17,15 +17,14 @@ Renderer::Renderer(unsigned w, unsigned h, std::string const& file)
   , ppm_(width_, height_)
 {}
 
-void Renderer::render(Camera const& cam, std::vector<std::shared_ptr<Shape>> const& shapeVec, std::vector<Light> const& lightVec)
+void Renderer::render(Camera const& cam, std::vector<std::shared_ptr<Shape>> const& shapeVec, std::vector<Light> const& lightVec, Color const& ambient)
 {
   std::size_t const checker_pattern_size = 20;
 
   for (unsigned y = 0; y < height_; ++y) {
     for (unsigned x = 0; x < width_; ++x) {
       Pixel p(x,y);
-      
-      p.color = trace(cam_ray(p, cam), shapeVec, lightVec);
+      p.color = trace(cam_ray(p, cam), shapeVec, lightVec, ambient);
 
       write(p);
     }
@@ -38,14 +37,23 @@ Ray cam_ray(Pixel const& p, Camera const& cam)
   return Ray{ { 0,0,0 },{ p.x,p.y,-1 } };
 }
 
-Color trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const& shapeVec, std::vector<Light> const& lightVec)
+Color trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const& shapeVec, std::vector<Light> const& lightVec, Color const& ambient)
 {
-  return Color{ 1,1,0 };
+  HitPoint closest;
+  closest.distance = 0;
+  if (closest.distance != 0) 
+  {
+    return shade(closest, lightVec, ambient);
+  }
+  else
+  {
+    return Color{ 0,0,0 }; // = background_color
+  }
 }
 
-Color shade(HitPoint const& hit, std::vector<Light> const& lightVec)
+Color shade(HitPoint const& hit, std::vector<Light> const& lightVec, Color const& ambient)
 {
-  return Color{ 0,0,0 };
+  return Color{ 0,0,1 };
 }
 
 void Renderer::write(Pixel const& p)
