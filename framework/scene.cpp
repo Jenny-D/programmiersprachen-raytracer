@@ -1,6 +1,7 @@
 #include "scene.hpp"
 
-void Scene::sdf(std::string const& sdfName, Camera& cam, Renderer& render) {
+void Scene::sdf(std::string const& sdfName, Camera& cam) {
+// void Scene::sdf(std::string const& sdfName, Camera & cam, Renderer & render) {
 	
 	std::ifstream input(sdfName);
 	std::string line_buffer;
@@ -211,7 +212,7 @@ void Scene::sdf(std::string const& sdfName, Camera& cam, Renderer& render) {
         line_string_stream >> width;
         line_string_stream >> height;
 
-        render = Renderer{ width, height, filename };
+        //render = Renderer{ width, height, filename };
       }
 		}
 	}
