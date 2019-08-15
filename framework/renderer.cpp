@@ -20,11 +20,13 @@ Renderer::Renderer(unsigned w, unsigned h, std::string const& file)
 
 void Renderer::render(Camera const& cam, std::vector<std::shared_ptr<Shape>> const& shapeVec, std::vector<Light> const& lightVec, Color const& ambient)
 {
+  float d = cam.distance();
+  
   for (unsigned y = 0; y < height_; ++y) {
     for (unsigned x = 0; x < width_; ++x) {
       Pixel p(x,y);
 
-      p.color = trace(cam_ray(p, cam.distance()), shapeVec, lightVec, ambient);
+      p.color = trace(cam_ray(p, d), shapeVec, lightVec, ambient);
 
       write(p);
     }

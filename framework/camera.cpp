@@ -1,5 +1,6 @@
 #define _USE_MATH_DEFINES
 #include "camera.hpp"
+#include <iostream>
 
 float Camera::distance() const {
   // Breite der Ebene auf 1 normieren
