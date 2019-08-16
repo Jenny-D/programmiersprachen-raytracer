@@ -32,6 +32,9 @@ public:
   std::string getFile() const;
 
   void render (Camera const& cam, std::vector<std::shared_ptr<Shape>> const& shapeVec, std::vector<Light> const& lightVec, Color const& ambient);
+  Ray cam_ray(Pixel const& p, float d);
+  Color trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const& shapeVec, std::vector<Light> const& lightVec, Color const& ambient);
+  Color shade(HitPoint const& hit, std::vector<Light> const& lightVec, Color const& ambient);
   void write(Pixel const& p);
 
 
@@ -47,11 +50,5 @@ private:
   std::string filename_;
   PpmWriter ppm_;
 };
-
-Ray cam_ray(Pixel const& p, float d);
-
-Color trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const& shapeVec, std::vector<Light> const& lightVec, Color const& ambient);
-
-Color shade(HitPoint const& hit, std::vector<Light> const& lightVec, Color const& ambient);
 
 #endif // #ifndef BUW_RENDERER_HPP

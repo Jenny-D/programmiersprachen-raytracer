@@ -25,7 +25,7 @@ void Renderer::render(Camera const& cam, std::vector<std::shared_ptr<Shape>> con
   for (unsigned y = 0; y < height_; ++y) {
     for (unsigned x = 0; x < width_; ++x) {
       Pixel p(x,y);
-
+      
       p.color = trace(cam_ray(p, d), shapeVec, lightVec, ambient);
 
       write(p);
@@ -34,29 +34,29 @@ void Renderer::render(Camera const& cam, std::vector<std::shared_ptr<Shape>> con
   ppm_.save(filename_);
 }
 
-Ray cam_ray(Pixel const& p, float d) 
+Ray Renderer::cam_ray(Pixel const& p, float d)
 {
-  return Ray{ { 0,0,0 },{ p.x,p.y,-d } };
+  float x = (1 / width_) * (p.x + 1) - 0.5;
+  float y = (1 / height_) * (p.y + 1) - 0.5;
+  return Ray{ { 0,0,0 },{ x,y,-d } };
 }
 
-Color trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const& shapeVec, std::vector<Light> const& lightVec, Color const& ambient)
+Color Renderer::trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const& shapeVec, std::vector<Light> const& lightVec, Color const& ambient)
 {
   HitPoint closest_hp;
-  closest_hp.distance = 0;
+  closest_hp.distance = std::numeric_limits<float>::min();;
 
   for (unsigned i = 0; i < shapeVec.size(); i++) {
     float t;
     HitPoint hp = shapeVec[i]->intersect(ray, t);
     if (hp.hit) {
-      if (hp.distance < -1) {
-        if (closest_hp.distance >= 0 || closest_hp.distance > hp.distance){
-          closest_hp = hp;
-        }
+      if (closest_hp.distance < hp.distance){
+        closest_hp = hp;
       }
     }
   }
 
-  if (closest_hp.distance != 0) 
+  if (closest_hp.hit) 
   {
     return shade(closest_hp, lightVec, ambient);
   }
@@ -66,9 +66,9 @@ Color trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const& shapeVec,
   }
 }
 
-Color shade(HitPoint const& hit, std::vector<Light> const& lightVec, Color const& ambient)
+Color Renderer::shade(HitPoint const& hit, std::vector<Light> const& lightVec, Color const& ambient)
 {
-  return Color{ 0,0,1 };
+  return hit.material->ka_;
 }
 
 void Renderer::write(Pixel const& p)
