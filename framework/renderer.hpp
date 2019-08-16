@@ -27,14 +27,10 @@ class Renderer
 public:
   Renderer(unsigned w, unsigned h, std::string const& file);
 
-  unsigned getWidth() const;
-  unsigned getHeight() const;
-  std::string getFile() const;
-
   void render (Camera const& cam, std::vector<std::shared_ptr<Shape>> const& shapeVec, std::vector<Light> const& lightVec, Color const& ambient);
   Ray cam_ray(Pixel const& p, float d);
   Color trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const& shapeVec, std::vector<Light> const& lightVec, Color const& ambient);
-  Color shade(HitPoint const& hit, std::vector<Light> const& lightVec, Color const& ambient);
+  Color shade(HitPoint const& hp, std::vector<Light> const& lightVec, Color const& ambient);
   void write(Pixel const& p);
 
 

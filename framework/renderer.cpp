@@ -36,22 +36,23 @@ void Renderer::render(Camera const& cam, std::vector<std::shared_ptr<Shape>> con
 
 Ray Renderer::cam_ray(Pixel const& p, float d)
 {
-  float x = (1 / width_) * (p.x + 1) - 0.5;
-  float y = (1 / height_) * (p.y + 1) - 0.5;
+  float x = (1.0f / width_) * p.x  - 0.5f;
+  float y = (1.0f / height_) * p.y - 0.5f;
   return Ray{ { 0,0,0 },{ x,y,-d } };
 }
 
 Color Renderer::trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const& shapeVec, std::vector<Light> const& lightVec, Color const& ambient)
 {
   HitPoint closest_hp;
-  closest_hp.distance = std::numeric_limits<float>::min();;
+  closest_hp.distance = std::numeric_limits<float>::min();
 
   for (unsigned i = 0; i < shapeVec.size(); i++) {
     float t;
     HitPoint hp = shapeVec[i]->intersect(ray, t);
-    if (hp.hit) {
-      if (closest_hp.distance < hp.distance){
+    if (hp.hit == true) {
+      if (hp.distance < closest_hp.distance){
         closest_hp = hp;
+        //std::cout << closest_hp.hit << " " << hp.hit << std::endl;
       }
     }
   }
@@ -66,9 +67,9 @@ Color Renderer::trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const&
   }
 }
 
-Color Renderer::shade(HitPoint const& hit, std::vector<Light> const& lightVec, Color const& ambient)
+Color Renderer::shade(HitPoint const& hp, std::vector<Light> const& lightVec, Color const& ambient)
 {
-  return hit.material->ka_;
+  return hp.material->ka_;
 }
 
 void Renderer::write(Pixel const& p)
@@ -85,21 +86,6 @@ void Renderer::write(Pixel const& p)
   }
 
   ppm_.write(p);
-}
-
-unsigned Renderer::getWidth() const
-{
-  return width_;
-}
-
-unsigned Renderer::getHeight() const
-{
-  return height_;
-}
-
-std::string Renderer::getFile() const
-{
-  return filename_;
 }
 
 // original checkerboard render

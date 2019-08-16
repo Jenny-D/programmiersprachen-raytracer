@@ -2,11 +2,15 @@
 define material red 1 0 0 1 0 0 1 0 0 1
 define material green 0 1 0 0 1 0 0 1 0 1
 define material blue 0 0 1 0 0 1 0 0 1 1
+define material yellow 1 1 0 1 1 0 1 1 0 1
+define material magenta 1 0 1 1 0 1 1 0 1 1
 
 #shapes
 define shape box red_bottom -100 -80 -200 100 80 -100 red
-define shape sphere blue_sphere -110 0 -100 50 blue
-define shape sphere green_sphere -500 -500 -100 50 green
+define shape sphere yellow_sphere 0 0 -60 50 yellow
+define shape sphere blue_sphere 0 0 -1000 50 blue
+define shape sphere magenta_sphere 0 0 -10000 50 magenta
+define shape sphere green_sphere 0 0 -100 50 green
 
 #lighting
 define light sun 1000 700 0 .2 .2 .2 100

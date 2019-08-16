@@ -8,8 +8,8 @@
 
 struct HitPoint {
 	bool hit = false;
-	float distance = 0.0f;
-	std::string name = "Sphere";
+	float distance = std::numeric_limits<float>::min();
+	std::string name = "Default";
 	std::shared_ptr<Material> material;
 	glm::vec3 hitPoint = { 0.0f, 0.0f, 0.0f };
 	glm::vec3 direction = { 0.0f, 0.0f, 0.0f };
