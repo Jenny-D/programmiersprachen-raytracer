@@ -44,15 +44,14 @@ Ray Renderer::cam_ray(Pixel const& p, float d)
 Color Renderer::trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const& shapeVec, std::vector<Light> const& lightVec, Color const& ambient)
 {
   HitPoint closest_hp;
-  closest_hp.distance = std::numeric_limits<float>::min();
 
   for (unsigned i = 0; i < shapeVec.size(); i++) {
     float t;
     HitPoint hp = shapeVec[i]->intersect(ray, t);
+    //std::cout << hp.hit << std::endl;
     if (hp.hit == true) {
       if (hp.distance < closest_hp.distance){
         closest_hp = hp;
-        //std::cout << closest_hp.hit << " " << hp.hit << std::endl;
       }
     }
   }

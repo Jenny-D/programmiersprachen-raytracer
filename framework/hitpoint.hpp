@@ -8,7 +8,7 @@
 
 struct HitPoint {
 	bool hit = false;
-	float distance = std::numeric_limits<float>::min();
+	float distance = std::numeric_limits<float>::max();
 	std::string name = "Default";
 	std::shared_ptr<Material> material;
 	glm::vec3 hitPoint = { 0.0f, 0.0f, 0.0f };

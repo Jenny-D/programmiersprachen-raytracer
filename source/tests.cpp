@@ -239,6 +239,14 @@ TEST_CASE(" TestLight ", "[7.1]") {
   REQUIRE(sun2.brightness == 1.0f);
 }
 
+TEST_CASE(" teste alte und neue Intersect-Methoden ", "[7.1]") {
+  Box red_bottom{ {-100, -80, -200}, {100, 80, -100} };
+  Ray ray{ { 0,0,0 }, { -0.5,-0.5,1.12 } };
+  float t;
+  REQUIRE(red_bottom.intersect(ray, t).hit == true);
+  REQUIRE(red_bottom.intersect_old(ray, t).hit == false);
+}
+
 int main(int argc, char *argv[])
 {
   return Catch::Session().run(argc, argv);
