@@ -48,7 +48,6 @@ Color Renderer::trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const&
   for (unsigned i = 0; i < shapeVec.size(); i++) {
     float t;
     HitPoint hp = shapeVec[i]->intersect(ray, t);
-    //std::cout << hp.hit << std::endl;
     if (hp.hit == true) {
       if (hp.distance < closest_hp.distance){
         closest_hp = hp;
