@@ -8,7 +8,7 @@ float Camera::distance() const {
   // Öffnungswinkel in Bogenmaß umrechnen
   float Y = ((2 * M_PI) / 360) * fov_x_;
   // Seitenlängen berechnen
-  float a = (c / (std::sin(Y))) / 2;
+  float a = (c / (std::sin(Y / 2))) / 2;
   // Entfernung zwischen Koordinatenursprung und Bildebene berechnen
   float d = 0.5 * (std::sqrt((4 * a * a) - (c * c)));
 
