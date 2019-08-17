@@ -38,7 +38,8 @@ Ray Renderer::cam_ray(Pixel const& p, float d)
 {
   float x = (1.0f / width_) * p.x  - 0.5f;
   float y = (1.0f / height_) * p.y - 0.5f;
-  return Ray{ { 0,0,0 },{ x,y,-d } };
+  glm::vec3 direction{ x,y,-d };
+  return Ray{ { 0,0,0 },glm::normalize(direction) };
 }
 
 Color Renderer::trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const& shapeVec, std::vector<Light> const& lightVec, Color const& ambient)
@@ -70,38 +71,40 @@ Color Renderer::trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const&
 
 Color Renderer::shade(HitPoint const& hp, std::vector<std::shared_ptr<Shape>> const& shapeVec, std::vector<Light> const& lightVec, Color const& ambient)
 {
-  float r, g, b;
+  //float r, g, b;
 
-  // ambiente Beleuchtung
-  r = hp.material->ka_.r * ambient.r;
-  g = hp.material->ka_.g * ambient.g;
-  b = hp.material->ka_.b * ambient.b;
+  //// ambiente Beleuchtung
+  //r = hp.material->ka_.r * ambient.r;
+  //g = hp.material->ka_.g * ambient.g;
+  //b = hp.material->ka_.b * ambient.b;
 
-  // diffuse Beleuchtung
-  for (auto light : lightVec) {
-    bool obstructed = false;
+  //// diffuse Beleuchtung
+  //for (auto light : lightVec) {
+  //  bool obstructed = false;
 
-    float dir_x = light.position.x - hp.hitPoint.x;
-    float dir_y = light.position.y - hp.hitPoint.y;
-    float dir_z = light.position.z - hp.hitPoint.z;
-    Ray l_ray{ hp.hitPoint,{ dir_x,dir_y,dir_z } };
-    float t;
+  //  float dir_x = light.position.x - hp.hitPoint.x;
+  //  float dir_y = light.position.y - hp.hitPoint.y;
+  //  float dir_z = light.position.z - hp.hitPoint.z;
+  //  Ray l_ray{ hp.hitPoint,{ dir_x,dir_y,dir_z } };
+  //  float t;
 
-    for (auto shape : shapeVec) {
-      HitPoint hpl = (*shape).intersect(l_ray, t);
-      if (hpl.hit == true && hpl.name != hp.name) {
-        obstructed = true;
-        break;
-      }
-    }
+  //  for (auto shape : shapeVec) {
+  //    HitPoint hpl = (*shape).intersect(l_ray, t);
+  //    if (hpl.hit == true && hpl.name != hp.name) {
+  //      obstructed = true;
+  //      break;
+  //    }
+  //  }
 
-    if (!obstructed) {
-      r += hp.material->kd_.r * 0.7;
-      g += hp.material->kd_.g * 0.7;
-      b += hp.material->kd_.b * 0.7;
-    }
-  }
-  return Color{ r,g,b };
+  //  if (!obstructed) {
+  //    r += hp.material->kd_.r * light.brightness;
+  //    g += hp.material->kd_.g * light.brightness;
+  //    b += hp.material->kd_.b * light.brightness;
+  //  }
+  //}
+  //return Color{ r,g,b };
+
+  return hp.material->ka_;
 }
 
 void Renderer::write(Pixel const& p)
