@@ -48,6 +48,9 @@ Color Renderer::trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const&
   for (unsigned i = 0; i < shapeVec.size(); i++) {
     float t;
     HitPoint hp = shapeVec[i]->intersect(ray, t);
+    //if (hp.name == "green_sphere") {
+      //std::cout << hp.direction.x << ", " << hp.direction.y << ", " << hp.direction.z << std::endl;
+    //}
     if (hp.hit == true) {
       if (hp.distance < closest_hp.distance){
         closest_hp = hp;
@@ -67,7 +70,16 @@ Color Renderer::trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const&
 
 Color Renderer::shade(HitPoint const& hp, std::vector<Light> const& lightVec, Color const& ambient)
 {
-  return hp.material->ka_;
+  float r, g, b;
+
+  // ambiente Beleuchtung
+  r = hp.material->ka_.r * ambient.r;
+  g = hp.material->ka_.g * ambient.g;
+  b = hp.material->ka_.b * ambient.b;
+
+  // diffuse Beleuchtung
+  // ...
+  return Color{ r,g,b };
 }
 
 void Renderer::write(Pixel const& p)
