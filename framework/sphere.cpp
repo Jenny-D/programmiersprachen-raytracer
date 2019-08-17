@@ -58,6 +58,7 @@ HitPoint Sphere::intersect(Ray const& ray, float& t) const {
 		intersectionPoint.y = ray.origin.y + t * ray.direction.y;
 		intersectionPoint.z = ray.origin.z + t * ray.direction.z;
 	}
-	return HitPoint{hit, t, getName(), getMaterial(), intersectionPoint , ray.direction};
+  //std::cout << hit << std::endl;
+  return HitPoint{ hit, t, getName(), getMaterial(), intersectionPoint , ray.direction };
 }
 

@@ -45,9 +45,9 @@ Color Renderer::trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const&
 {
   HitPoint closest_hp;
 
-  for (unsigned i = 0; i < shapeVec.size(); i++) {
+  for (auto shape : shapeVec) {
     float t;
-    HitPoint hp = shapeVec[i]->intersect(ray, t);
+    HitPoint hp = (*shape).intersect(ray, t);
     //if (hp.name == "green_sphere") {
       //std::cout << hp.direction.x << ", " << hp.direction.y << ", " << hp.direction.z << std::endl;
     //}
@@ -60,7 +60,7 @@ Color Renderer::trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const&
 
   if (closest_hp.hit) 
   {
-    return shade(closest_hp, lightVec, ambient);
+    return shade(closest_hp, shapeVec, lightVec, ambient);
   }
   else
   {
@@ -68,7 +68,7 @@ Color Renderer::trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const&
   }
 }
 
-Color Renderer::shade(HitPoint const& hp, std::vector<Light> const& lightVec, Color const& ambient)
+Color Renderer::shade(HitPoint const& hp, std::vector<std::shared_ptr<Shape>> const& shapeVec, std::vector<Light> const& lightVec, Color const& ambient)
 {
   float r, g, b;
 
@@ -78,7 +78,29 @@ Color Renderer::shade(HitPoint const& hp, std::vector<Light> const& lightVec, Co
   b = hp.material->ka_.b * ambient.b;
 
   // diffuse Beleuchtung
-  // ...
+  for (auto light : lightVec) {
+    bool obstructed = false;
+
+    float dir_x = light.position.x - hp.hitPoint.x;
+    float dir_y = light.position.y - hp.hitPoint.y;
+    float dir_z = light.position.z - hp.hitPoint.z;
+    Ray l_ray{ hp.hitPoint,{ dir_x,dir_y,dir_z } };
+    float t;
+
+    for (auto shape : shapeVec) {
+      HitPoint hpl = (*shape).intersect(l_ray, t);
+      if (hpl.hit == true && hpl.name != hp.name) {
+        obstructed = true;
+        break;
+      }
+    }
+
+    if (!obstructed) {
+      r += hp.material->kd_.r * 0.7;
+      g += hp.material->kd_.g * 0.7;
+      b += hp.material->kd_.b * 0.7;
+    }
+  }
   return Color{ r,g,b };
 }
 
