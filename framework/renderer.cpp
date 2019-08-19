@@ -104,9 +104,9 @@ Color Renderer::shade(HitPoint const& hp, std::vector<std::shared_ptr<Shape>> co
       b += hp.material->kd_.b * light.brightness * s;
     }
   }
-  /*r /= (r + 1);
+  r /= (r + 1);
   g /= (g + 1);
-  b /= (b + 1);*/
+  b /= (b + 1);
   return Color{ r,g,b };
 }
 
