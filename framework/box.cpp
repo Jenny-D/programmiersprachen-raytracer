@@ -53,6 +53,7 @@ std::ostream& Box::print(std::ostream& os) const {
 
 HitPoint Box::intersect(Ray const& ray, float& t) const {
   HitPoint hp{ false, std::numeric_limits<float>::max(), getName(), getMaterial(), {0,0,0}, ray.direction };
+  float eps = 0.0001;
   if (ray.direction.x != 0 || ray.direction.y != 0 || ray.direction.z != 0)
   {
     std::vector<float> distanceVec;
@@ -76,9 +77,9 @@ HitPoint Box::intersect(Ray const& ray, float& t) const {
       if (i != std::numeric_limits<float>::max())
       {
         hp.hitPoint = ray.origin + (i * ray.direction);
-        if ((hp.hitPoint.x <= max_.x && hp.hitPoint.x >= min_.x) && 
-            (hp.hitPoint.y <= max_.y && hp.hitPoint.y >= min_.y) && 
-            (hp.hitPoint.z <= max_.z && hp.hitPoint.z >= min_.z))
+        if ((hp.hitPoint.x <= max_.x+eps && hp.hitPoint.x >= min_.x-eps) && 
+            (hp.hitPoint.y <= max_.y+eps && hp.hitPoint.y >= min_.y-eps) && 
+            (hp.hitPoint.z <= max_.z+eps && hp.hitPoint.z >= min_.z-eps))
         {
           t = i;
           hp.distance = t;
