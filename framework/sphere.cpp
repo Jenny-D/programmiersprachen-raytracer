@@ -58,8 +58,15 @@ HitPoint Sphere::intersect(Ray const& ray, float& t) const {
 		intersectionPoint.y = ray.origin.y + t * ray.direction.y;
 		intersectionPoint.z = ray.origin.z + t * ray.direction.z;
 	}
+
   t = t / sqrt(glm::dot(ray.direction, ray.direction));
-  return HitPoint{ hit, t, getName(), getMaterial(), intersectionPoint , ray.direction, { 0,0,0 } };
+
+  float dir_x = center_.x - intersectionPoint.x;
+  float dir_y = center_.y - intersectionPoint.y;
+  float dir_z = center_.z - intersectionPoint.z;
+  glm::vec3 normal{ dir_x, dir_y, dir_z };
+
+  return HitPoint{ hit, t, getName(), getMaterial(), intersectionPoint , ray.direction, normal };
 }
 
 //HitPoint Sphere::intersect(Ray const& ray, double& t) const {

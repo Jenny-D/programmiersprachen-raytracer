@@ -21,14 +21,13 @@ Renderer::Renderer(unsigned w, unsigned h, std::string const& file)
 void Renderer::render(Camera const& cam, std::vector<std::shared_ptr<Shape>> const& shapeVec, std::vector<Light> const& lightVec, Color const& ambient)
 {
   float d = cam.distance();
-  int hole = 0;
-
+ 
   for (unsigned y = 0; y < height_; ++y) {
     for (unsigned x = 0; x < width_; ++x) {
       Pixel p(x,y);
       
       p.color = trace(cam_ray(p, d), shapeVec, lightVec, ambient);
-
+ 
       write(p);
     }
   }
@@ -89,20 +88,25 @@ Color Renderer::shade(HitPoint const& hp, std::vector<std::shared_ptr<Shape>> co
 
     for (auto shape : shapeVec) {
       HitPoint hpl = (*shape).intersect(l_ray, t);
-      if (hpl.hit && t <= 1-0.0001) {
+      if (hpl.hit && t <= 1-0.00001) {
         obstructed = true;
         break;
       }
-
     }
-   // obstructed = false;
 
     if (!obstructed) {
-      r += hp.material->kd_.r * light.brightness;
-      g += hp.material->kd_.g * light.brightness;
-      b += hp.material->kd_.b * light.brightness;
+      glm::vec3 l = glm::normalize(l_vec);
+      glm::vec3 n = glm::normalize(hp.normal);
+      float s = glm::dot(l,n);
+
+      r += hp.material->kd_.r * light.brightness * s;
+      g += hp.material->kd_.g * light.brightness * s;
+      b += hp.material->kd_.b * light.brightness * s;
     }
   }
+  /*r /= (r + 1);
+  g /= (g + 1);
+  b /= (b + 1);*/
   return Color{ r,g,b };
 }
 
