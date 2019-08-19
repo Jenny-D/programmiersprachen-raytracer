@@ -69,40 +69,41 @@ Color Renderer::trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const&
 
 Color Renderer::shade(HitPoint const& hp, std::vector<std::shared_ptr<Shape>> const& shapeVec, std::vector<Light> const& lightVec, Color const& ambient)
 {
-  //float r, g, b;
+  float r, g, b;
 
-  //// ambiente Beleuchtung
-  //r = hp.material->ka_.r * ambient.r;
-  //g = hp.material->ka_.g * ambient.g;
-  //b = hp.material->ka_.b * ambient.b;
+  // ambiente Beleuchtung
+  r = hp.material->ka_.r * ambient.r;
+  g = hp.material->ka_.g * ambient.g;
+  b = hp.material->ka_.b * ambient.b;
 
-  //// diffuse Beleuchtung
-  //for (auto light : lightVec) {
-  //  bool obstructed = false;
+  // diffuse Beleuchtung
+  for (auto light : lightVec) {
+    bool obstructed = false;
 
-  //  float dir_x = light.position.x - hp.hitPoint.x;
-  //  float dir_y = light.position.y - hp.hitPoint.y;
-  //  float dir_z = light.position.z - hp.hitPoint.z;
-  //  Ray l_ray{ hp.hitPoint,{ dir_x,dir_y,dir_z } };
-  //  float t;
+    float dir_x = light.position.x - hp.hitPoint.x;
+    float dir_y = light.position.y - hp.hitPoint.y;
+    float dir_z = light.position.z - hp.hitPoint.z;
+    glm::vec3 l_vec{ dir_x,dir_y,dir_z };
+    Ray l_ray{ light.position,{ -dir_x,-dir_y,-dir_z } };
+    float t;
 
-  //  for (auto shape : shapeVec) {
-  //    HitPoint hpl = (*shape).intersect(l_ray, t);
-  //    if (hpl.hit == true && hpl.name != hp.name) {
-  //      obstructed = true;
-  //      break;
-  //    }
-  //  }
+    for (auto shape : shapeVec) {
+      HitPoint hpl = (*shape).intersect(l_ray, t);
+      if (hpl.hit && t <= 1-0.0001) {
+        obstructed = true;
+        break;
+      }
 
-  //  if (!obstructed) {
-  //    r += hp.material->kd_.r * light.brightness;
-  //    g += hp.material->kd_.g * light.brightness;
-  //    b += hp.material->kd_.b * light.brightness;
-  //  }
-  //}
-  //return Color{ r,g,b };
+    }
+   // obstructed = false;
 
-  return hp.material->ka_;
+    if (!obstructed) {
+      r += hp.material->kd_.r * light.brightness;
+      g += hp.material->kd_.g * light.brightness;
+      b += hp.material->kd_.b * light.brightness;
+    }
+  }
+  return Color{ r,g,b };
 }
 
 void Renderer::write(Pixel const& p)

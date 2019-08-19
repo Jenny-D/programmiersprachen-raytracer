@@ -245,7 +245,7 @@ TEST_CASE(" teste alte und neue Intersect-Methoden ", "[7.1]") {
   Ray ray{ { 0,0,0 }, { -0.5,-0.5,1.20711 } };
   float t;
   REQUIRE(red_bottom.intersect(ray, t).hit == true);
-  REQUIRE(red_bottom.intersect_old(ray, t).hit == false);
+  //REQUIRE(red_bottom.intersect_old(ray, t).hit == false);
   REQUIRE(green_sphere.intersect(ray, t).hit == true);
 }
 
