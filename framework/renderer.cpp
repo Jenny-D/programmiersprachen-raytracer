@@ -26,19 +26,8 @@ void Renderer::render(Camera const& cam, std::vector<std::shared_ptr<Shape>> con
   for (unsigned y = 0; y < height_; ++y) {
     for (unsigned x = 0; x < width_; ++x) {
       Pixel p(x,y);
-
-      if (p.x == 99 && p.y == 69) {
-        hole = 3;
-      }
       
       p.color = trace(cam_ray(p, d), shapeVec, lightVec, ambient);
-
-      if (p.color.r >= 0.5) {
-        hole = 1;
-      }
-      if (p.color.r < 0.5 && hole == 1) {
-        hole = 2;
-      }
 
       write(p);
     }
@@ -51,8 +40,7 @@ Ray Renderer::cam_ray(Pixel const& p, float d)
   float x = (1.0f / width_) * p.x  - 0.5f;
   float y = (1.0f / height_) * p.y - 0.5f;
   glm::vec3 direction{ x,y,-d };
-  glm::vec3 norm = glm::normalize(direction);
-  return Ray{ { 0,0,0 },norm };
+  return Ray{ { 0,0,0 }, direction};
 }
 
 Color Renderer::trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const& shapeVec, std::vector<Light> const& lightVec, Color const& ambient)
@@ -62,10 +50,7 @@ Color Renderer::trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const&
   for (auto shape : shapeVec) {
     float t;
     HitPoint hp = (*shape).intersect(ray, t);
-    //if (hp.name == "green_sphere") {
-      //std::cout << hp.direction.x << ", " << hp.direction.y << ", " << hp.direction.z << std::endl;
-    //}
-    if (hp.hit == true) {
+    if (hp.hit) {
       if (hp.distance < closest_hp.distance){
         closest_hp = hp;
       }
