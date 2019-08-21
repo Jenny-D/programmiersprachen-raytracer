@@ -14,3 +14,20 @@ float Camera::distance() const {
 
   return d;
 }
+
+glm::mat4 Camera::cam_transformation() {
+	
+	glm::vec3 e = eye_;
+	glm::vec3 n = glm::normalize(dir_);
+	glm::vec3 up = up_;
+	glm::vec3 u = glm::normalize(glm::cross(n, up));
+	glm::vec3 v = glm::normalize(glm::cross(u, n));
+
+	glm::mat4 transformed_cam;
+	transformed_cam[0] = glm::vec4(u, 0.0f);
+	transformed_cam[1] = glm::vec4(v, 0.0f);
+	transformed_cam[2] = glm::vec4(-1.0f * n, 0.0f);
+	transformed_cam[3] = glm::vec4(e, 1.0f);
+
+	return transformed_cam;
+}
