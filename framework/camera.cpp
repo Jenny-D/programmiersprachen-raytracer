@@ -28,6 +28,6 @@ glm::mat4 Camera::cam_transformation() {
 	transformed_cam[1] = glm::vec4(v, 0.0f);
 	transformed_cam[2] = glm::vec4(-1.0f * n, 0.0f);
 	transformed_cam[3] = glm::vec4(e, 1.0f);
-
+	
 	return transformed_cam;
 }

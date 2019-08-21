@@ -16,7 +16,7 @@ struct Camera {
 										0.0f, 1.0f, 0.0f, 0.0f,
 										0.0f, 0.0f, 1.0f, 0.0f,
 										0.0f, 0.0f, 0.0f, 1.0 };
-	glm::mat4 world_transformation_inv_ = glm::inverse(world_transformation_);
+	glm::mat4 world_transformation_inv_ = glm::inverse(cam_transformation());
 
 	glm::mat4 cam_transformation();
 	float distance()const;
