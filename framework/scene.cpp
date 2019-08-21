@@ -1,5 +1,11 @@
 #include "scene.hpp"
 
+void transform_object(glm::mat4 const& m, Camera& cam)
+{
+	cam.world_transformation_ = m * cam.world_transformation_;
+	cam.world_transformation_inv_ = glm::inverse(cam.world_transformation_);
+}
+
 void sdf(std::string const& sdfName, Scene& scene, Camera& cam) {
 	
 	std::ifstream input(sdfName);
@@ -176,15 +182,15 @@ void sdf(std::string const& sdfName, Scene& scene, Camera& cam) {
 
 			if ("camera" == identifier) 
 			{
-        std::string name;
-        float fov_x;
-        float eye_x, eye_y, eye_z;
-        float dir_x, dir_y, dir_z;
-        float up_x, up_y, up_z;
+				std::string name;
+				float fov_x;
+				/*float eye_x, eye_y, eye_z;
+				float dir_x, dir_y, dir_z;
+				float up_x, up_y, up_z;*/
         
-        line_string_stream >> name;
+				line_string_stream >> name;
 				line_string_stream >> fov_x;
-				line_string_stream >> eye_x;
+				/*line_string_stream >> eye_x;
 				line_string_stream >> eye_y;
 				line_string_stream >> eye_z;
 				line_string_stream >> dir_x;
@@ -192,39 +198,78 @@ void sdf(std::string const& sdfName, Scene& scene, Camera& cam) {
 				line_string_stream >> dir_z;
 				line_string_stream >> up_x;
 				line_string_stream >> up_y;
-				line_string_stream >> up_z;
+				line_string_stream >> up_z;*/
 
 				std::cout << "camera " << name << " " << fov_x << " "
-					<< eye_x << " " << eye_y << " " << eye_z << " "
-					<< dir_x << " " << dir_y << " " << dir_z << " "
-					<< up_x << " " << up_y << " " << up_z << std::endl;
+					//<< eye_x << " " << eye_y << " " << eye_z << " "
+					//<< dir_x << " " << dir_y << " " << dir_z << " "
+					//<< up_x << " " << up_y << " " << up_z 
+					<< std::endl;
 
-        cam = Camera{ name, fov_x, { eye_x, eye_y, eye_z }, { dir_x, dir_y, dir_z }, { up_x, up_y, up_z } };
+				cam = Camera{ name, fov_x }; //{ eye_x, eye_y, eye_z }, { dir_x, dir_y, dir_z }, { up_x, up_y, up_z } };
 			}
-      if ("render" == identifier) 
-      {
-        unsigned width;
-        unsigned height;
-        std::string filename;
-        
-        line_string_stream >> filename;
-        line_string_stream >> width;
-        line_string_stream >> height;
+		}
 
-        Renderer renderer{ width, height, filename };
-        renderer.render(cam, scene.shapeVec, scene.lightVec, scene.ambient);
+		if ("transform" == identifier) {
+			std::string name;
+			line_string_stream >> name;
 
-        Window window{ {width, height} };
+			if (cam.name_ == name) {
 
-        while (!window.should_close())
-        {
-          if (window.get_key(GLFW_KEY_ESCAPE) == GLFW_PRESS)
-          {
-            window.close();
-          }
-          window.show(renderer.color_buffer());
-        }
-      }
+				std::string transformation;
+				line_string_stream >> transformation;
+
+				if ("translate" == transformation) {
+					glm::vec3 translate;
+					line_string_stream >> translate.x;
+					line_string_stream >> translate.y;
+					line_string_stream >> translate.z;
+
+					std::cout << transformation << " " << name << " " <<
+						translate.x << " " << translate.y << " " << translate.z << std::endl;
+
+					transform_object(glm::translate(translate), cam);
+				}
+
+				if ("rotate" == transformation) {
+					float a;
+					glm::vec3 rotate;
+					line_string_stream >> a;
+					line_string_stream >> rotate.x;
+					line_string_stream >> rotate.y;
+					line_string_stream >> rotate.z;
+
+					std::cout << transformation << " " << name << " " << a <<  " " <<
+						rotate.x << " " << rotate.y << " " << rotate.z << std::endl;
+
+					transform_object(glm::rotate(a, rotate), cam);
+				}
+			}
+		}
+		
+		if ("render" == identifier)
+		{
+			unsigned width;
+			unsigned height;
+			std::string filename;
+
+			line_string_stream >> filename;
+			line_string_stream >> width;
+			line_string_stream >> height;
+
+			Renderer renderer{ width, height, filename };
+			renderer.render(cam, scene.shapeVec, scene.lightVec, scene.ambient);
+
+			Window window{ {width, height} };
+
+			while (!window.should_close())
+			{
+				if (window.get_key(GLFW_KEY_ESCAPE) == GLFW_PRESS)
+				{
+					window.close();
+				}
+				window.show(renderer.color_buffer());
+			}
 		}
 	}
 	input.close();

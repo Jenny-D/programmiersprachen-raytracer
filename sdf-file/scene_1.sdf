@@ -22,6 +22,12 @@ define light sun_2 50 30 -50 .2 .2 .2 .6
 efine light sun_3 0 0 0 .2 .2 .2 .7
 define ambient .5 .5 .5
 
+#camera
+define camera eye 45
+
+#camera xform
+transform eye translate 100 0 100
+transform eye rotate -45 0 1 0
+
 #rendering
-define camera eye 45 0 0 0 0 0 -1 0 1 0
-define render image.ppm 500 500
+render image.ppm 500 500
