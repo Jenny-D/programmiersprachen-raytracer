@@ -97,11 +97,14 @@ Color Renderer::shade(HitPoint const& hp, std::vector<std::shared_ptr<Shape>> co
     if (!obstructed) {
       glm::vec3 l = glm::normalize(l_vec);
       glm::vec3 n = glm::normalize(hp.normal);
-      float s = glm::dot(l,n);
+      float ln = glm::dot(l,n);
+      glm::vec3 r{ 1,1,1 };
+      glm::vec3 v = glm::normalize(-hp.hitPoint);
+      float rv = glm::dot(r, v);
 
-      r += hp.material->kd_.r * light.brightness * s;
-      g += hp.material->kd_.g * light.brightness * s;
-      b += hp.material->kd_.b * light.brightness * s;
+      r += light.brightness * ((hp.material->kd_.r * ln) + (hp.material->ks_.r * pow(rv, hp.material->m_)));
+      g += light.brightness * ((hp.material->kd_.g * ln) + (hp.material->ks_.g * pow(rv, hp.material->m_)));
+      b += light.brightness * ((hp.material->kd_.b * ln) + (hp.material->ks_.b * pow(rv, hp.material->m_)));
     }
   }
   r /= (r + 1);
