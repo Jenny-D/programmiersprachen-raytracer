@@ -7,15 +7,12 @@ define material magenta 1 0 1 1 0 1 1 0 1 .5
 define material cyan 0 1 1 0 1 1 0 1 1 .5
 
 #shapes
-define shape sphere green_sphere 0 0 -81 28.28427125 green
-define shape box blue_box -20 -20 -120 20 20 -80 blue
+define shape sphere green_sphere 0 0 -100 20 blue
+define shape box blue_box -40 -40 -160 40 40 -140 blue
 
 #lighting
-define light sun_1 0 35 -50 .2 .2 .2 .5
-efine light sun_2 -50 -50 -80 .2 .2 .2 .3
-efine light sun_3 50 -50 -80 .2 .2 .2 .3
-efine light sun_4 0 20 -84 .2 .2 .2 .3
-define ambient .2 .2 .2
+define light sun_1 0 0 0 .2 .2 .2 1
+define ambient .1 .1 .1
 
 #rendering
 define camera eye 45.0 1 1 1 1 1 1 1 1 1
