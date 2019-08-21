@@ -97,18 +97,22 @@ Color Renderer::shade(HitPoint const& hp, std::vector<std::shared_ptr<Shape>> co
     if (!obstructed) {
       glm::vec3 l = glm::normalize(l_vec);
       glm::vec3 n = glm::normalize(hp.normal);
-      float s = glm::dot(-l,-n);
+      float s = glm::dot(l,n);  // Kosinus vom Winkel zwischen n und l
       glm::vec3 rl = (2 * s * n) - l;
       glm::vec3 v = glm::normalize(-hp.hitPoint);
       float s2 = glm::dot(rl, v);
 
-      r += light.brightness * hp.material->kd_.r * s;
+      /*r += light.brightness * hp.material->kd_.r * s;
       g += light.brightness * hp.material->kd_.g * s;
-      b += light.brightness * hp.material->kd_.b * s;
+      b += light.brightness * hp.material->kd_.b * s;*/
 
-      /*r += light.brightness * ((hp.material->kd_.r * s) + (hp.material->ks_.r * pow(s2, hp.material->m_)));
+      if (b > 0) {
+        int charles = 0;
+      }
+
+      r += light.brightness * ((hp.material->kd_.r * s) + (hp.material->ks_.r * pow(s2, hp.material->m_)));
       g += light.brightness * ((hp.material->kd_.g * s) + (hp.material->ks_.g * pow(s2, hp.material->m_)));
-      b += light.brightness * ((hp.material->kd_.b * s) + (hp.material->ks_.b * pow(s2, hp.material->m_)));*/
+      b += light.brightness * ((hp.material->kd_.b * s) + (hp.material->ks_.b * pow(s2, hp.material->m_)));
     }
   }
   r /= (r + 1);

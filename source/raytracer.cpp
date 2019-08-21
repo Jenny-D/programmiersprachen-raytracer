@@ -10,7 +10,7 @@ int main(int argc, char* argv[])
 {
   Scene scene;
   Camera cam;
-  sdf("../../sdf-file/scene_ball.sdf", scene, cam);
+  sdf("../../sdf-file/scene_1.sdf", scene, cam);
 
   return 0;
 }
