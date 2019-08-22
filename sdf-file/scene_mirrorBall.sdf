@@ -1,0 +1,20 @@
+#material
+define material red 1 0 0 1 0 0 1 0 0 .5
+define material green 0 1 0 0 1 0 0 1 0 .5
+define material blue 0 0 1 0 0 1 0 0 1 50
+define material yellow 1 1 0 1 1 0 1 1 0 .5
+define material magenta 1 0 1 1 0 1 1 0 1 .5
+define material cyan 0 1 1 0 1 1 0 1 1 .5
+define material white_mirror 1 1 1 1 1 1 1 1 1 50 1
+
+#shapes
+define shape sphere mirror_sphere 0 0 -100 20 white_mirror
+define shape sphere blue_sphere 0 10 -70 5 blue
+
+#lighting
+define light sun_1 50 0 0 .2 .2 .2 1
+define ambient .2 .2 .2
+
+#rendering
+define camera eye 45.0 1 1 1 1 1 1 1 1 1
+define render image.ppm 500 500

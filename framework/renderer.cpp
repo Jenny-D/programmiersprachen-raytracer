@@ -26,7 +26,7 @@ void Renderer::render(Camera const& cam, std::vector<std::shared_ptr<Shape>> con
     for (unsigned x = 0; x < width_; ++x) {
       Pixel p(x,y);
       
-      p.color = trace(cam_ray(p, d), shapeVec, lightVec, ambient);
+      p.color = trace(cam_ray(p, d), shapeVec, lightVec, ambient, 0);
  
       write(p);
     }
@@ -42,8 +42,10 @@ Ray Renderer::cam_ray(Pixel const& p, float d)
   return Ray{ { 0,0,0 }, direction};
 }
 
-Color Renderer::trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const& shapeVec, std::vector<Light> const& lightVec, Color const& ambient)
+Color Renderer::trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const& shapeVec, std::vector<Light> const& lightVec, Color const& ambient, int limit)
 {
+  limit++; // maximale Spiegelungsanzahl
+  
   HitPoint closest_hp;
 
   for (auto shape : shapeVec) {
@@ -59,22 +61,20 @@ Color Renderer::trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const&
   if (closest_hp.hit) 
   {
     Color hpColor = shade(closest_hp, shapeVec, lightVec, ambient);
-    if (closest_hp.material->mirror_ == 1) {
+    if (closest_hp.material->mirror_ == 1 && limit <= 10) {
       //gespiegelten Ray losschicken und dessen Shade zurückgeben
       glm::vec3 l = glm::normalize(-ray.direction);
       glm::vec3 n = glm::normalize(closest_hp.normal);
       float s = glm::dot(l, n);  // Kosinus vom Winkel zwischen n und l
       glm::vec3 rl = (2 * s * n) - l;
       Ray new_ray = Ray{ closest_hp.hitPoint, rl };
-      Color mirroredColor = trace(new_ray, shapeVec, lightVec, ambient);
-      return { float(0.7 * mirroredColor.r + 0.3 * hpColor.r),float(0.7 * mirroredColor.g + 0.3 * hpColor.g),float(0.7 * mirroredColor.b + 0.3 * hpColor.b) };
-      //falls nur die Background Color zurückgegeben wird, bleibt es bei der Spielfarbe
-      //if (tmpCol1.r == 0 && tmpCol1.g == 0 && tmpCol1.b == 0) {
-      //  //return Color{ 0,0,0 }; 
-      //  return shade(closest_hp, shapeVec, lightVec, ambient);
-      //} else {
-      //  return tmpCol;
-      //}
+      Color mirroredColor = trace(new_ray, shapeVec, lightVec, ambient, limit);
+
+      float r = 0.7 * mirroredColor.r + 0.3 * hpColor.r;
+      float g = 0.7 * mirroredColor.g + 0.3 * hpColor.g;
+      float b = 0.7 * mirroredColor.b + 0.3 * hpColor.b;
+
+      return { r,g,b };
     }
     else {
       return hpColor;

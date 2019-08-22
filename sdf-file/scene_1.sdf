@@ -1,10 +1,10 @@
 #material
-define material red 1 0 0 1 0 0 1 0 0 10 0
-define material green 0 1 0 0 1 0 0 1 0 20 0
-define material blue 0 0 1 0 0 1 0 0 1 15 0
-define material yellow 1 1 0 1 1 0 1 1 0 30 0
-define material magenta 1 0 1 1 0 1 1 0 1 50 0
-define material cyan 0 1 1 0 1 1 0 1 1 20 0
+define material red 1 0 0 1 0 0 1 0 0 10
+define material green 0 1 0 0 1 0 0 1 0 20
+define material blue 0 0 1 0 0 1 0 0 1 15
+define material yellow 1 1 0 1 1 0 1 1 0 30
+define material magenta 1 0 1 1 0 1 1 0 1 50
+define material cyan 0 1 1 0 1 1 0 1 1 20
 
 #shapes
 define shape box cyan_box -5 -5 -89 5 5 -85 cyan
