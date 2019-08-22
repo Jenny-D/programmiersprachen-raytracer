@@ -50,7 +50,8 @@ std::ostream& Sphere::print(std::ostream& os) const {
 }
 
 
-HitPoint Sphere::intersect(Ray const& ray, float& t) const {
+/*HitPoint Sphere::intersect(Ray const& ray, float& t) const {
+	Ray transformed_ray{ transformRay(getWorldTransInv(), ray) };
 	auto hit = glm::intersectRaySphere(ray.origin, glm::normalize(ray.direction), center_, radius_ * radius_, t);
 	glm::vec3 intersectionPoint{ 0.0f };
 	if (hit) {
@@ -67,6 +68,27 @@ HitPoint Sphere::intersect(Ray const& ray, float& t) const {
   glm::vec3 normal{ dir_x, dir_y, dir_z };
 
   return HitPoint{ hit, t, getName(), getMaterial(), intersectionPoint , ray.direction, normal };
+}*/
+
+//intersect für Transformationen
+HitPoint Sphere::intersect(Ray const& ray, float& t) const {
+	Ray transformed_ray{ transformRay(getWorldTransInv(), ray) };
+	auto hit = glm::intersectRaySphere(transformed_ray.origin, glm::normalize(transformed_ray.direction), center_, radius_ * radius_, t);
+	glm::vec3 intersectionPoint{ 0.0f };
+	if (hit) {
+		intersectionPoint.x = transformed_ray.origin.x + t * transformed_ray.direction.x;
+		intersectionPoint.y = transformed_ray.origin.y + t * transformed_ray.direction.y;
+		intersectionPoint.z = transformed_ray.origin.z + t * transformed_ray.direction.z;
+	}
+
+	t = t / sqrt(glm::dot(transformed_ray.direction, transformed_ray.direction));
+
+	float dir_x = center_.x - intersectionPoint.x;
+	float dir_y = center_.y - intersectionPoint.y;
+	float dir_z = center_.z - intersectionPoint.z;
+	glm::vec3 normal{ dir_x, dir_y, dir_z };
+
+	return HitPoint{ hit, t, getName(), getMaterial(), intersectionPoint , transformed_ray.direction, normal };
 }
 
 //HitPoint Sphere::intersect(Ray const& ray, double& t) const {

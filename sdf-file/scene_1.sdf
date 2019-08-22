@@ -16,6 +16,11 @@ define shape sphere green_sphere 0 25 -100 10 green
 define shape sphere magenta_sphere_1 -15 -20 -100 7 magenta
 define shape sphere magenta_sphere_2 15 -20 -100 7 magenta
 
+#transform name transformation parameter
+transform magenta_sphere_1 scale 2 4 2
+transform magenta_sphere_1 translate 3 0 2
+transform magenta_sphere_1 rotate 45 1 0 0
+
 #lighting
 define light sun_1 -50 30 0 .2 .2 .2 .6
 define light sun_2 50 30 -50 .2 .2 .2 .6

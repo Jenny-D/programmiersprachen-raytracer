@@ -7,6 +7,7 @@
 #include <memory>
 #include <string>
 #include <algorithm>
+#include <math.h>
 #include <glm/gtx/transform.hpp>
 #include "material.hpp"
 #include "shape.hpp"
@@ -28,7 +29,9 @@ struct Scene {
   // void sdf(std::string const& sdfName, Camera& cam);
 };
 //void render(Scene const& scene, Camera const& cam);
-void transform_object(glm::mat4 const& m, Camera& cam);
+glm::mat4 translate(glm::vec3 tv);
+glm::mat4 scale(glm::vec3 sm);
+glm::mat4 rotate(glm::vec3 rv);
 
 void sdf(std::string const& sdfName, Scene& scene, Camera& cam);
 

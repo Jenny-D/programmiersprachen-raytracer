@@ -18,7 +18,7 @@ Renderer::Renderer(unsigned w, unsigned h, std::string const& file)
   , ppm_(width_, height_)
 {}
 
-void Renderer::render(Camera const& cam, std::vector<std::shared_ptr<Shape>> const& shapeVec, std::vector<Light> const& lightVec, Color const& ambient)
+void Renderer::render(Camera& cam, std::vector<std::shared_ptr<Shape>> const& shapeVec, std::vector<Light> const& lightVec, Color const& ambient)
 {
   float d = cam.distance();
  
@@ -26,7 +26,7 @@ void Renderer::render(Camera const& cam, std::vector<std::shared_ptr<Shape>> con
     for (unsigned x = 0; x < width_; ++x) {
       Pixel p(x,y);
       
-      p.color = trace(cam_ray(p, d), shapeVec, lightVec, ambient);
+      p.color = trace(cam_ray(p, d, cam), shapeVec, lightVec, ambient);
  
       write(p);
     }
@@ -34,14 +34,13 @@ void Renderer::render(Camera const& cam, std::vector<std::shared_ptr<Shape>> con
   ppm_.save(filename_);
 }
 
-Ray Renderer::cam_ray(Pixel const& p, float d)
+Ray Renderer::cam_ray(Pixel const& p, float d, Camera& c)
 {
   float x = (1.0f / width_) * p.x  - 0.5f;
   float y = (1.0f / height_) * p.y - 0.5f;
   glm::vec3 direction{ x,y,-d };
   Ray ray{ { 0,0,0 }, direction};
 
-  Camera c;
   glm::mat4 cam_matrix{ c.cam_transformation() };
   return Ray{ transformRay(cam_matrix, ray) };
 }
