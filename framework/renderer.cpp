@@ -58,7 +58,27 @@ Color Renderer::trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const&
 
   if (closest_hp.hit) 
   {
-    return shade(closest_hp, shapeVec, lightVec, ambient);
+    Color hpColor = shade(closest_hp, shapeVec, lightVec, ambient);
+    if (closest_hp.material->mirror_ == 1) {
+      //gespiegelten Ray losschicken und dessen Shade zurückgeben
+      glm::vec3 l = glm::normalize(-ray.direction);
+      glm::vec3 n = glm::normalize(closest_hp.normal);
+      float s = glm::dot(l, n);  // Kosinus vom Winkel zwischen n und l
+      glm::vec3 rl = (2 * s * n) - l;
+      Ray new_ray = Ray{ closest_hp.hitPoint, rl };
+      Color mirroredColor = trace(new_ray, shapeVec, lightVec, ambient);
+      return { float(0.7 * mirroredColor.r + 0.3 * hpColor.r),float(0.7 * mirroredColor.g + 0.3 * hpColor.g),float(0.7 * mirroredColor.b + 0.3 * hpColor.b) };
+      //falls nur die Background Color zurückgegeben wird, bleibt es bei der Spielfarbe
+      //if (tmpCol1.r == 0 && tmpCol1.g == 0 && tmpCol1.b == 0) {
+      //  //return Color{ 0,0,0 }; 
+      //  return shade(closest_hp, shapeVec, lightVec, ambient);
+      //} else {
+      //  return tmpCol;
+      //}
+    }
+    else {
+      return hpColor;
+    }
   }
   else
   {
