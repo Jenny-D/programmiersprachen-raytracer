@@ -1,0 +1,36 @@
+#material
+define material red 1 0 0 1 0 0 1 0 0 10
+define material green 0 1 0 0 1 0 0 1 0 20
+define material blue 0 0 1 0 0 1 0 0 1 15
+define material yellow 1 1 0 1 1 0 1 1 0 30
+define material magenta 1 0 1 1 0 1 1 0 1 50
+define material cyan 0 1 1 0 1 1 0 1 1 20
+define material white 1 1 1 1 1 1 1 1 1 1
+define material white_mirror 1 1 1 1 1 1 1 1 1 50 1
+define material red_mirror 1 0 0 1 0 0 1 0 0 50 1
+
+#shapes
+define shape box white_box -5 -5 -102 5 5 -99 white
+define shape box cyan_box -8 17 -88 8 33 -72 cyan
+define shape box mirror_box -35 -35 -101 35 35 -100 white_mirror
+define shape box leg_1 -40 30 -200 -30 40 -100 white
+define shape box leg_2 30 30 -200 40 40 -100 white
+define shape box leg_3 30 -40 -200 40 -30 -100 white
+define shape box leg_3 -40 -40 -200 -30 -30 -100 white
+define shape sphere blue_sphere 0 25 -80 10 blue
+define shape sphere green_sphere_1 -15 -20 -80 7 green
+define shape sphere green_sphere_2 15 -20 -80 7 yellow
+define shape sphere the_eye 0 0 75 75 red
+define shape box the_canvas -100 -100 30 100 100 31 white
+
+#lighting
+efine light sun_left -50 30 0 1 1 1 1
+define light sun_right 50 0 0 1 1 1 1
+efine light sun_corner -30 30 -97 1 1 1 1
+efine light sun_kugl 0 25 -120 1 1 1 1
+efine light sun_origin 0 0 0 1 1 1 1
+define ambient .1 .1 .1
+
+#rendering
+define camera eye 45.0 1 1 1 1 1 1 1 1 1
+define render image.ppm 500 500

@@ -78,6 +78,7 @@ void sdf(std::string const& sdfName, Scene& scene, Camera& cam) {
 				float kd_r, kd_g, kd_b;
 				float ks_r, ks_g, ks_b;
 				float m;
+        int mirror = 0;
         
 				// befülle Variablen
 				line_string_stream >> material_name;
@@ -91,16 +92,17 @@ void sdf(std::string const& sdfName, Scene& scene, Camera& cam) {
 				line_string_stream >> ks_g;
 				line_string_stream >> ks_b;
 				line_string_stream >> m;
+        line_string_stream >> mirror;
 
 				// gib Variablen aus
 				std::cout << "material " << material_name << " " 
 				<< ka_r << " " << ka_g << " " << ka_b << " " 
 				<< kd_r << " " << kd_g << " " << kd_b << " " 
 				<< ks_r << " " << ks_g << " " << ks_b << " " 
-				<<  m  << std::endl;
+				<<  m  << " " << mirror << std::endl;
 
 				// erstelle Objekt
-				Material mat { material_name, {ka_r, ka_g, ka_b}, {kd_r, kd_g, kd_b}, {ks_r, ks_g, ks_b}, m };
+				Material mat { material_name, {ka_r, ka_g, ka_b}, {kd_r, kd_g, kd_b}, {ks_r, ks_g, ks_b}, m, mirror };
 				auto material = std::make_shared<Material>(mat);
 
 				// füge Objekt zu Container hinzu

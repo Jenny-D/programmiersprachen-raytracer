@@ -25,8 +25,8 @@ void Renderer::render(Camera& cam, std::vector<std::shared_ptr<Shape>> const& sh
   for (unsigned y = 0; y < height_; ++y) {
     for (unsigned x = 0; x < width_; ++x) {
       Pixel p(x,y);
-      
-      p.color = trace(cam_ray(p, d, cam), shapeVec, lightVec, ambient);
+
+      p.color = trace(cam_ray(p, d, cam), shapeVec, lightVec, ambient, 0);
  
       write(p);
     }
@@ -45,8 +45,10 @@ Ray Renderer::cam_ray(Pixel const& p, float d, Camera& c)
   return Ray{ transformRay(cam_matrix, ray) };
 }
 
-Color Renderer::trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const& shapeVec, std::vector<Light> const& lightVec, Color const& ambient)
+Color Renderer::trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const& shapeVec, std::vector<Light> const& lightVec, Color const& ambient, int limit)
 {
+  limit++; // maximale Spiegelungsanzahl
+  
   HitPoint closest_hp;
 
   for (auto shape : shapeVec) {
@@ -61,7 +63,25 @@ Color Renderer::trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const&
 
   if (closest_hp.hit) 
   {
-    return shade(closest_hp, shapeVec, lightVec, ambient);
+    Color hpColor = shade(closest_hp, shapeVec, lightVec, ambient);
+    if (closest_hp.material->mirror_ == 1 && limit <= 10) {
+      //gespiegelten Ray losschicken und dessen Shade zur�ckgeben
+      glm::vec3 l = glm::normalize(-ray.direction);
+      glm::vec3 n = glm::normalize(closest_hp.normal);
+      float s = glm::dot(l, n);  // Kosinus vom Winkel zwischen n und l
+      glm::vec3 rl = (2 * s * n) - l;
+      Ray new_ray = Ray{ closest_hp.hitPoint, rl };
+      Color mirroredColor = trace(new_ray, shapeVec, lightVec, ambient, limit);
+
+      float r = 0.7 * mirroredColor.r + 0.3 * hpColor.r;
+      float g = 0.7 * mirroredColor.g + 0.3 * hpColor.g;
+      float b = 0.7 * mirroredColor.b + 0.3 * hpColor.b;
+
+      return { r,g,b };
+    }
+    else {
+      return hpColor;
+    }
   }
   else
   {
@@ -100,16 +120,28 @@ Color Renderer::shade(HitPoint const& hp, std::vector<std::shared_ptr<Shape>> co
     if (!obstructed) {
       glm::vec3 l = glm::normalize(l_vec);
       glm::vec3 n = glm::normalize(hp.normal);
-      float s = glm::dot(l,n);
+      float s = glm::dot(l,n);  // Kosinus vom Winkel zwischen n und l
+      glm::vec3 rl = (2 * s * n) - l;
+      glm::vec3 v = glm::normalize(-hp.hitPoint);
+      float s2 = glm::dot(rl, v);
 
-      r += hp.material->kd_.r * light.brightness * s;
-      g += hp.material->kd_.g * light.brightness * s;
-      b += hp.material->kd_.b * light.brightness * s;
+      /*r += light.brightness * hp.material->kd_.r * s;
+      g += light.brightness * hp.material->kd_.g * s;
+      b += light.brightness * hp.material->kd_.b * s;*/
+
+      if (b > 0) {
+        int charles = 0;
+      }
+
+      r += light.brightness * ((hp.material->kd_.r * s) + (hp.material->ks_.r * pow(s2, hp.material->m_)));
+      g += light.brightness * ((hp.material->kd_.g * s) + (hp.material->ks_.g * pow(s2, hp.material->m_)));
+      b += light.brightness * ((hp.material->kd_.b * s) + (hp.material->ks_.b * pow(s2, hp.material->m_)));
     }
   }
   r /= (r + 1);
   g /= (g + 1);
   b /= (b + 1);
+
   return Color{ r,g,b };
 }
 
