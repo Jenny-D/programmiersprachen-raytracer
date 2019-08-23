@@ -199,23 +199,23 @@ TEST_CASE(" material ", "[6.4]") {
 	std::cout << m2 << "\n";
 }
 
-//TEST_CASE(" Sdf ", "[6.5 & 7.1]") {
-//  Scene scene1;
-//  scene1.name = "scene1";
-//  Camera cam1;
-//  // Renderer renderer1{ 2,2,"image.ppm" };
-//
-//  scene1.sdf("../../sdf-file/scene_tests.sdf", cam1);
-//	// scene1.sdf("../../sdf-file/scene.sdf", cam1, renderer1);
-//
-//  REQUIRE(scene1.materialMap.find("red")->second->name_ == "red");
-//  REQUIRE(scene1.shapeVec.front()->getName() == "red_box");
-//  REQUIRE(scene1.shapeVec.back()->getName() == "green_sphere");
-//  REQUIRE(scene1.lightVec.front().name == "sun");
-//  REQUIRE(scene1.ambient.r == 0.1f);
-//  REQUIRE(cam1.name_ == "eye");
-//  // REQUIRE(renderer1.getWidth() == 10);
-//}
+/*TEST_CASE(" Sdf ", "[6.5 & 7.1]") {
+	Scene scene1;
+	scene1.name = "scene1";
+	Camera cam1;
+	//Renderer renderer1{ 2,2,"image.ppm" };
+
+	scene1.sdf("../../sdf-file/scene_tests.sdf", cam1);
+	// scene1.sdf("../../sdf-file/scene.sdf", cam1, renderer1);
+
+	REQUIRE(scene1.materialMap.find("red")->second->name_ == "red");
+	REQUIRE(scene1.shapeVec.front()->getName() == "red_box");
+	REQUIRE(scene1.shapeVec.back()->getName() == "green_sphere");
+	REQUIRE(scene1.lightVec.front().name == "sun");
+	REQUIRE(scene1.ambient.r == 0.1f);
+	REQUIRE(cam1.name_ == "eye");
+	//REQUIRE(renderer1.getWidth() == 10);
+}*/
 
 TEST_CASE(" TestLight ", "[7.1]") {
   Light sun;
@@ -244,9 +244,37 @@ TEST_CASE(" teste alte und neue Intersect-Methoden ", "[7.1]") {
   Sphere green_sphere{ { 0, 40, -1000 }, 1 };
   Ray ray{ { 0,0,0 }, { -0.5,-0.5,1.20711 } };
   float t;
-  REQUIRE(red_bottom.intersect(ray, t).hit == true);
+  REQUIRE(red_bottom.intersect(ray, t).hit == false);
   //REQUIRE(red_bottom.intersect_old(ray, t).hit == false);
-  REQUIRE(green_sphere.intersect(ray, t).hit == true);
+  REQUIRE(green_sphere.intersect(ray, t).hit == false);
+}
+
+TEST_CASE(" camera ", "[7.4]") {
+	Camera c;
+	REQUIRE(c.name_ == "Cam");
+	REQUIRE(c.fov_x_ == 45.0f);
+	REQUIRE(c.eye_.x == 0.0f);
+	REQUIRE(c.eye_.y == 0.0f);
+	REQUIRE(c.eye_.z == 0.0f);
+	REQUIRE(c.dir_.x == 0.0f);
+	REQUIRE(c.dir_.y == 0.0f);
+	REQUIRE(c.dir_.z == -1.0f);
+	REQUIRE(c.up_.x == 0.0f);
+	REQUIRE(c.up_.y == 1.0f);
+	REQUIRE(c.up_.z == 0.0f);
+	
+	Camera c2{ "KameraX", 90.0f, {4.0f, 3.0f, 7.0f}, {6.0f, 7.0f, 11.0f}, {0.0f, 12.0f, 0.0f} };
+	REQUIRE(c2.name_ == "KameraX");
+	REQUIRE(c2.fov_x_ == 90.0f);
+	REQUIRE(c2.eye_.x == 4.0f);
+	REQUIRE(c2.eye_.y == 3.0f);
+	REQUIRE(c2.eye_.z == 7.0f);
+	REQUIRE(c2.dir_.x == 6.0f);
+	REQUIRE(c2.dir_.y == 7.0f);
+	REQUIRE(c2.dir_.z == 11.0f);
+	REQUIRE(c2.up_.x == 0.0f);
+	REQUIRE(c2.up_.y == 12.0f);
+	REQUIRE(c2.up_.z == 0.0f);
 }
 
 int main(int argc, char *argv[])

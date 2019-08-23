@@ -16,6 +16,11 @@ define shape sphere magenta_sphere 0 25 -100 10 magenta
 define shape sphere green_sphere_1 -15 -20 -100 7 green
 define shape sphere green_sphere_2 15 -20 -100 7 green
 
+#transform name transformation parameter
+transform magenta_sphere_1 scale 2 4 2
+transform magenta_sphere_1 translate 3 0 2
+transform magenta_sphere_1 rotate 45 1 0 0
+
 #lighting
 define light sun_left -50 30 0 1 1 1 1
 define light sun_right 50 30 -50 1 1 1 1
@@ -24,6 +29,12 @@ efine light sun_kugl 0 25 -120 1 1 1 1
 efine light sun_origin 0 0 0 1 1 1 1
 define ambient .1 .1 .1
 
+#camera
+define camera eye 45 0 0 0 0 0 -1 0 1 0
+
+#camera xform
+transform eye translate 100 0 100
+transform eye rotate -45 0 1 0
+
 #rendering
-define camera eye 45.0 1 1 1 1 1 1 1 1 1
-define render image.ppm 500 500
+render image.ppm 500 500

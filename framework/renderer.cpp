@@ -18,15 +18,15 @@ Renderer::Renderer(unsigned w, unsigned h, std::string const& file)
   , ppm_(width_, height_)
 {}
 
-void Renderer::render(Camera const& cam, std::vector<std::shared_ptr<Shape>> const& shapeVec, std::vector<Light> const& lightVec, Color const& ambient)
+void Renderer::render(Camera& cam, std::vector<std::shared_ptr<Shape>> const& shapeVec, std::vector<Light> const& lightVec, Color const& ambient)
 {
   float d = cam.distance();
  
   for (unsigned y = 0; y < height_; ++y) {
     for (unsigned x = 0; x < width_; ++x) {
       Pixel p(x,y);
-      
-      p.color = trace(cam_ray(p, d), shapeVec, lightVec, ambient, 0);
+
+      p.color = trace(cam_ray(p, d, cam), shapeVec, lightVec, ambient, 0);
  
       write(p);
     }
@@ -34,12 +34,15 @@ void Renderer::render(Camera const& cam, std::vector<std::shared_ptr<Shape>> con
   ppm_.save(filename_);
 }
 
-Ray Renderer::cam_ray(Pixel const& p, float d)
+Ray Renderer::cam_ray(Pixel const& p, float d, Camera& c)
 {
   float x = (1.0f / width_) * p.x  - 0.5f;
   float y = (1.0f / height_) * p.y - 0.5f;
   glm::vec3 direction{ x,y,-d };
-  return Ray{ { 0,0,0 }, direction};
+  Ray ray{ { 0,0,0 }, direction};
+
+  glm::mat4 cam_matrix{ c.cam_transformation() };
+  return Ray{ transformRay(cam_matrix, ray) };
 }
 
 Color Renderer::trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const& shapeVec, std::vector<Light> const& lightVec, Color const& ambient, int limit)
@@ -62,7 +65,7 @@ Color Renderer::trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const&
   {
     Color hpColor = shade(closest_hp, shapeVec, lightVec, ambient);
     if (closest_hp.material->mirror_ == 1 && limit <= 10) {
-      //gespiegelten Ray losschicken und dessen Shade zurückgeben
+      //gespiegelten Ray losschicken und dessen Shade zurï¿½ckgeben
       glm::vec3 l = glm::normalize(-ray.direction);
       glm::vec3 n = glm::normalize(closest_hp.normal);
       float s = glm::dot(l, n);  // Kosinus vom Winkel zwischen n und l

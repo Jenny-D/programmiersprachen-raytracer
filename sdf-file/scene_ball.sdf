@@ -15,5 +15,5 @@ define light sun_1 50 0 0 .2 .2 .2 1
 define ambient .2 .2 .2
 
 #rendering
-define camera eye 45.0 1 1 1 1 1 1 1 1 1
+define camera eye 45 0 0 0 0 0 -1 0 1 0
 define render image.ppm 500 500
