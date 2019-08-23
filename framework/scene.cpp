@@ -232,13 +232,13 @@ void sdf(std::string const& sdfName, Scene& scene, Camera& cam) {
 			{
 				std::string name;
 				float fov_x;
-				/*float eye_x, eye_y, eye_z;
+				float eye_x, eye_y, eye_z;
 				float dir_x, dir_y, dir_z;
-				float up_x, up_y, up_z;*/
+				float up_x, up_y, up_z;
         
 				line_string_stream >> name;
 				line_string_stream >> fov_x;
-				/*line_string_stream >> eye_x;
+				line_string_stream >> eye_x;
 				line_string_stream >> eye_y;
 				line_string_stream >> eye_z;
 				line_string_stream >> dir_x;
@@ -246,15 +246,15 @@ void sdf(std::string const& sdfName, Scene& scene, Camera& cam) {
 				line_string_stream >> dir_z;
 				line_string_stream >> up_x;
 				line_string_stream >> up_y;
-				line_string_stream >> up_z;*/
+				line_string_stream >> up_z;
 
 				std::cout << "camera " << name << " " << fov_x << " "
-					//<< eye_x << " " << eye_y << " " << eye_z << " "
-					//<< dir_x << " " << dir_y << " " << dir_z << " "
-					//<< up_x << " " << up_y << " " << up_z 
+					<< eye_x << " " << eye_y << " " << eye_z << " "
+					<< dir_x << " " << dir_y << " " << dir_z << " "
+					<< up_x << " " << up_y << " " << up_z 
 					<< std::endl;
 
-				cam = Camera{ name, fov_x }; //{ eye_x, eye_y, eye_z }, { dir_x, dir_y, dir_z }, { up_x, up_y, up_z } };
+				cam = Camera{ name, fov_x, { eye_x, eye_y, eye_z }, { dir_x, dir_y, dir_z }, { up_x, up_y, up_z } };
 			}
 		}
 

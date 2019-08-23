@@ -28,7 +28,7 @@ efine light sun_3 0 0 0 .2 .2 .2 .7
 define ambient .5 .5 .5
 
 #camera
-define camera eye 45
+define camera eye 45 0 0 0 0 0 -1 0 1 0
 
 #camera xform
 transform eye translate 100 0 100
