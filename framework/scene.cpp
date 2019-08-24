@@ -78,7 +78,7 @@ void sdf(std::string const& sdfName, Scene& scene, Camera& cam) {
 				float kd_r, kd_g, kd_b;
 				float ks_r, ks_g, ks_b;
 				float m;
-        int mirror = 0;
+        float mirror = 0;
         
 				// befülle Variablen
 				line_string_stream >> material_name;
