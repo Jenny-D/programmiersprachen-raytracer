@@ -19,7 +19,7 @@ struct Material {
 	Color kd_ = { 0.0f, 0.0f, 0.0f };
 	Color ks_ = { 0.0f, 0.0f, 0.0f };
 	float m_ = 0.0f;
-  int mirror_ = 0;
+  float mirror_ = 0;
 };
 
 #endif // !MATERIAL_HPP

@@ -7,13 +7,10 @@ define material magenta 1 0 1 1 0 1 1 0 1 .5
 define material cyan 0 1 1 0 1 1 0 1 1 .5
 
 #shapes
-define shape box red_box -30 -30 -110 30 30 -100 red
+define shape box red_box -5 -20 -75 5 -10 -65 red
 
 #lighting
 define light sun_1 0 35 -50 .2 .2 .2 .5
-efine light sun_2 -50 -50 -80 .2 .2 .2 .3
-efine light sun_3 50 -50 -80 .2 .2 .2 .3
-efine light sun_4 0 20 -84 .2 .2 .2 .3
 define ambient .2 .2 .2
 
 #rendering
