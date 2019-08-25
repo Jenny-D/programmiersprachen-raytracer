@@ -78,7 +78,7 @@ void sdf(std::string const& sdfName, Scene& scene, Camera& cam) {
 				float kd_r, kd_g, kd_b;
 				float ks_r, ks_g, ks_b;
 				float m;
-        float mirror = 0;
+				float mirror = 0;
         
 				// befülle Variablen
 				line_string_stream >> material_name;
@@ -92,7 +92,7 @@ void sdf(std::string const& sdfName, Scene& scene, Camera& cam) {
 				line_string_stream >> ks_g;
 				line_string_stream >> ks_b;
 				line_string_stream >> m;
-        line_string_stream >> mirror;
+				line_string_stream >> mirror;
 
 				// gib Variablen aus
 				std::cout << "material " << material_name << " " 
@@ -232,14 +232,14 @@ void sdf(std::string const& sdfName, Scene& scene, Camera& cam) {
 
 			if ("camera" == identifier) 
 			{
-				std::string name;
-				float fov_x;
+				std::string name_;
+				float fov_x_;
 				glm::vec3 eye_;
 				glm::vec3 dir_;
 				glm::vec3 up_;
         
-				line_string_stream >> name;
-				line_string_stream >> fov_x;
+				line_string_stream >> name_;
+				line_string_stream >> fov_x_;
 				line_string_stream >> eye_.x;
 				line_string_stream >> eye_.y;
 				line_string_stream >> eye_.z;
@@ -250,13 +250,13 @@ void sdf(std::string const& sdfName, Scene& scene, Camera& cam) {
 				line_string_stream >> up_.y;
 				line_string_stream >> up_.z;
 
-				std::cout << "camera " << name << " " << fov_x << " "
+				std::cout << "camera " << name_ << " " << fov_x_ << " "
 					<< eye_.x << " " << eye_.y << " " << eye_.z << " "
 					<< dir_.x << " " << dir_.y << " " << dir_.z << " "
 					<< up_.x << " " << up_.y << " " << up_.z 
 					<< std::endl;
 
-				cam = Camera{ name, fov_x, { eye_.x, eye_.y, eye_.z }, { dir_.x, dir_.y, dir_.z }, { up_.x, up_.y, up_.z } };
+				cam = Camera{ name_, fov_x_, { eye_.x, eye_.y, eye_.z }, { dir_.x, dir_.y, dir_.z }, { up_.x, up_.y, up_.z } };
 			}
 		}
 
@@ -275,7 +275,7 @@ void sdf(std::string const& sdfName, Scene& scene, Camera& cam) {
 					line_string_stream >> scale_vec.y;
 					line_string_stream >> scale_vec.z;
 
-					std::cout << transformation << " " << name << " " <<
+					std::cout << name << " " << transformation << " " <<
 						scale_vec.x << " " << scale_vec.y << " " << scale_vec.z << std::endl;
 
 					glm::mat4 m = scale(scale_vec);
@@ -288,7 +288,7 @@ void sdf(std::string const& sdfName, Scene& scene, Camera& cam) {
 					line_string_stream >> translate_vec.y;
 					line_string_stream >> translate_vec.z;
 
-					std::cout << transformation << " " << name << " " <<
+					std::cout << name << " " << transformation << " " <<
 						translate_vec.x << " " << translate_vec.y << " " << translate_vec.z << std::endl;
 
 					glm::mat4 m = translate(translate_vec);
@@ -303,7 +303,7 @@ void sdf(std::string const& sdfName, Scene& scene, Camera& cam) {
 					line_string_stream >> rotation.y;
 					line_string_stream >> rotation.z;
 
-					std::cout << transformation << " " << name << " " << a <<  " " <<
+					std::cout << name << " " << transformation << " " << a <<  " " <<
 						rotation.x << " " << rotation.y << " " << rotation.z << std::endl;
 
 					glm::mat4 m = rotate(rotation, a);

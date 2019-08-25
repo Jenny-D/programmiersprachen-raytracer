@@ -1,0 +1,35 @@
+#material
+define material red 1 0 0 1 0 0 1 0 0 10
+define material green 0 1 0 0 1 0 0 1 0 20
+define material blue 0 0 1 0 0 1 0 0 1 15
+define material yellow 1 1 0 1 1 0 1 1 0 30
+define material magenta 1 0 1 1 0 1 1 0 1 50
+define material cyan 0 1 1 0 1 1 0 1 1 20
+define material white 1 1 1 1 1 1 1 1 1 20
+
+#shapes
+define shape box cyan_box -8 10 -88 8 26 -72 cyan
+define shape box white_box -45 -45 -101 45 45 -100 white
+define shape box yellow_box 7 -14 -85 20 -1 -68 yellow
+define shape sphere blue_sphere 22 10 -75 6 blue
+define shape sphere green_sphere -15 -15 -80 11 green
+
+#transform name transformation parameter
+transform cyan_box scale 2 4 2
+transform cyan_box rotate 60 1 0 0
+transform cyan_box translate 3 0 2
+
+#lighting
+define light sun_right 50 0 0 1 1 1 1
+define ambient .1 .1 .1
+
+#camera
+define camera eye 45 0 0 0 0 0 -1 0 1 0
+
+#camera xform
+transform eye scale 2 4 2 
+transform eye rotate -45 0 1 0
+transform eye translate 100 0 100
+
+#rendering
+define render image.ppm 500 500

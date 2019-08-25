@@ -115,8 +115,6 @@ bool sortbyFirst(const std::pair<float, glm::vec3>& a, const std::pair<float, gl
   return hp;
 }*/
 
-//Intersect für Transformationen
-
 HitPoint Box::intersect(Ray const& ray, float& t) const {
 	Ray transformed_ray{ transformRay(getWorldTransInv(), ray) };
 	HitPoint hp{ false, std::numeric_limits<float>::max(), getName(), getMaterial(), {0,0,0}, transformed_ray.direction , { 1,1,1 } };
@@ -171,6 +169,11 @@ HitPoint Box::intersect(Ray const& ray, float& t) const {
 					hp.distance = t;
 					hp.hit = true;
 					hp.normal = p.second;
+
+					glm::mat4 transposed = glm::transpose(getWorldTransInv());
+					glm::vec3 transformed_normal(transposed * glm::vec4{ hp.normal, 0.0f });
+					hp.normal = glm::normalize(transformed_normal);
+
 					return hp;
 				}
 			}
