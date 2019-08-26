@@ -17,6 +17,7 @@ class Shape {
 	  std::string getName() const;
 	  std::shared_ptr<Material> getMaterial() const;
 	  void setWorldTrans(glm::mat4 m);
+	  void setWorldTransInv(glm::mat4 m);
 	  glm::mat4 getWorldTrans() const;
 	  glm::mat4 getWorldTransInv() const;
 	  virtual float area() const = 0;

@@ -34,6 +34,10 @@ void Shape::setWorldTrans(glm::mat4 m) {
 	world_transformation_ = m;
 }
 
+void Shape::setWorldTransInv(glm::mat4 m) {
+	world_transformation_inv_ = m;
+}
+
 glm::mat4 Shape::getWorldTrans() const {
 	return world_transformation_;
 }

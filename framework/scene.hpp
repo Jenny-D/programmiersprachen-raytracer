@@ -8,6 +8,7 @@
 #include <string>
 #include <algorithm>
 #include <math.h>
+#include <cmath>
 #include <glm/gtx/transform.hpp>
 #include "material.hpp"
 #include "shape.hpp"

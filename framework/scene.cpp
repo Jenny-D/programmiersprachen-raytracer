@@ -1,3 +1,4 @@
+#define _USE_MATH_DEFINES
 #include "scene.hpp"
 
 glm::mat4 translate(glm::vec3 tv){
@@ -28,25 +29,25 @@ glm::mat4 rotate(glm::vec3 rv, float angle) {
 
 	if (rv.x == 1.0f) {
 		m[0] = glm::vec4{ 1.0f, 0.0f, 0.0f, 0.0f };
-		m[1] = glm::vec4{ 0.0f, cos(angle), sin(angle), 0.0f };
-		m[2] = glm::vec4{ 0.0f, -sin(angle), cos(angle), 0.0f };
+		m[1] = glm::vec4{ 0.0f, cos(angle * M_PI / 180.0f), sin(angle * M_PI / 180.0f), 0.0f };
+		m[2] = glm::vec4{ 0.0f, -sin(angle * M_PI / 180.0f), cos(angle * M_PI / 180.0f), 0.0f };
 		m[3] = glm::vec4{ 0.0f, 0.0f, 0.0f, 1.0f };
 
 		return m;
 	}
 
 	if (rv.y == 1.0f) {
-		m[0] = glm::vec4{ cos(angle), 0.0f, -sin(angle), 0.0f };
+		m[0] = glm::vec4{ cos(angle * M_PI / 180.0f), 0.0f, -sin(angle * M_PI / 180.0f), 0.0f };
 		m[1] = glm::vec4{ 0.0f, 1.0f, 0.0f, 0.0f };
-		m[2] = glm::vec4{ sin(angle), 0.0f, cos(angle), 0.0f };
+		m[2] = glm::vec4{ sin(angle * M_PI / 180.0f), 0.0f, cos(angle * M_PI / 180.0f), 0.0f };
 		m[3] = glm::vec4{ 0.0f, 0.0f, 0.0f, 1.0f };
 
 		return m;
 	}
 
 	if (rv.z == 1.0f) {
-		m[0] = glm::vec4{ cos(angle), sin(angle), 0.0f, 0.0f };
-		m[1] = glm::vec4{ -sin(angle), cos(angle), 0.0f, 0.0f };
+		m[0] = glm::vec4{ cos(angle * M_PI / 180.0f), sin(angle * M_PI / 180.0f), 0.0f, 0.0f };
+		m[1] = glm::vec4{ -sin(angle * M_PI / 180.0f), cos(angle * M_PI / 180.0f), 0.0f, 0.0f };
 		m[2] = glm::vec4{ 0.0f, 0.0f, 1.0f, 0.0f };
 		m[3] = glm::vec4{ 0.0f, 0.0f, 0.0f, 1.0f };
 
@@ -280,6 +281,7 @@ void sdf(std::string const& sdfName, Scene& scene, Camera& cam) {
 
 					glm::mat4 m = scale(scale_vec);
 					cam.world_transformation_ *= m;
+					cam.world_transformation_inv_ = glm::inverse(cam.world_transformation_);
 				}
 
 				if ("translate" == transformation) {
@@ -293,6 +295,7 @@ void sdf(std::string const& sdfName, Scene& scene, Camera& cam) {
 
 					glm::mat4 m = translate(translate_vec);
 					cam.world_transformation_ *= m;
+					cam.world_transformation_inv_ = glm::inverse(cam.world_transformation_);
 				}
 
 				if ("rotate" == transformation) {
@@ -308,6 +311,7 @@ void sdf(std::string const& sdfName, Scene& scene, Camera& cam) {
 
 					glm::mat4 m = rotate(rotation, a);
 					cam.world_transformation_ *= m;
+					cam.world_transformation_inv_ = glm::inverse(cam.world_transformation_);
 				}
 			}
 
@@ -331,6 +335,7 @@ void sdf(std::string const& sdfName, Scene& scene, Camera& cam) {
 						glm::mat4 transformation_m = shape->getWorldTrans();
 						transformation_m *= m;
 						shape->setWorldTrans(transformation_m);
+						shape->setWorldTransInv(glm::inverse(transformation_m));
 					}
 
 					if ("translate" == transformation) {
@@ -347,6 +352,7 @@ void sdf(std::string const& sdfName, Scene& scene, Camera& cam) {
 						glm::mat4 transformation_m = shape->getWorldTrans();
 						transformation_m *= m;
 						shape->setWorldTrans(transformation_m);
+						shape->setWorldTransInv(glm::inverse(transformation_m));
 					}
 
 					if ("rotate" == transformation) {
@@ -366,6 +372,7 @@ void sdf(std::string const& sdfName, Scene& scene, Camera& cam) {
 						glm::mat4 transformation_m = shape->getWorldTrans();
 						transformation_m *= m;
 						shape->setWorldTrans(transformation_m);
+						shape->setWorldTransInv(glm::inverse(transformation_m));
 					}
 				}
 		}
