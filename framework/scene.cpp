@@ -7,7 +7,7 @@ glm::mat4 translate(glm::vec3 tv){
 	m[0] = glm::vec4{ 1.0f, 0.0f, 0.0f, 0.0f };
 	m[1] = glm::vec4{ 0.0f, 1.0f, 0.0f, 0.0f };
 	m[2] = glm::vec4{ 0.0f, 0.0f, 1.0f, 0.0f };
-	m[3] = glm::vec4{ tv.x, tv.y, tv.z, 1 };
+	m[3] = glm::vec4{ tv.x, tv.y, tv.z, 1.0f };
 
 	return m;
 }
@@ -27,27 +27,27 @@ glm::mat4 rotate(glm::vec3 rv, float angle) {
 
 	glm::mat4 m;
 
-	if (rv.x == 1.0f) {
+	if (rv.x == 1.0f && rv.y == 0.0f && rv.z == 0.0f) {
 		m[0] = glm::vec4{ 1.0f, 0.0f, 0.0f, 0.0f };
-		m[1] = glm::vec4{ 0.0f, cos(angle * M_PI / 180.0f), sin(angle * M_PI / 180.0f), 0.0f };
-		m[2] = glm::vec4{ 0.0f, -sin(angle * M_PI / 180.0f), cos(angle * M_PI / 180.0f), 0.0f };
+		m[1] = glm::vec4{ 0.0f, cos(angle / 2.0f * M_PI / 180.0f), sin(angle / 2.0f * M_PI / 180.0f), 0.0f };
+		m[2] = glm::vec4{ 0.0f, -sin(angle / 2.0f * M_PI / 180.0f), cos(angle / 2.0f * M_PI / 180.0f), 0.0f };
 		m[3] = glm::vec4{ 0.0f, 0.0f, 0.0f, 1.0f };
 
 		return m;
 	}
 
-	if (rv.y == 1.0f) {
-		m[0] = glm::vec4{ cos(angle * M_PI / 180.0f), 0.0f, -sin(angle * M_PI / 180.0f), 0.0f };
+	if (rv.y == 1.0f && rv.x == 0.0f && rv.z == 0.0f) {
+		m[0] = glm::vec4{ cos(angle / 2.0f * M_PI / 180.0f), 0.0f, -sin(angle / 2.0f * M_PI / 180.0f), 0.0f };
 		m[1] = glm::vec4{ 0.0f, 1.0f, 0.0f, 0.0f };
-		m[2] = glm::vec4{ sin(angle * M_PI / 180.0f), 0.0f, cos(angle * M_PI / 180.0f), 0.0f };
+		m[2] = glm::vec4{ sin(angle / 2.0f * M_PI / 180.0f), 0.0f, cos(angle / 2.0f * M_PI / 180.0f), 0.0f };
 		m[3] = glm::vec4{ 0.0f, 0.0f, 0.0f, 1.0f };
 
 		return m;
 	}
 
-	if (rv.z == 1.0f) {
-		m[0] = glm::vec4{ cos(angle * M_PI / 180.0f), sin(angle * M_PI / 180.0f), 0.0f, 0.0f };
-		m[1] = glm::vec4{ -sin(angle * M_PI / 180.0f), cos(angle * M_PI / 180.0f), 0.0f, 0.0f };
+	if (rv.z == 1.0f && rv.x == 0 && rv.y == 0) {
+		m[0] = glm::vec4{ cos(angle / 2.0f * M_PI / 180.0f), sin(angle / 2.0f * M_PI / 180.0f), 0.0f, 0.0f };
+		m[1] = glm::vec4{ -sin(angle / 2.0f * M_PI / 180.0f), cos(angle / 2.0f * M_PI / 180.0f), 0.0f, 0.0f };
 		m[2] = glm::vec4{ 0.0f, 0.0f, 1.0f, 0.0f };
 		m[3] = glm::vec4{ 0.0f, 0.0f, 0.0f, 1.0f };
 
