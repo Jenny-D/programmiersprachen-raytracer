@@ -108,8 +108,8 @@ Color Renderer::trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const&
 
         HitPoint out = in;
         HitPoint out_2;
-        out_2.material = out.material;
-        while (out.material == out_2.material) {
+        bool same_material = true;
+        while (same_material) {
           for (auto shape : shapeVec) {
             float t;
             HitPoint hp = (*shape).intersect(in_ray, t);
@@ -121,6 +121,9 @@ Color Renderer::trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const&
           }
           if (out.material == out_2.material) {
             out = out_2;
+          }
+          else {
+            same_material = false;
           }
         }
 
@@ -212,25 +215,3 @@ void Renderer::write(Pixel const& p)
 
   ppm_.write(p);
 }
-
-// original checkerboard render
-
-/*void Renderer::render()
-{
-  std::size_t const checker_pattern_size = 20;
-
-  for (unsigned y = 0; y < height_; ++y) {
-    for (unsigned x = 0; x < width_; ++x) {
-      Pixel p(x, y);
-      if (((x / checker_pattern_size) % 2) != ((y / checker_pattern_size) % 2)) {
-        p.color = Color(0.0, 1.0, float(x) / height_);
-      }
-      else {
-        p.color = Color(1.0, 0.0, float(y) / width_);
-      }
-
-      write(p);
-    }
-  }
-  ppm_.save(filename_);
-}*/
