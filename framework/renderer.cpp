@@ -102,33 +102,46 @@ Color Renderer::trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const&
       }
 
       if (op < 1) {
+        float ref_in = 1.0 / hp.material->refraction_;
+        float ref_out = hp.material->refraction_ / 1.0;
+
         HitPoint in = offset(hp, false);
-        glm::vec3 in_vec;
+        glm::vec3 dir = glm::normalize(in.direction);
+        float cos_alpha = glm::dot(in.normal,dir);
+        //float sin_alpha = sin(acos(cos_alpha));
+        //float sin_beta = sin_alpha * ref_in;
+        //float cos_beta = cos(asin(sin_beta));
+        float cos_beta = cos(asin(sin(acos(cos_alpha)) * ref_in));
+
+        float x = ref_in * (dir.x + (cos_alpha * in.normal.x)) - (in.normal.x * cos_beta);
+        float y = ref_in * (dir.y + (cos_alpha * in.normal.y)) - (in.normal.y * cos_beta);
+        float z = ref_in * (dir.z + (cos_alpha * in.normal.z)) - (in.normal.z * cos_beta);
+        glm::vec3 in_vec{ x,y,z };
         Ray in_ray{ in.hitPoint,in_vec };
 
-        HitPoint out = in;
-        HitPoint out_2;
-        bool same_material = true;
-        while (same_material) {
-          for (auto shape : shapeVec) {
-            float t;
-            HitPoint hp = (*shape).intersect(in_ray, t);
-            if (hp.hit) {
-              if (hp.distance < out_2.distance) {
-                out_2 = hp;
-              }
+        HitPoint out;
+        for (auto shape : shapeVec) {
+          float t;
+          HitPoint p = (*shape).intersect(in_ray, t);
+          if (p.hit) {
+            if (p.distance < out.distance) {
+              out = p;
             }
-          }
-          if (out.material == out_2.material) {
-            out = out_2;
-          }
-          else {
-            same_material = false;
           }
         }
 
         if (in.hitPoint != out.hitPoint) {
-          glm::vec3 out_vec;
+          glm::vec3 dir = glm::normalize(out.direction);
+          float cos_alpha = glm::dot(out.normal, dir);
+          //float sin_alpha = sin(acos(cos_alpha));
+          //float sin_beta = sin_alpha * ref_in;
+          //float cos_beta = cos(asin(sin_beta));
+          float cos_beta = cos(asin(sin(acos(cos_alpha)) * ref_out));
+
+          float x = ref_out * (dir.x + (cos_alpha * out.normal.x)) - (out.normal.x * cos_beta);
+          float y = ref_out * (dir.y + (cos_alpha * out.normal.y)) - (out.normal.y * cos_beta);
+          float z = ref_out * (dir.z + (cos_alpha * out.normal.z)) - (out.normal.z * cos_beta);
+          glm::vec3 out_vec{ x,y,z };
           Ray out_ray{ out.hitPoint,out_vec };
           refractedColor = trace(out_ray, shapeVec, lightVec, ambient, limit);
         }
@@ -161,7 +174,7 @@ Color Renderer::shade(HitPoint const& hp, std::vector<std::shared_ptr<Shape>> co
 
   // diffuse Beleuchtung
   for (auto light : lightVec) {
-    bool obstructed = false;
+    float obstruction = false;
 
     float dir_x = light.position.x - hp.hitPoint.x;
     float dir_y = light.position.y - hp.hitPoint.y;
@@ -173,13 +186,14 @@ Color Renderer::shade(HitPoint const& hp, std::vector<std::shared_ptr<Shape>> co
     for (auto shape : shapeVec) {
       HitPoint hpl = offset((*shape).intersect(l_ray, t), true);
       if (hpl.hit && t <= 1 - 0.0001) {
-      //if (hpl.hit) {
-        obstructed = true;
-        break;
+        obstruction += hpl.material->opacity_;
+        if (obstruction > 1) { 
+          break; 
+        }
       }
     }
 
-    if (!obstructed) {
+    if (obstruction < 1) {
       glm::vec3 l = glm::normalize(l_vec);
       glm::vec3 n = hp.normal;
       float s = glm::dot(l,n);  // Kosinus vom Winkel zwischen n und l
@@ -187,9 +201,9 @@ Color Renderer::shade(HitPoint const& hp, std::vector<std::shared_ptr<Shape>> co
       glm::vec3 v = glm::normalize(-hp.hitPoint);
       float s2 = glm::dot(rl, v);
 
-      r += light.brightness * ((hp.material->kd_.r * s) + (hp.material->ks_.r * pow(s2, hp.material->m_)));
-      g += light.brightness * ((hp.material->kd_.g * s) + (hp.material->ks_.g * pow(s2, hp.material->m_)));
-      b += light.brightness * ((hp.material->kd_.b * s) + (hp.material->ks_.b * pow(s2, hp.material->m_)));
+      r += light.brightness * ((hp.material->kd_.r * s) + (hp.material->ks_.r * pow(s2, hp.material->m_))) - obstruction;
+      g += light.brightness * ((hp.material->kd_.g * s) + (hp.material->ks_.g * pow(s2, hp.material->m_))) - obstruction;
+      b += light.brightness * ((hp.material->kd_.b * s) + (hp.material->ks_.b * pow(s2, hp.material->m_))) - obstruction;
     }
   }
   r /= (r + 1);
