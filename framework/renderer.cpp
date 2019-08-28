@@ -45,12 +45,20 @@ Ray Renderer::cam_ray(Pixel const& p, float d, Camera& c)
   return Ray{ transformRay(cam_matrix, ray) };
 }
 
-HitPoint offset(HitPoint const& hp)
+HitPoint offset(HitPoint const& hp, bool out)
 {
+  float epsilon = 0.0001;
   HitPoint off_hp = hp;
-  off_hp.hitPoint.x += 0.0001 * hp.normal.x;
-  off_hp.hitPoint.y += 0.0001 * hp.normal.y;
-  off_hp.hitPoint.z += 0.0001 * hp.normal.z;
+  if (out) {
+    off_hp.hitPoint.x += epsilon * hp.normal.x;
+    off_hp.hitPoint.y += epsilon * hp.normal.y;
+    off_hp.hitPoint.z += epsilon * hp.normal.z;
+  }
+  else {
+    off_hp.hitPoint.x += (-2) * epsilon * hp.normal.x;
+    off_hp.hitPoint.y += (-2) * epsilon * hp.normal.y;
+    off_hp.hitPoint.z += (-2) * epsilon * hp.normal.z;
+  }
   return off_hp;
 }
 
@@ -72,31 +80,66 @@ Color Renderer::trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const&
 
   if (closest_hp.hit) 
   {
-    //HitPoint hp = closest_hp;
-    HitPoint hp = offset(closest_hp);
+    HitPoint hp = offset(closest_hp, true);
 
     Color hpColor = shade(hp, shapeVec, lightVec, ambient);
 
-    if (hp.material->mirror_ > 0 && limit <= 10) {
-      //gespiegelten Ray losschicken und dessen Shade zur�ckgeben
-      glm::vec3 l = glm::normalize(-ray.direction);
-      glm::vec3 n = hp.normal;
-      float s = glm::dot(l, n);  // Kosinus vom Winkel zwischen n und l
-      glm::vec3 rl = (2 * s * n) - l;
-      Ray new_ray = Ray{ hp.hitPoint, rl };
-      Color mirroredColor = trace(new_ray, shapeVec, lightVec, ambient, limit);
-      
-      // die 70% - 30% Einteilung ist fragwürdig
-      float m = hp.material->mirror_;
-      float r = m * mirroredColor.r + (1 - m) * hpColor.r;
-      float g = m * mirroredColor.g + (1 - m) * hpColor.g;
-      float b = m * mirroredColor.b + (1 - m) * hpColor.b;
+    Color mirroredColor = hpColor;
+    Color refractedColor = hpColor;
 
-      return { r,g,b };
+    float mir = hp.material->mirror_;
+    float op = hp.material->opacity_;
+
+    if (limit <= 10) {
+      if (mir > 0) {
+        //gespiegelten Ray losschicken und dessen Shade zur�ckgeben
+        glm::vec3 l = glm::normalize(-ray.direction);
+        glm::vec3 n = hp.normal;
+        float s = glm::dot(l, n);  // Kosinus vom Winkel zwischen n und l
+        glm::vec3 rl = (2 * s * n) - l;
+        Ray new_ray = Ray{ hp.hitPoint, rl };
+        mirroredColor = trace(new_ray, shapeVec, lightVec, ambient, limit);
+      }
+
+      if (op < 1) {
+        HitPoint in = offset(hp, false);
+        glm::vec3 in_vec;
+        Ray in_ray{ in.hitPoint,in_vec };
+
+        HitPoint out = in;
+        HitPoint out_2;
+        out_2.material = out.material;
+        while (out.material == out_2.material) {
+          for (auto shape : shapeVec) {
+            float t;
+            HitPoint hp = (*shape).intersect(in_ray, t);
+            if (hp.hit) {
+              if (hp.distance < out_2.distance) {
+                out_2 = hp;
+              }
+            }
+          }
+          if (out.material == out_2.material) {
+            out = out_2;
+          }
+        }
+
+        if (in.hitPoint != out.hitPoint) {
+          glm::vec3 out_vec;
+          Ray out_ray{ out.hitPoint,out_vec };
+          refractedColor = trace(out_ray, shapeVec, lightVec, ambient, limit);
+        }
+        else {
+          refractedColor = trace(in_ray, shapeVec, lightVec, ambient, limit);
+        }
+      }
     }
-    else {
-      return hpColor;
-    }
+    
+    float r = (op - mir) * hpColor.r + mir * mirroredColor.r + (1 - op) * refractedColor.r;
+    float g = (op - mir) * hpColor.g + mir * mirroredColor.g + (1 - op) * refractedColor.g;
+    float b = (op - mir) * hpColor.b + mir * mirroredColor.b + (1 - op) * refractedColor.b;
+
+    return { r,g,b };
   }
   else
   {
@@ -125,7 +168,7 @@ Color Renderer::shade(HitPoint const& hp, std::vector<std::shared_ptr<Shape>> co
     float t;
 
     for (auto shape : shapeVec) {
-      HitPoint hpl = offset((*shape).intersect(l_ray, t));
+      HitPoint hpl = offset((*shape).intersect(l_ray, t), true);
       if (hpl.hit && t <= 1 - 0.0001) {
       //if (hpl.hit) {
         obstructed = true;
