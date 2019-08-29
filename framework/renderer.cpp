@@ -55,9 +55,9 @@ HitPoint offset(HitPoint const& hp, bool out)
     off_hp.hitPoint.z += epsilon * hp.normal.z;
   }
   else {
-    off_hp.hitPoint.x += (-2) * epsilon * hp.normal.x;
-    off_hp.hitPoint.y += (-2) * epsilon * hp.normal.y;
-    off_hp.hitPoint.z += (-2) * epsilon * hp.normal.z;
+    off_hp.hitPoint.x += -epsilon * hp.normal.x;
+    off_hp.hitPoint.y += -epsilon * hp.normal.y;
+    off_hp.hitPoint.z += -epsilon * hp.normal.z;
   }
   return off_hp;
 }
@@ -92,7 +92,7 @@ Color Renderer::trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const&
 
     if (limit <= 10) {
       if (mir > 0) {
-        //gespiegelten Ray losschicken und dessen Shade zur�ckgeben
+        //gespiegelten Ray losschicken und dessen Shade zurückgeben
         glm::vec3 l = glm::normalize(-ray.direction);
         glm::vec3 n = hp.normal;
         float s = glm::dot(l, n);  // Kosinus vom Winkel zwischen n und l
@@ -104,18 +104,21 @@ Color Renderer::trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const&
       if (op < 1) {
         float ref_in = 1.0 / hp.material->refraction_;
         float ref_out = hp.material->refraction_ / 1.0;
+        //float ref_out = 1.0 / hp.material->refraction_;
+        //float ref_in = hp.material->refraction_ / 1.0;
 
-        HitPoint in = offset(hp, false);
+        HitPoint in = offset(closest_hp, false);
         glm::vec3 dir = glm::normalize(in.direction);
-        float cos_alpha = glm::dot(in.normal,dir);
-        //float sin_alpha = sin(acos(cos_alpha));
-        //float sin_beta = sin_alpha * ref_in;
-        //float cos_beta = cos(asin(sin_beta));
-        float cos_beta = cos(asin(sin(acos(cos_alpha)) * ref_in));
+        glm::vec3 n = in.normal;
+        float cos_beta = glm::dot(n,dir);
+        float cos_alpha = -cos(asin(sin(acos(cos_beta)) * ref_in));
 
-        float x = ref_in * (dir.x + (cos_alpha * in.normal.x)) - (in.normal.x * cos_beta);
-        float y = ref_in * (dir.y + (cos_alpha * in.normal.y)) - (in.normal.y * cos_beta);
-        float z = ref_in * (dir.z + (cos_alpha * in.normal.z)) - (in.normal.z * cos_beta);
+        /*float x = ref_in * (dir.x + (cos_alpha * n.x)) - (n.x * cos_beta);
+        float y = ref_in * (dir.y + (cos_alpha * n.y)) - (n.y * cos_beta);
+        float z = ref_in * (dir.z + (cos_alpha * n.z)) - (n.z * cos_beta);*/
+        float x = (dir.x + (n.x * cos_beta)) / ref_in - (cos_alpha * n.x);
+        float y = (dir.y + (n.y * cos_beta)) / ref_in - (cos_alpha * n.y);
+        float z = (dir.z + (n.z * cos_beta)) / ref_in - (cos_alpha * n.z);
         glm::vec3 in_vec{ x,y,z };
         Ray in_ray{ in.hitPoint,in_vec };
 
@@ -131,16 +134,18 @@ Color Renderer::trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const&
         }
 
         if (in.hitPoint != out.hitPoint) {
+          out = offset(out, true);
           glm::vec3 dir = glm::normalize(out.direction);
-          float cos_alpha = glm::dot(out.normal, dir);
-          //float sin_alpha = sin(acos(cos_alpha));
-          //float sin_beta = sin_alpha * ref_in;
-          //float cos_beta = cos(asin(sin_beta));
-          float cos_beta = cos(asin(sin(acos(cos_alpha)) * ref_out));
+          glm::vec3 n = out.normal;
+          float cos_beta = glm::dot(n, dir);
+          float cos_alpha = -cos(asin(sin(acos(cos_beta)) * ref_out));
 
-          float x = ref_out * (dir.x + (cos_alpha * out.normal.x)) - (out.normal.x * cos_beta);
-          float y = ref_out * (dir.y + (cos_alpha * out.normal.y)) - (out.normal.y * cos_beta);
-          float z = ref_out * (dir.z + (cos_alpha * out.normal.z)) - (out.normal.z * cos_beta);
+          /*float x = ref_in * (dir.x + (cos_alpha * n.x)) - (n.x * cos_beta);
+          float y = ref_in * (dir.y + (cos_alpha * n.y)) - (n.y * cos_beta);
+          float z = ref_in * (dir.z + (cos_alpha * n.z)) - (n.z * cos_beta);*/
+          float x = (dir.x + (n.x * cos_beta)) / ref_out - (cos_alpha * n.x);
+          float y = (dir.y + (n.y * cos_beta)) / ref_out - (cos_alpha * n.y);
+          float z = (dir.z + (n.z * cos_beta)) / ref_out - (cos_alpha * n.z);
           glm::vec3 out_vec{ x,y,z };
           Ray out_ray{ out.hitPoint,out_vec };
           refractedColor = trace(out_ray, shapeVec, lightVec, ambient, limit);
@@ -229,3 +234,55 @@ void Renderer::write(Pixel const& p)
 
   ppm_.write(p);
 }
+
+
+//float ref_in = 1.0 / hp.material->refraction_;
+//float ref_out = hp.material->refraction_ / 1.0;
+////float ref_out = 1.0 / hp.material->refraction_;
+////float ref_in = hp.material->refraction_ / 1.0;
+//
+//HitPoint in = offset(hp, false);
+//glm::vec3 dir = glm::normalize(in.direction);
+//glm::vec3 n = in.normal;
+//float cos_alpha = glm::dot(in.normal, dir);
+////float sin_alpha = sin(acos(cos_alpha));
+////float sin_beta = sin_alpha * ref_in;
+////float cos_beta = cos(asin(sin_beta));
+//float cos_beta = cos(asin(sin(acos(cos_alpha)) * ref_in));
+//
+//float x = ref_in * (dir.x + (cos_alpha * n.x)) - (n.x * cos_beta);
+//float y = ref_in * (dir.y + (cos_alpha * n.y)) - (n.y * cos_beta);
+//float z = ref_in * (dir.z + (cos_alpha * n.z)) - (n.z * cos_beta);
+//glm::vec3 in_vec{ x,y,z };
+//Ray in_ray{ in.hitPoint,in_vec };
+//
+//HitPoint out;
+//for (auto shape : shapeVec) {
+//  float t;
+//  HitPoint p = (*shape).intersect(in_ray, t);
+//  if (p.hit) {
+//    if (p.distance < out.distance) {
+//      out = p;
+//    }
+//  }
+//}
+//
+//if (in.hitPoint != out.hitPoint) {
+//  glm::vec3 dir = glm::normalize(out.direction);
+//  glm::vec3 n = out.normal;
+//  float cos_alpha = glm::dot(n, dir);
+//  //float sin_alpha = sin(acos(cos_alpha));
+  //float sin_beta = sin_alpha * ref_in;
+  //float cos_beta = cos(asin(sin_beta));
+//  float cos_beta = cos(asin(sin(acos(cos_alpha)) * ref_out));
+//
+//  float x = ref_out * (dir.x + (cos_alpha * n.x)) - (n.x * cos_beta);
+//  float y = ref_out * (dir.y + (cos_alpha * n.y)) - (n.y * cos_beta);
+//  float z = ref_out * (dir.z + (cos_alpha * n.z)) - (n.z * cos_beta);
+//  glm::vec3 out_vec{ x,y,z };
+//  Ray out_ray{ out.hitPoint,out_vec };
+//  refractedColor = trace(out_ray, shapeVec, lightVec, ambient, limit);
+//}
+//else {
+//  refractedColor = trace(in_ray, shapeVec, lightVec, ambient, limit);
+//}

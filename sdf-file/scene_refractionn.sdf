@@ -11,16 +11,15 @@ define material white 1 1 1 1 1 1 1 1 1 20
 define material mirror_glass 1 1 1 1 1 1 1 1 1 20 .7 1.3 .2
 
 #shapes
-define shape box glass_box -10 -10 -85 30 30 -80 glass
-define shape box blue_box -30 -30 -91 10 10 -90 blue
-efine shape box mirror_box -20 -20 -96 20 20 -95 mirror_glass
-define shape box canvas -5000 -5000 -101 5000 5000 -100 white
+efine shape box glass_box -10 -10 -85 30 30 -80 glass
+define shape box blue_box -15 -15 -110 15 15 -109 blue
+define shape box canvas -5000 -5000 -120 5000 5000 -119 white
 define shape box canvas -101 -5000 -5000 -100 5000 5000 red
 define shape box canvas 100 -5000 -5000 101 5000 5000 yellow
-define shape box canvas -5000 -5000 1 5000 5000 2 blue
-define shape box canvas -5000 100 -5000 5000 101 5000 cyan
-define shape box canvas -5000 -101 -5000 5000 -100 5000 magenta
-define shape sphere mirror_ball 10 10 -65 10 glass
+define shape box canvas -5000 -5000 1 5000 5000 2 green
+define shape box canvas -100 100 -100 100 101 100 cyan
+define shape box canvas -100 -101 -100 100 -100 100 magenta
+define shape sphere mirror_ball 0 0 -65 20 glass
 
 #lighting
 define light sun -30 30 0 1 1 1 1
