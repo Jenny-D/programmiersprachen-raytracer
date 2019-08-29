@@ -179,7 +179,7 @@ Color Renderer::shade(HitPoint const& hp, std::vector<std::shared_ptr<Shape>> co
 
   // diffuse Beleuchtung
   for (auto light : lightVec) {
-    float obstruction = false;
+    float obstruction = 0;
 
     float dir_x = light.position.x - hp.hitPoint.x;
     float dir_y = light.position.y - hp.hitPoint.y;
@@ -191,7 +191,7 @@ Color Renderer::shade(HitPoint const& hp, std::vector<std::shared_ptr<Shape>> co
     for (auto shape : shapeVec) {
       HitPoint hpl = offset((*shape).intersect(l_ray, t), true);
       if (hpl.hit && t <= 1 - 0.0001) {
-        obstruction += hpl.material->opacity_;
+        obstruction += (1 - obstruction) * hpl.material->opacity_;
         if (obstruction > 1) { 
           break; 
         }
@@ -234,55 +234,3 @@ void Renderer::write(Pixel const& p)
 
   ppm_.write(p);
 }
-
-
-//float ref_in = 1.0 / hp.material->refraction_;
-//float ref_out = hp.material->refraction_ / 1.0;
-////float ref_out = 1.0 / hp.material->refraction_;
-////float ref_in = hp.material->refraction_ / 1.0;
-//
-//HitPoint in = offset(hp, false);
-//glm::vec3 dir = glm::normalize(in.direction);
-//glm::vec3 n = in.normal;
-//float cos_alpha = glm::dot(in.normal, dir);
-////float sin_alpha = sin(acos(cos_alpha));
-////float sin_beta = sin_alpha * ref_in;
-////float cos_beta = cos(asin(sin_beta));
-//float cos_beta = cos(asin(sin(acos(cos_alpha)) * ref_in));
-//
-//float x = ref_in * (dir.x + (cos_alpha * n.x)) - (n.x * cos_beta);
-//float y = ref_in * (dir.y + (cos_alpha * n.y)) - (n.y * cos_beta);
-//float z = ref_in * (dir.z + (cos_alpha * n.z)) - (n.z * cos_beta);
-//glm::vec3 in_vec{ x,y,z };
-//Ray in_ray{ in.hitPoint,in_vec };
-//
-//HitPoint out;
-//for (auto shape : shapeVec) {
-//  float t;
-//  HitPoint p = (*shape).intersect(in_ray, t);
-//  if (p.hit) {
-//    if (p.distance < out.distance) {
-//      out = p;
-//    }
-//  }
-//}
-//
-//if (in.hitPoint != out.hitPoint) {
-//  glm::vec3 dir = glm::normalize(out.direction);
-//  glm::vec3 n = out.normal;
-//  float cos_alpha = glm::dot(n, dir);
-//  //float sin_alpha = sin(acos(cos_alpha));
-  //float sin_beta = sin_alpha * ref_in;
-  //float cos_beta = cos(asin(sin_beta));
-//  float cos_beta = cos(asin(sin(acos(cos_alpha)) * ref_out));
-//
-//  float x = ref_out * (dir.x + (cos_alpha * n.x)) - (n.x * cos_beta);
-//  float y = ref_out * (dir.y + (cos_alpha * n.y)) - (n.y * cos_beta);
-//  float z = ref_out * (dir.z + (cos_alpha * n.z)) - (n.z * cos_beta);
-//  glm::vec3 out_vec{ x,y,z };
-//  Ray out_ray{ out.hitPoint,out_vec };
-//  refractedColor = trace(out_ray, shapeVec, lightVec, ambient, limit);
-//}
-//else {
-//  refractedColor = trace(in_ray, shapeVec, lightVec, ambient, limit);
-//}
