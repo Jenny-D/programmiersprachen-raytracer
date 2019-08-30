@@ -390,16 +390,16 @@ void sdf(std::string const& sdfName, Scene& scene, Camera& cam) {
 			Renderer renderer{ width, height, filename };
 			renderer.render(cam, scene.shapeVec, scene.lightVec, scene.ambient);
 
-			Window window{ {width, height} };
+			/*Window window{ {width, height} };			//für Animation
 
-			while (!window.should_close())
+			while (!window.should_close())						//das
 			{
-				if (window.get_key(GLFW_KEY_ESCAPE) == GLFW_PRESS)
+				if (window.get_key(GLFW_KEY_ESCAPE) == GLFW_PRESS) //alles
 				{
-					window.close();
+					window.close();								//hier
 				}
-				window.show(renderer.color_buffer());
-			}
+				window.show(renderer.color_buffer());		//auskommentieren
+			}	*/										//!
 		}
 	}
 	input.close();

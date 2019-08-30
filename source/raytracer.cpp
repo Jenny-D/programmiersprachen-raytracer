@@ -10,7 +10,13 @@ int main(int argc, char* argv[])
 {
   Scene scene;
   Camera cam;
-  sdf("../../sdf-file/scene_transformations.sdf", scene, cam);
+  //sdf("../../sdf-file/scene_transformations.sdf", scene, cam);
+
+  int i = 1;
+  while (i < 121) {
+	  sdf("../../build/source/image_" + std::to_string(i) + ".sdf", scene, cam);
+	  i++;
+  }
 
   return 0;
 }

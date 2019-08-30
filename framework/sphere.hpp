@@ -20,7 +20,7 @@ class Sphere : public Shape {
 
   private:	
     glm::vec3 center_;
-		float radius_;
+	float radius_;
 
 };
 

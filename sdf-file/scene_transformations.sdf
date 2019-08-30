@@ -46,4 +46,4 @@ ransform eye rotate -45 0 1 0
 ransform eye translate 100 0 100
 
 #rendering
-define render image.ppm 500 500
+define render transformations.ppm 500 500
