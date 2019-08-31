@@ -395,18 +395,18 @@ void sdf(std::string const& sdfName, Scene& scene, Camera& cam, bool animation) 
 			Renderer renderer{ width, height, filename };
 			renderer.render(cam, scene.shapeVec, scene.lightVec, scene.ambient);
 
-      if (!animation) {
-        Window window{ {width, height} };			//für Animation
+		 if (!animation) {
+			Window window{ {width, height} };			//für Animation
 
-        while (!window.should_close())						//das
-        {
-          if (window.get_key(GLFW_KEY_ESCAPE) == GLFW_PRESS) //alles
-          {
-            window.close();								//hier
-          }
-          window.show(renderer.color_buffer());		//auskommentieren
-        }										//!
-      }
+			while (!window.should_close())						//das
+			{
+				if (window.get_key(GLFW_KEY_ESCAPE) == GLFW_PRESS) //alles
+				{
+					window.close();								//hier
+				}
+			window.show(renderer.color_buffer());		//auskommentieren
+			}										//!
+		 }
 		}
 	}
 	input.close();

@@ -34,7 +34,7 @@ glm::mat4 translate(glm::vec3 tv);
 glm::mat4 scale(glm::vec3 sm);
 glm::mat4 rotate(glm::vec3 rv);
 
-void sdf(std::string const& sdfName, Scene& scene, Camera& cam);
+void sdf(std::string const& sdfName, Scene& scene, Camera& cam, bool animation);
 
 std::shared_ptr<Material> find_material(std::string const& input, std::map<std::string, std::shared_ptr<Material>> const& materialMap);
 
