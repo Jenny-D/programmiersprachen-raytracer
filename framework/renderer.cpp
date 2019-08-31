@@ -45,12 +45,20 @@ Ray Renderer::cam_ray(Pixel const& p, float d, Camera& c)
   return Ray{ transformRay(cam_matrix, ray) };
 }
 
-HitPoint offset(HitPoint const& hp)
+HitPoint offset(HitPoint const& hp, bool out)
 {
+  float epsilon = 0.0001;
   HitPoint off_hp = hp;
-  off_hp.hitPoint.x += 0.0001 * hp.normal.x;
-  off_hp.hitPoint.y += 0.0001 * hp.normal.y;
-  off_hp.hitPoint.z += 0.0001 * hp.normal.z;
+  if (out) {
+    off_hp.hitPoint.x += epsilon * hp.normal.x;
+    off_hp.hitPoint.y += epsilon * hp.normal.y;
+    off_hp.hitPoint.z += epsilon * hp.normal.z;
+  }
+  else {
+    off_hp.hitPoint.x += -epsilon * hp.normal.x;
+    off_hp.hitPoint.y += -epsilon * hp.normal.y;
+    off_hp.hitPoint.z += -epsilon * hp.normal.z;
+  }
   return off_hp;
 }
 
@@ -72,31 +80,87 @@ Color Renderer::trace(Ray const& ray, std::vector<std::shared_ptr<Shape>> const&
 
   if (closest_hp.hit) 
   {
-    //HitPoint hp = closest_hp;
-    HitPoint hp = offset(closest_hp);
+    HitPoint hp = offset(closest_hp, true);
 
     Color hpColor = shade(hp, shapeVec, lightVec, ambient);
 
-    if (hp.material->mirror_ > 0 && limit <= 10) {
-      //gespiegelten Ray losschicken und dessen Shade zur�ckgeben
-      glm::vec3 l = glm::normalize(-ray.direction);
-      glm::vec3 n = hp.normal;
-      float s = glm::dot(l, n);  // Kosinus vom Winkel zwischen n und l
-      glm::vec3 rl = (2 * s * n) - l;
-      Ray new_ray = Ray{ hp.hitPoint, rl };
-      Color mirroredColor = trace(new_ray, shapeVec, lightVec, ambient, limit);
-      
-      // die 70% - 30% Einteilung ist fragwürdig
-      float m = hp.material->mirror_;
-      float r = m * mirroredColor.r + (1 - m) * hpColor.r;
-      float g = m * mirroredColor.g + (1 - m) * hpColor.g;
-      float b = m * mirroredColor.b + (1 - m) * hpColor.b;
+    Color mirroredColor = hpColor;
+    Color refractedColor = hpColor;
 
-      return { r,g,b };
+    float mir = hp.material->mirror_;
+    float op = hp.material->opacity_;
+
+    if (limit <= 10) {
+      if (mir > 0) {
+        //gespiegelten Ray losschicken und dessen Shade zurückgeben
+        glm::vec3 l = glm::normalize(-ray.direction);
+        glm::vec3 n = hp.normal;
+        float s = glm::dot(l, n);  // Kosinus vom Winkel zwischen n und l
+        glm::vec3 rl = (2 * s * n) - l;
+        Ray new_ray = Ray{ hp.hitPoint, rl };
+        mirroredColor = trace(new_ray, shapeVec, lightVec, ambient, limit);
+      }
+
+      if (op < 1) {
+        float ref_in = 1.0 / hp.material->refraction_;
+        float ref_out = hp.material->refraction_ / 1.0;
+        //float ref_out = 1.0 / hp.material->refraction_;
+        //float ref_in = hp.material->refraction_ / 1.0;
+
+        HitPoint in = offset(closest_hp, false);
+        glm::vec3 dir = glm::normalize(in.direction);
+        glm::vec3 n = in.normal;
+        float cos_beta = glm::dot(n,dir);
+        float cos_alpha = -cos(asin(sin(acos(cos_beta)) * ref_in));
+
+        /*float x = ref_in * (dir.x + (cos_alpha * n.x)) - (n.x * cos_beta);
+        float y = ref_in * (dir.y + (cos_alpha * n.y)) - (n.y * cos_beta);
+        float z = ref_in * (dir.z + (cos_alpha * n.z)) - (n.z * cos_beta);*/
+        float x = (dir.x + (n.x * cos_beta)) / ref_in - (cos_alpha * n.x);
+        float y = (dir.y + (n.y * cos_beta)) / ref_in - (cos_alpha * n.y);
+        float z = (dir.z + (n.z * cos_beta)) / ref_in - (cos_alpha * n.z);
+        glm::vec3 in_vec{ x,y,z };
+        Ray in_ray{ in.hitPoint,in_vec };
+
+        HitPoint out;
+        for (auto shape : shapeVec) {
+          float t;
+          HitPoint p = (*shape).intersect(in_ray, t);
+          if (p.hit) {
+            if (p.distance < out.distance) {
+              out = p;
+            }
+          }
+        }
+
+        if (in.hitPoint != out.hitPoint) {
+          out = offset(out, true);
+          glm::vec3 dir = glm::normalize(out.direction);
+          glm::vec3 n = out.normal;
+          float cos_beta = glm::dot(n, dir);
+          float cos_alpha = -cos(asin(sin(acos(cos_beta)) * ref_out));
+
+          /*float x = ref_in * (dir.x + (cos_alpha * n.x)) - (n.x * cos_beta);
+          float y = ref_in * (dir.y + (cos_alpha * n.y)) - (n.y * cos_beta);
+          float z = ref_in * (dir.z + (cos_alpha * n.z)) - (n.z * cos_beta);*/
+          float x = (dir.x + (n.x * cos_beta)) / ref_out - (cos_alpha * n.x);
+          float y = (dir.y + (n.y * cos_beta)) / ref_out - (cos_alpha * n.y);
+          float z = (dir.z + (n.z * cos_beta)) / ref_out - (cos_alpha * n.z);
+          glm::vec3 out_vec{ x,y,z };
+          Ray out_ray{ out.hitPoint,out_vec };
+          refractedColor = trace(out_ray, shapeVec, lightVec, ambient, limit);
+        }
+        else {
+          refractedColor = trace(in_ray, shapeVec, lightVec, ambient, limit);
+        }
+      }
     }
-    else {
-      return hpColor;
-    }
+    
+    float r = (op - mir) * hpColor.r + mir * mirroredColor.r + (1 - op) * refractedColor.r;
+    float g = (op - mir) * hpColor.g + mir * mirroredColor.g + (1 - op) * refractedColor.g;
+    float b = (op - mir) * hpColor.b + mir * mirroredColor.b + (1 - op) * refractedColor.b;
+
+    return { r,g,b };
   }
   else
   {
@@ -115,7 +179,7 @@ Color Renderer::shade(HitPoint const& hp, std::vector<std::shared_ptr<Shape>> co
 
   // diffuse Beleuchtung
   for (auto light : lightVec) {
-    bool obstructed = false;
+    float obstruction = 0;
 
     float dir_x = light.position.x - hp.hitPoint.x;
     float dir_y = light.position.y - hp.hitPoint.y;
@@ -125,15 +189,16 @@ Color Renderer::shade(HitPoint const& hp, std::vector<std::shared_ptr<Shape>> co
     float t;
 
     for (auto shape : shapeVec) {
-      HitPoint hpl = offset((*shape).intersect(l_ray, t));
+      HitPoint hpl = offset((*shape).intersect(l_ray, t), true);
       if (hpl.hit && t <= 1 - 0.0001) {
-      //if (hpl.hit) {
-        obstructed = true;
-        break;
+        obstruction += (1 - obstruction) * hpl.material->opacity_;
+        if (obstruction > 1) { 
+          break; 
+        }
       }
     }
 
-    if (!obstructed) {
+    if (obstruction < 1) {
       glm::vec3 l = glm::normalize(l_vec);
       glm::vec3 n = hp.normal;
       float s = glm::dot(l,n);  // Kosinus vom Winkel zwischen n und l
@@ -141,9 +206,9 @@ Color Renderer::shade(HitPoint const& hp, std::vector<std::shared_ptr<Shape>> co
       glm::vec3 v = glm::normalize(-hp.hitPoint);
       float s2 = glm::dot(rl, v);
 
-      r += light.brightness * ((hp.material->kd_.r * s) + (hp.material->ks_.r * pow(s2, hp.material->m_)));
-      g += light.brightness * ((hp.material->kd_.g * s) + (hp.material->ks_.g * pow(s2, hp.material->m_)));
-      b += light.brightness * ((hp.material->kd_.b * s) + (hp.material->ks_.b * pow(s2, hp.material->m_)));
+      r += light.brightness * ((hp.material->kd_.r * s) + (hp.material->ks_.r * pow(s2, hp.material->m_))) - obstruction;
+      g += light.brightness * ((hp.material->kd_.g * s) + (hp.material->ks_.g * pow(s2, hp.material->m_))) - obstruction;
+      b += light.brightness * ((hp.material->kd_.b * s) + (hp.material->ks_.b * pow(s2, hp.material->m_))) - obstruction;
     }
   }
   r /= (r + 1);
@@ -169,25 +234,3 @@ void Renderer::write(Pixel const& p)
 
   ppm_.write(p);
 }
-
-// original checkerboard render
-
-/*void Renderer::render()
-{
-  std::size_t const checker_pattern_size = 20;
-
-  for (unsigned y = 0; y < height_; ++y) {
-    for (unsigned x = 0; x < width_; ++x) {
-      Pixel p(x, y);
-      if (((x / checker_pattern_size) % 2) != ((y / checker_pattern_size) % 2)) {
-        p.color = Color(0.0, 1.0, float(x) / height_);
-      }
-      else {
-        p.color = Color(1.0, 0.0, float(y) / width_);
-      }
-
-      write(p);
-    }
-  }
-  ppm_.save(filename_);
-}*/

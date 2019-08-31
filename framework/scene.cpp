@@ -80,6 +80,8 @@ void sdf(std::string const& sdfName, Scene& scene, Camera& cam) {
 				float ks_r, ks_g, ks_b;
 				float m;
 				float mirror = 0;
+        float refraction = 1;
+        float opacity = 1;
         
 				// befülle Variablen
 				line_string_stream >> material_name;
@@ -94,16 +96,19 @@ void sdf(std::string const& sdfName, Scene& scene, Camera& cam) {
 				line_string_stream >> ks_b;
 				line_string_stream >> m;
 				line_string_stream >> mirror;
+        line_string_stream >> refraction;
+        line_string_stream >> opacity;
 
 				// gib Variablen aus
 				std::cout << "material " << material_name << " " 
 				<< ka_r << " " << ka_g << " " << ka_b << " " 
 				<< kd_r << " " << kd_g << " " << kd_b << " " 
 				<< ks_r << " " << ks_g << " " << ks_b << " " 
-				<<  m  << " " << mirror << std::endl;
+				<< m << " " << mirror << " "
+        << refraction << " " << opacity << std::endl;
 
 				// erstelle Objekt
-				Material mat { material_name, {ka_r, ka_g, ka_b}, {kd_r, kd_g, kd_b}, {ks_r, ks_g, ks_b}, m, mirror };
+				Material mat { material_name, {ka_r, ka_g, ka_b}, {kd_r, kd_g, kd_b}, {ks_r, ks_g, ks_b}, m, mirror, refraction, opacity };
 				auto material = std::make_shared<Material>(mat);
 
 				// füge Objekt zu Container hinzu
@@ -404,27 +409,6 @@ void sdf(std::string const& sdfName, Scene& scene, Camera& cam) {
 	}
 	input.close();
 }
-
-/*std::shared_ptr<Material> vec_find_material(std::string const& input, std::vector<std::shared_ptr<Material>> const& materialVec) {
-	for (int i = 0; i < materialVec.size(); i++) {
-		if (materialVec[i]->name_ == input) {
-			return materialVec[i];
-		}
-	}
-	return nullptr;
-}
-
-std::shared_ptr<Material> set_find_material(std::string const& input, std::set<std::shared_ptr<Material>> const& materialSet) {
-	auto dummy = std::make_shared<Material>();
-	dummy->name_ = input;
-	std::cout << (dummy == *materialSet.begin()) << std::endl;
-	auto result = materialSet.find(dummy);
-	std::cout << *result << "  " << *materialSet.end();
-	if (result == materialSet.end()) {
-		return nullptr;
-	}
-	return *result;
-}*/
 
 std::shared_ptr<Material> find_material(std::string const& input, std::map<std::string, std::shared_ptr<Material>> const& materialMap) {
 	auto i = materialMap.find(input);

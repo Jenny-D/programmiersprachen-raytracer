@@ -20,6 +20,8 @@ struct Material {
 	Color ks_ = { 0.0f, 0.0f, 0.0f };
 	float m_ = 0.0f;
   float mirror_ = 0;
+  float refraction_ = 1;
+  float opacity_ = 1;
 };
 
 #endif // !MATERIAL_HPP

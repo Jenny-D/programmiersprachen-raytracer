@@ -18,7 +18,6 @@ class Box : public Shape {
 		virtual float volume() const override;
 		virtual std::ostream& print(std::ostream& os) const override;
 		HitPoint intersect(Ray const& ray, float& t) const override;
-    //HitPoint intersect_old(Ray const& ray, float& t) const;
 
   private:		
 		glm::vec3 min_;

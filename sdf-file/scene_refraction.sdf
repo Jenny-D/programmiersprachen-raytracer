@@ -1,0 +1,34 @@
+#material
+define material red 1 0 0 1 0 0 1 0 0 10
+define material green 0 1 0 0 1 0 0 1 0 20
+define material blue 0 0 1 0 0 1 0 0 1 15
+define material yellow 1 1 0 1 1 0 1 1 0 30
+define material magenta 1 0 1 1 0 1 1 0 1 50
+define material cyan 0 1 1 0 1 1 0 1 1 20
+define material glass 1 1 1 1 1 1 1 1 1 40 0 1 .2
+define material red_glass 1 0 0 1 0 0 1 0 0 20 .1 1 .5
+define material mirror 1 1 1 1 1 1 1 1 1 20 .7
+define material white 1 1 1 1 1 1 1 1 1 20
+define material mirror_glass 1 1 1 1 1 1 1 1 1 20 .7 1.3 .2
+
+#shapes
+define shape box glass_box -10 -10 -85 30 30 -80 glass
+define shape box blue_box -30 -30 -91 10 10 -90 blue
+efine shape box mirror_box -20 -20 -96 20 20 -95 mirror_glass
+define shape box canvas -5000 -5000 -101 5000 5000 -100 white
+efine shape box canvas -101 -5000 -5000 -100 5000 5000 red
+efine shape box canvas 100 -5000 -5000 101 5000 5000 yellow
+efine shape box canvas -5000 -5000 1 5000 5000 2 blue
+efine shape box canvas -5000 100 -5000 5000 101 5000 cyan
+efine shape box canvas -5000 -101 -5000 5000 -100 5000 magenta
+define shape sphere mirror_ball 10 10 -65 10 glass
+
+#lighting
+define light sun -30 30 0 1 1 1 1
+define ambient .1 .1 .1
+
+#camera
+define camera eye 45 0 0 0 0 0 -1 0 1 0
+
+#rendering
+render image.ppm 500 500

@@ -79,30 +79,3 @@ HitPoint Sphere::intersect(Ray const& ray, float& t) const {
     return HitPoint{};
   }
 }
-
-//HitPoint Sphere::intersect(Ray const& ray, double& t) const {
-//  auto hit = glm::intersectRaySphere<glm::highp_vec3>(ray.origin, glm::normalize(ray.direction), center_, radius_ * radius_, t);
-//  glm::vec3 intersectionPoint{ 0.0f };
-//  if (hit) {
-//    intersectionPoint.x = ray.origin.x + t * ray.direction.x;
-//    intersectionPoint.y = ray.origin.y + t * ray.direction.y;
-//    intersectionPoint.z = ray.origin.z + t * ray.direction.z;
-//  }
-//  return HitPoint{ hit, t, getName(), getMaterial(), intersectionPoint , ray.direction, { 0,0,0 } };
-//}
-
-//bool intersectRaySphere(glm::vec3 const& rayStarting, glm::vec3 const& rayNormalizedDirection, glm::vec3 const& sphereCenter, float sphereRadiusSquared, float & intersectionDistance )
-//{
-//  float eps = 0.000001;
-//  glm::vec3 diff = sphereCenter - rayStarting;
-//  glm::vec3 t0 = glm::dot<glm::vec3>(diff, rayNormalizedDirection);
-//  glm::vec3 dSquared = glm::dot<glm::vec3>(diff, diff) - t0 * t0;
-//  if (dSquared > sphereRadiusSquared)
-//  {
-//    return false;
-//  }
-//  typename genType::value_type t1 = sqrt(sphereRadiusSquered - dSquared);
-//  intersectionDistance = t0 > t1 + Epsilon ? t0 - t1 : t0 + t1;
-//  return intersectionDistance > Epsilon;
-//}
-
