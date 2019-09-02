@@ -58,6 +58,7 @@ PpmWriter::save()
 
   std::fstream file(file_.c_str(), std::ios::out);
   file.clear();
+
   file << "P3 "
        << (unsigned int)width_ << " "
        << (unsigned int)height_ << " "

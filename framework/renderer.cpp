@@ -39,7 +39,7 @@ Ray Renderer::cam_ray(Pixel const& p, float d, Camera& c)
   float x = (1.0f / width_) * p.x  - 0.5f;
   float y = (1.0f / height_) * p.y - 0.5f;
   glm::vec3 direction{ x,y,-d };
-  Ray ray{ { 0,0,0 }, direction};
+  Ray ray { { 0,0,0 }, direction};
 
   glm::mat4 cam_matrix{ c.cam_transformation() };
   return Ray{ transformRay(cam_matrix, ray) };

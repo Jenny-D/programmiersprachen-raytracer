@@ -32,7 +32,7 @@ struct Scene {
 //void render(Scene const& scene, Camera const& cam);
 glm::mat4 translate(glm::vec3 tv);
 glm::mat4 scale(glm::vec3 sm);
-glm::mat4 rotate(glm::vec3 rv);
+glm::mat4 rotate(glm::vec3 rv, float angle);
 
 void sdf(std::string const& sdfName, Scene& scene, Camera& cam, bool animation);
 

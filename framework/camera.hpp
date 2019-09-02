@@ -12,11 +12,11 @@ struct Camera {
 	glm::vec3 eye_ = { 0.0f, 0.0f, 0.0f };
 	glm::vec3 dir_ = { 0.0f, 0.0f, -1.0f };
 	glm::vec3 up_ = { 0.0f, 1.0f, 0.0f };
-	glm::mat4 world_transformation_ = { 1.0f, 0.0f, 0.0f, 0.0f,
+	/*glm::mat4 world_transformation_ = { 1.0f, 0.0f, 0.0f, 0.0f,
 										0.0f, 1.0f, 0.0f, 0.0f,
 										0.0f, 0.0f, 1.0f, 0.0f,
 										0.0f, 0.0f, 0.0f, 1.0 };
-	glm::mat4 world_transformation_inv_ = glm::inverse(cam_transformation());
+	glm::mat4 world_transformation_inv_ = glm::inverse(cam_transformation());*/
 
 	glm::mat4 cam_transformation();
 	float distance()const;

@@ -270,7 +270,7 @@ void sdf(std::string const& sdfName, Scene& scene, Camera& cam, bool animation) 
 			std::string name;
 			line_string_stream >> name;
 
-			if (cam.name_ == name) {
+			/*if (cam.name_ == name) {
 
 				std::string transformation;
 				line_string_stream >> transformation;
@@ -318,7 +318,7 @@ void sdf(std::string const& sdfName, Scene& scene, Camera& cam, bool animation) 
 					cam.world_transformation_ *= m;
 					cam.world_transformation_inv_ = glm::inverse(cam.world_transformation_);
 				}
-			}
+			}*/
 
 			for (std::shared_ptr<Shape> shape : scene.shapeVec )
 				if (shape->getName() == name) {
@@ -395,18 +395,18 @@ void sdf(std::string const& sdfName, Scene& scene, Camera& cam, bool animation) 
 			Renderer renderer{ width, height, filename };
 			renderer.render(cam, scene.shapeVec, scene.lightVec, scene.ambient);
 
-		 if (!animation) {
-			Window window{ {width, height} };			//für Animation
+			if (!animation) {
+				Window window{ {width, height} };			//für Animation
 
-			while (!window.should_close())						//das
-			{
-				if (window.get_key(GLFW_KEY_ESCAPE) == GLFW_PRESS) //alles
+				while (!window.should_close())						//das
 				{
-					window.close();								//hier
-				}
-			window.show(renderer.color_buffer());		//auskommentieren
-			}										//!
-		 }
+					if (window.get_key(GLFW_KEY_ESCAPE) == GLFW_PRESS) //alles
+					{
+						window.close();								//hier
+					}
+					window.show(renderer.color_buffer());		//auskommentieren
+				}										//!
+			}
 		}
 	}
 	input.close();
